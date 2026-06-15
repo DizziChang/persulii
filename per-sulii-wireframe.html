@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>沛素 per-sulii — 官網線框稿 Wireframe</title>
+<style>
+  :root{
+    --ink:#2A2A2A; --mid:#9C9C9C; --line:#c9c9c9; --line2:#dcdcdc;
+    --bg:#f0f0f0; --panel:#ffffff; --ph:#e4e4e4; --ph2:#ededed; --ph-stroke:#cfcfcf;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Noto Sans TC','Noto Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    background:#e2e2e2;color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- Control bar ---------- */
+  .toolbar{
+    position:sticky;top:0;z-index:100;background:#1f1f1f;color:#fff;
+    display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+    padding:10px 20px;font-size:13px;
+  }
+  .toolbar .brand{font-weight:700;letter-spacing:.5px}
+  .toolbar .brand small{font-weight:400;color:#aaa;margin-left:8px}
+  .toolbar .group{display:flex;gap:6px;align-items:center}
+  .toolbar .group .lbl{color:#888;margin-right:4px;font-size:11px;text-transform:uppercase;letter-spacing:1px}
+  .tbtn{
+    background:#333;color:#ddd;border:1px solid #444;border-radius:5px;
+    padding:6px 12px;cursor:pointer;font-size:12.5px;font-family:inherit;transition:.15s;
+  }
+  .tbtn:hover{background:#3f3f3f}
+  .tbtn.active{background:#fff;color:#1f1f1f;border-color:#fff;font-weight:600}
+  .toolbar .spacer{flex:1}
+  .toolbar .hint{color:#888;font-size:11px}
+
+  /* ---------- Stage ---------- */
+  .stage{padding:30px 20px 80px;display:flex;justify-content:center}
+  .device{
+    background:var(--bg);width:100%;max-width:1280px;
+    box-shadow:0 4px 24px rgba(0,0,0,.14);transition:max-width .25s;
+    border:1px solid #d2d2d2;
+  }
+  .stage.mobile .device{max-width:390px}
+  .device-cap{
+    text-align:center;font-size:11px;color:#888;padding:7px;background:#cfcfcf;
+    letter-spacing:1px;text-transform:uppercase;
+  }
+
+  /* ---------- Wireframe primitives ---------- */
+  .page{display:none}
+  .page.active{display:block}
+  .wf{padding:0}
+  .section{padding:40px 56px;border-bottom:1px dashed var(--line)}
+  .stage.mobile .section{padding:28px 22px}
+  .sec-tag{
+    display:inline-block;font-size:10px;letter-spacing:1.5px;color:#a8a8a8;
+    text-transform:uppercase;margin-bottom:14px;border:1px solid #d8d8d8;
+    padding:2px 8px;border-radius:3px;background:#eaeaea;
+  }
+  /* placeholder boxes */
+  .ph{
+    background:repeating-linear-gradient(45deg,var(--ph) 0 10px,var(--ph2) 10px 20px);
+    border:1px solid var(--ph-stroke);border-radius:4px;
+    display:flex;align-items:center;justify-content:center;
+    color:#9a9a9a;font-size:12px;letter-spacing:1px;text-align:center;padding:10px;
+  }
+  .ph.solid{background:var(--ph)}
+  .line{height:11px;background:#d4d4d4;border-radius:3px;margin:7px 0}
+  .line.dark{background:#bcbcbc}
+  .line.w90{width:90%}.line.w80{width:80%}.line.w70{width:70%}
+  .line.w60{width:60%}.line.w50{width:50%}.line.w40{width:40%}.line.w30{width:30%}
+  .htxt{font-weight:700;color:#5f5f5f;letter-spacing:.5px}
+  .h1{font-size:30px}.h2{font-size:22px}.h3{font-size:16px}
+  .stage.mobile .h1{font-size:22px}.stage.mobile .h2{font-size:18px}
+  .sub{color:#9a9a9a;font-size:13px;margin-top:6px}
+  .btn-ph{
+    display:inline-flex;align-items:center;justify-content:center;
+    background:#cdcdcd;border:1px solid #b4b4b4;border-radius:4px;
+    padding:11px 22px;color:#555;font-size:13px;letter-spacing:.5px;margin-top:6px;
+  }
+  .btn-ph.dark{background:#5a5a5a;color:#e8e8e8;border-color:#5a5a5a}
+  .btn-ph.ghost{background:transparent}
+  .row{display:flex;gap:20px}
+  .stage.mobile .row{flex-direction:column}
+  .col{flex:1;min-width:0}
+  .center{text-align:center}
+  .center .line{margin-left:auto;margin-right:auto}
+  .mt8{margin-top:8px}.mt16{margin-top:16px}.mt24{margin-top:24px}.mt32{margin-top:32px}
+  .card{background:var(--panel);border:1px solid var(--line2);border-radius:6px;padding:22px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .stage.mobile .grid2,.stage.mobile .grid3,.stage.mobile .grid4{grid-template-columns:1fr}
+  .icon-ph{width:46px;height:46px;border-radius:50%;background:var(--ph);border:1px solid var(--ph-stroke);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;color:#aaa;font-size:11px}
+
+  /* ---------- Header wireframe ---------- */
+  .wf-header{
+    display:flex;flex-direction:column;align-items:center;gap:16px;
+    padding:22px 56px;background:#fafafa;border-bottom:1px solid var(--line);
+    position:relative;
+  }
+  .stage.mobile .wf-header{padding:18px 22px}
+  .wf-logo{font-weight:700;font-size:18px;letter-spacing:2px;color:#555}
+  .wf-logo small{font-size:9px;letter-spacing:1px;color:#aaa;display:block;font-weight:400}
+  .logo-img{height:48px;width:auto;display:block;margin:0 auto}
+  .logo-img.foot{height:56px}
+  .stage.mobile .logo-img{height:40px}
+  .wf-nav{display:flex;gap:26px;font-size:13.5px;color:#777}
+  .wf-nav span{cursor:pointer}
+  .wf-nav span:hover{color:#2A2A2A}
+  .desk-only{display:flex}.mob-only{display:none}
+  .stage.mobile .desk-only{display:none}
+  .stage.mobile .mob-only{display:block}
+  .burger{position:absolute;right:22px;top:50%;transform:translateY(-50%);font-size:22px;color:#777;cursor:pointer;user-select:none}
+
+  /* mobile dropdown menu */
+  .mobile-menu{display:none;background:#fafafa;border-bottom:1px solid var(--line)}
+  .mobile-menu.open{display:block;animation:mmIn .18s ease}
+  @keyframes mmIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  .mobile-menu span.mm-link{display:block;padding:15px 22px;border-bottom:1px solid var(--line2);font-size:14.5px;color:#555;cursor:pointer}
+  .mobile-menu span.mm-link:hover{background:#f0f0f0;color:#2A2A2A}
+  .mobile-menu .mm-cta{padding:16px 22px}
+  .mobile-menu .mm-cta .btn-ph{display:block;text-align:center}
+  .stage:not(.mobile) .mobile-menu{display:none !important}
+
+  /* ---------- Footer wireframe ---------- */
+  .wf-footer{background:#dedede;padding:44px 56px 26px;border-top:1px solid var(--line)}
+  .stage.mobile .wf-footer{padding:34px 22px 22px}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:30px}
+  .stage.mobile .foot-grid{grid-template-columns:1fr 1fr}
+  .foot-h{font-size:11px;letter-spacing:1px;color:#777;text-transform:uppercase;margin-bottom:12px;font-weight:600}
+  .foot-li{font-size:12.5px;color:#8a8a8a;margin:7px 0}
+  .foot-bottom{display:flex;justify-content:space-between;margin-top:34px;padding-top:18px;border-top:1px solid #cccccc;color:#999;font-size:11.5px;flex-wrap:wrap;gap:10px}
+
+  .anno{font-size:11px;color:#b08968;background:#fbf3e9;border:1px dashed #e0c9a8;border-radius:4px;padding:3px 8px;display:inline-block;margin-top:10px}
+  /* hide non-content annotations: section tags, notes, image-intent labels */
+  .sec-tag,.anno{display:none}
+  .ph:not(.solid){color:transparent}
+  .prod-media{flex:0 0 42%}
+  .stage.mobile .prod-media{flex:1 1 auto;width:100%}
+  .stage.mobile .prod-media .ph{height:280px !important}
+  .prevnext{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:26px;gap:16px;flex-wrap:wrap}
+  .pn-link{font-size:14px;color:#5f5f5f;cursor:pointer;letter-spacing:.5px;font-weight:600}
+  .pn-link:hover{color:#2A2A2A}
+  .pn-label{display:block;font-size:11px;color:#a8a8a8;margin-bottom:5px;font-weight:400;letter-spacing:1px}
+  .breadcrumb{font-size:12px;color:#9a9a9a;padding:16px 56px 0}
+  .stage.mobile .breadcrumb{padding:14px 22px 0}
+  .pagetitle-band{background:#e8e8e8;padding:34px 56px;text-align:center;border-bottom:1px dashed var(--line)}
+  .stage.mobile .pagetitle-band{padding:26px 22px}
+
+  /* Hero with full-bleed background-image placeholder */
+  .hero-bg{
+    position:relative;min-height:420px;display:flex;align-items:center;
+    background:repeating-linear-gradient(45deg,#dcdcdc 0 14px,#e3e3e3 14px 28px);
+    border:1px solid var(--ph-stroke);
+  }
+  .stage.mobile .hero-bg{min-height:360px}
+  .hero-bg .hero-note{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    color:#a6a6a6;font-size:13px;letter-spacing:1px;text-align:center;
+    border:1px dashed #bdbdbd;background:#ececec;padding:8px 16px;border-radius:4px;
+    pointer-events:none;z-index:0;
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="brand">沛素 per-sulii<small>官網線框稿 · Low-fi Wireframe</small></div>
+  <div class="group">
+    <span class="lbl">頁面</span>
+    <button class="tbtn active" data-page="home">首頁</button>
+    <button class="tbtn" data-page="about">關於</button>
+    <button class="tbtn" data-page="products">產品</button>
+    <button class="tbtn" data-page="product">產品內頁</button>
+    <button class="tbtn" data-page="journal">專欄</button>
+    <button class="tbtn" data-page="contact">聯絡</button>
+  </div>
+  <div class="spacer"></div>
+  <div class="group">
+    <span class="lbl">裝置</span>
+    <button class="tbtn dbtn active" data-dev="desktop">桌機</button>
+    <button class="tbtn dbtn" data-dev="mobile">手機</button>
+  </div>
+</div>
+
+<div class="stage" id="stage">
+<div class="device">
+  <div class="device-cap" id="devcap">DESKTOP · 1280px</div>
+
+  <!-- ================= HEADER (shared) ================= -->
+  <div class="wf-header">
+    <img class="logo-img" src="images/per-sulii-logo-grayscale.png" alt="沛素 per-sulii">
+    <div class="wf-nav desk-only">
+      <span data-page="home">首頁</span>
+      <span data-page="about">關於</span>
+      <span data-page="products">產品</span>
+      <span data-page="journal">專欄</span>
+    </div>
+    <div class="burger mob-only" id="burger">≡</div>
+  </div>
+
+  <!-- ================= MOBILE MENU (drawer) ================= -->
+  <div class="mobile-menu" id="mobileMenu">
+    <span class="mm-link" data-page="home">首頁</span>
+    <span class="mm-link" data-page="about">關於</span>
+    <span class="mm-link" data-page="products">產品</span>
+    <span class="mm-link" data-page="journal">專欄</span>
+    <div class="mm-cta"><span class="btn-ph dark" data-page="contact">成為合作夥伴</span></div>
+  </div>
+
+  <!-- ================================================= -->
+  <!-- HOME                                              -->
+  <!-- ================================================= -->
+  <div class="page active" id="page-home">
+
+    <!-- ① Hero -->
+    <div class="section hero-bg">
+      <div style="max-width:560px;position:relative;z-index:1">
+        <div class="htxt h1">Precision Skin Science</div>
+        <div class="line dark w70 mt16"></div>
+        <div class="sub">健康的肌膚需要保養 — 每天 30 秒，在家也能養出好肌膚。</div>
+        <div class="line w60 mt8"></div>
+        <span class="btn-ph dark mt16">了解產品</span>
+        <span class="btn-ph ghost mt16">品牌故事</span>
+      </div>
+    </div>
+
+    <!-- ② 科研實力 -->
+    <div class="section" style="background:#e9e9e9">
+      <span class="sec-tag">② 科研實力</span>
+      <div class="center">
+        <div class="htxt h2">國際製藥經驗領導研發</div>
+        <div class="sub">Science Behind Every Formula<br>Precision in Every Drop</div>
+      </div>
+      <div class="grid2 mt32">
+        <div class="card">
+          <div class="htxt h3">林先文 博士</div>
+          <div class="sub">日本 田邊製藥前研發部長 · 京都大學</div>
+          <div class="ph" style="height:64px;width:190px;margin-top:18px">簽名</div>
+        </div>
+        <div class="card">
+          <div class="htxt h3">陳高明 博士</div>
+          <div class="sub">美國 諾華藥廠前研發處長 · 賓州大學</div>
+          <div class="ph" style="height:64px;width:190px;margin-top:18px">簽名</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ③ 產品 -->
+    <div class="section">
+      <span class="sec-tag">④ 產品 Products</span>
+      <div class="center"><div class="htxt h2">在家養出好肌膚</div><div class="sub">每天 30 秒，悄悄變美。</div></div>
+      <div class="grid2 mt32">
+        <div class="card center">
+          <div class="ph" style="height:200px">S-essence 產品圖</div>
+          <div class="htxt h3 mt16">S-essence 外泌體多胜肽修護精華</div>
+          <div class="sub">每日簡單保養，維持肌膚穩定狀態。</div>
+          <span class="btn-ph mt16" data-page="product">了解更多</span>
+        </div>
+        <div class="card center">
+          <div class="ph" style="height:200px">V-essence 產品圖</div>
+          <div class="htxt h3 mt16">V-essence 精萃蜂胜肽 PLUS 精華</div>
+          <div class="sub">淡化紋路，緊緻肌膚，鎖住青春肌密。</div>
+          <span class="btn-ph mt16" data-page="product">了解更多</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ④ 品牌核心理念 -->
+    <div class="section center" style="background:#e9e9e9">
+      <span class="sec-tag">④ 品牌核心理念</span>
+      <div class="htxt h2">符合 TFDA PIF · 國際 INCI 認證</div>
+      <div class="sub">Thoughtful Care, Backed by Science.</div>
+    </div>
+
+    <!-- ⑤ 專欄 -->
+    <div class="section">
+      <span class="sec-tag">⑤ 專欄 Journal</span>
+      <div class="htxt h2">最新文章</div>
+      <div class="grid2 mt24">
+        <div class="card"><div class="ph" style="height:150px">縮圖</div><div class="line w90 mt16"></div><div class="line w60"></div><div class="sub">外泌體是什麼？</div></div>
+        <div class="card"><div class="ph" style="height:150px">縮圖</div><div class="line w90 mt16"></div><div class="line w60"></div><div class="sub">如何建立簡單保養？</div></div>
+      </div>
+    </div>
+
+    <!-- ⑥ 合作夥伴 -->
+    <div class="section center" style="background:#dadada">
+      <span class="sec-tag">⑥ 合作夥伴</span>
+      <div class="htxt h2">合作夥伴</div>
+      <div class="sub">與沛素一同推廣更理性的保養理念。</div>
+      <div class="mt24"><span class="btn-ph dark" data-page="contact">成為合作夥伴</span></div>
+    </div>
+  </div>
+
+  <!-- ================================================= -->
+  <!-- ABOUT                                             -->
+  <!-- ================================================= -->
+  <div class="page" id="page-about">
+    <div class="breadcrumb">首頁 / 關於</div>
+
+    <!-- ① Hero -->
+    <div class="section hero-bg" style="justify-content:center;text-align:center">
+      <div style="max-width:640px;position:relative;z-index:1;margin:0 auto">
+        <div class="sub">ABOUT PER-SULII</div>
+        <div class="htxt h1 mt8">關於沛素</div>
+        <div class="sub">Balancing · Nourishing · Revitalizing · Simple Care for Every Day</div>
+        <div class="line w60 mt24" style="margin:24px auto 0"></div>
+        <div class="line w50" style="margin:auto"></div>
+      </div>
+    </div>
+
+    <!-- ② 品牌故事 -->
+    <div class="section">
+      <span class="sec-tag">② 品牌故事</span>
+      <div class="row" style="gap:40px">
+        <div class="col">
+          <div class="htxt h2">我們為什麼創立沛素？</div>
+          <div class="line w90 mt16"></div><div class="line w90"></div><div class="line w80"></div>
+          <div class="line w90 mt16"></div><div class="line w70"></div>
+          <div class="sub mt16">最豐沛的滋養，最簡單的保養。每天 30 秒，悄悄變美。</div>
+        </div>
+        <div class="col"><div class="ph" style="height:240px">品牌情境照</div></div>
+      </div>
+    </div>
+
+    <!-- ③ 品牌理念 -->
+    <div class="section" style="background:#e9e9e9">
+      <span class="sec-tag">③ 品牌理念</span>
+      <div class="center"><div class="htxt h2">品牌理念</div></div>
+      <div class="grid3 mt32">
+        <div class="card center"><div class="icon-ph">icon</div><div class="htxt h3">科研導向</div><div class="sub">從成分機制出發，而非追逐市場流行。</div></div>
+        <div class="card center"><div class="icon-ph">icon</div><div class="htxt h3">簡單保養</div><div class="sub">減少不必要的程序，回歸肌膚真正需要。</div></div>
+        <div class="card center"><div class="icon-ph">icon</div><div class="htxt h3">長期價值</div><div class="sub">重視穩定與日常累積，而非追求快速刺激。</div></div>
+      </div>
+    </div>
+
+    <!-- ④ 研發團隊 -->
+    <div class="section">
+      <span class="sec-tag">④ 研發團隊</span>
+      <div class="center"><div class="htxt h2">國際製藥經驗領導研發</div><div class="sub">Science Behind Every Formula</div></div>
+      <div class="grid2 mt32">
+        <div class="card"><div class="row"><div class="ph" style="width:90px;height:110px">人像</div><div class="col"><div class="htxt h3">林先文 博士</div><div class="sub">京都大學博士 · 前日本田邊製藥研發部長</div><div class="line w80 mt16"></div><div class="line w60"></div><div class="anno">簽名 + 實驗室影像</div></div></div></div>
+        <div class="card"><div class="row"><div class="ph" style="width:90px;height:110px">人像</div><div class="col"><div class="htxt h3">陳高明 博士</div><div class="sub">賓州大學博士 · 前美國諾華藥廠研發處長</div><div class="line w80 mt16"></div><div class="line w60"></div><div class="anno">簽名 + 實驗室影像</div></div></div></div>
+      </div>
+    </div>
+
+    <!-- ⑤ 專為自然肌膚修護科研（含品質標準） -->
+    <div class="section" style="background:#e9e9e9">
+      <span class="sec-tag">⑤ 專為自然肌膚修護科研</span>
+      <div class="center"><div class="htxt h2">專為自然肌膚修護科研</div></div>
+      <div class="grid4 mt32">
+        <div class="card center"><div class="icon-ph">icon</div><div class="htxt h3">成分研究</div><div class="sub">精選高品質活性成分。</div></div>
+        <div class="card center"><div class="icon-ph">icon</div><div class="htxt h3">配方設計</div><div class="sub">兼顧穩定性與吸收效率。</div></div>
+        <div class="card center"><div class="icon-ph">icon</div><div class="htxt h3">安全評估</div><div class="sub">以溫和、日常使用為優先。</div></div>
+        <div class="card center"><div class="icon-ph">icon</div><div class="htxt h3">品質控管</div><div class="sub">從原料到成品皆嚴格把關。</div></div>
+      </div>
+      <div class="center mt32">
+        <div class="htxt h3">國際品質標準</div>
+        <div class="sub mt8">符合 TFDA PIF 制度 ｜ 採用國際 INCI 命名系統 ｜ GMP 品質管理</div>
+      </div>
+    </div>
+
+    <!-- ⑦ 品牌願景 -->
+    <div class="section center" style="background:#dadada">
+      <span class="sec-tag">⑦ 品牌願景</span>
+      <div class="htxt h2">品牌願景</div>
+      <div class="sub">美，源自於健康的身體</div>
+      <div class="line w70 mt24" style="margin:24px auto 0"></div>
+      <div class="line w60" style="margin:auto"></div>
+      <div class="line w50" style="margin:auto"></div>
+      <div class="sub mt16">保養回歸簡單，讓美麗回歸日常。</div>
+    </div>
+  </div>
+
+  <!-- ================================================= -->
+  <!-- PRODUCTS (list)                                   -->
+  <!-- ================================================= -->
+  <div class="page" id="page-products">
+    <div class="pagetitle-band">
+      <span class="sec-tag">產品列表頁</span>
+      <div class="htxt h1">Products</div>
+      <div class="sub">每天 30 秒，悄悄變美。</div>
+    </div>
+    <div class="section">
+      <div class="grid2">
+        <div class="card center">
+          <div class="ph" style="height:240px">S-essence 產品圖</div>
+          <div class="htxt h3 mt16">S-essence 外泌體多胜肽修護精華</div>
+          <div class="sub">每日簡單保養，維持肌膚穩定狀態。</div>
+          <span class="btn-ph mt16" data-page="product">了解更多</span>
+        </div>
+        <div class="card center">
+          <div class="ph" style="height:240px">V-essence 產品圖</div>
+          <div class="htxt h3 mt16">V-essence 精萃蜂胜肽 PLUS 精華</div>
+          <div class="sub">淡化紋路，緊緻肌膚，鎖住青春肌密。</div>
+          <span class="btn-ph mt16" data-page="product">了解更多</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================= -->
+  <!-- PRODUCT DETAIL                                    -->
+  <!-- ================================================= -->
+  <div class="page" id="page-product">
+    <div class="breadcrumb">首頁 / 產品 / S-essence 外泌體多胜肽修護精華</div>
+
+    <!-- 產品主視覺 + 名稱 -->
+    <div class="section">
+      <div class="row" style="gap:56px;align-items:flex-start">
+        <div class="col prod-media">
+          <div class="ph" style="height:400px">產品瓶身主圖</div>
+        </div>
+        <div class="col" style="padding-top:8px">
+          <div class="sub" style="letter-spacing:3px">S-ESSENCE</div>
+          <div class="htxt h1 mt8">外泌體多胜肽修護精華</div>
+          <div class="sub mt16">每日簡單保養，維持肌膚穩定狀態。</div>
+          <div class="line w90 mt24"></div><div class="line w80"></div><div class="line w60"></div>
+          <div class="mt32"><span class="btn-ph dark">洽詢經銷夥伴</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 產品特色 -->
+    <div class="section">
+      <div style="max-width:760px">
+        <div class="htxt h2">產品特色</div>
+        <div class="line w90 mt16"></div><div class="line w80"></div><div class="line w70"></div>
+      </div>
+    </div>
+
+    <!-- 關鍵成分 -->
+    <div class="section">
+      <div style="max-width:760px">
+        <div class="htxt h2">關鍵成分</div>
+        <div class="htxt h3 mt24">外泌體</div>
+        <div class="line w90 mt8"></div><div class="line w70"></div>
+        <div class="htxt h3 mt24">多胜肽</div>
+        <div class="line w90 mt8"></div><div class="line w70"></div>
+        <div class="htxt h3 mt24">小分子萃取</div>
+        <div class="line w90 mt8"></div><div class="line w70"></div>
+      </div>
+    </div>
+
+    <!-- 使用方式 -->
+    <div class="section">
+      <div style="max-width:760px">
+        <div class="htxt h2">使用方式</div>
+        <div class="sub mt16">1 ｜ 潔顏後取適量</div>
+        <div class="sub mt8">2 ｜ 均勻塗抹全臉</div>
+        <div class="sub mt8">3 ｜ 輕拍至吸收</div>
+        <div class="sub mt8">4 ｜ 後續保養</div>
+      </div>
+    </div>
+
+    <!-- 規格與認證 -->
+    <div class="section">
+      <div style="max-width:760px">
+        <div class="htxt h2">規格與認證</div>
+        <div class="sub mt16">容量 / 規格：—</div>
+        <div class="sub mt8">成分標示：依國際 INCI 命名系統</div>
+        <div class="sub mt8">認證：TFDA PIF ｜ INCI ｜ GMP</div>
+      </div>
+    </div>
+
+    <!-- 上一個 / 下一個商品 -->
+    <div class="section">
+      <div class="prevnext">
+        <span class="pn-link" data-page="product"><span class="pn-label">← 上一個商品</span>V-essence 精萃蜂胜肽 PLUS 精華</span>
+        <span class="pn-link" data-page="product" style="text-align:right"><span class="pn-label">下一個商品 →</span>V-essence 精萃蜂胜肽 PLUS 精華</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================= -->
+  <!-- JOURNAL                                           -->
+  <!-- ================================================= -->
+  <div class="page" id="page-journal">
+    <div class="pagetitle-band">
+      <span class="sec-tag">專欄列表頁</span>
+      <div class="htxt h1">Journal</div>
+      <div class="sub">理性保養知識與品牌觀點。</div>
+    </div>
+
+    <!-- grid -->
+    <div class="section">
+      <div class="grid3">
+        <div class="card"><div class="ph" style="height:140px">縮圖</div><div class="sub mt16">分類 · 保養知識</div><div class="htxt h3">如何建立簡單保養？</div><div class="line w80 mt8"></div></div>
+        <div class="card"><div class="ph" style="height:140px">縮圖</div><div class="sub mt16">分類 · 肌膚科學</div><div class="htxt h3">為什麼肌膚需要穩定而非過度刺激？</div><div class="line w80 mt8"></div></div>
+        <div class="card"><div class="ph" style="height:140px">縮圖</div><div class="sub mt16">分類 · 保養觀念</div><div class="htxt h3">25 歲後應該開始注意什麼？</div><div class="line w80 mt8"></div></div>
+        <div class="card"><div class="ph" style="height:140px">縮圖</div><div class="line w90 mt16"></div><div class="line w60"></div></div>
+        <div class="card"><div class="ph" style="height:140px">縮圖</div><div class="line w90 mt16"></div><div class="line w60"></div></div>
+        <div class="card"><div class="ph" style="height:140px">縮圖</div><div class="line w90 mt16"></div><div class="line w60"></div></div>
+      </div>
+      <div class="center mt32"><span class="btn-ph ghost">載入更多</span></div>
+    </div>
+  </div>
+
+  <!-- ================================================= -->
+  <!-- CONTACT                                           -->
+  <!-- ================================================= -->
+  <div class="page" id="page-contact">
+    <div class="pagetitle-band">
+      <span class="sec-tag">聯絡我們 / 經銷合作入口</span>
+      <div class="htxt h1">Become a Partner</div>
+      <div class="sub">與沛素一同推廣更理性的保養理念。</div>
+    </div>
+    <div class="section">
+      <!-- form (centered, single column) -->
+      <div class="card" style="max-width:620px;margin:0 auto">
+        <div class="sub">公司 / 品牌名稱</div><div class="ph solid" style="height:40px;margin-top:6px"></div>
+        <div class="sub mt16">聯絡人</div><div class="ph solid" style="height:40px;margin-top:6px"></div>
+        <div class="row mt16"><div class="col"><div class="sub">電話</div><div class="ph solid" style="height:40px;margin-top:6px"></div></div><div class="col"><div class="sub">Email</div><div class="ph solid" style="height:40px;margin-top:6px"></div></div></div>
+        <div class="sub mt16">需求說明</div><div class="ph solid" style="height:90px;margin-top:6px"></div>
+        <div class="center mt16"><span class="btn-ph dark">送出洽詢</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= FOOTER (shared) ================= -->
+  <div class="wf-footer">
+    <div class="foot-grid">
+      <div>
+        <img class="logo-img foot" src="images/per-sulii-logo-grayscale.png" alt="沛素 per-sulii">
+        <div class="foot-li" style="margin-top:12px">專為肌膚自然修護科研</div>
+      </div>
+      <div>
+        <div class="foot-h">產品</div>
+        <div class="foot-li">V-essence 精萃蜂胜肽 PLUS 精華</div>
+        <div class="foot-li">S-essence 外泌體多胜肽修護精華</div>
+      </div>
+      <div>
+        <div class="foot-h">關於</div>
+        <div class="foot-li">品牌理念</div>
+        <div class="foot-li">研發團隊</div>
+        <div class="foot-li">合作夥伴</div>
+      </div>
+      <div>
+        <div class="foot-h">社群 / 聯絡</div>
+        <div class="foot-li">Line · Facebook · Instagram</div>
+        <div class="foot-li">service@persulii.com</div>
+        <div class="foot-li">0912-125-856</div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© per-sulii 2026 · 媛和媄生醫美容有限公司</span>
+      <span>語言切換：繁中 / English</span>
+    </div>
+  </div>
+
+</div><!-- /device -->
+</div><!-- /stage -->
+
+<script>
+  var stage=document.getElementById('stage');
+  var devcap=document.getElementById('devcap');
+  var mobileMenu=document.getElementById('mobileMenu');
+  var burger=document.getElementById('burger');
+  function closeMenu(){ if(mobileMenu){mobileMenu.classList.remove('open');} if(burger){burger.textContent='≡';} }
+  function show(p){
+    document.querySelectorAll('.page').forEach(function(el){el.classList.remove('active')});
+    var t=document.getElementById('page-'+p); if(t)t.classList.add('active');
+    document.querySelectorAll('.tbtn[data-page]').forEach(function(b){
+      b.classList.toggle('active',b.getAttribute('data-page')===p);
+    });
+    closeMenu();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  if(burger){
+    burger.addEventListener('click',function(){
+      var open=mobileMenu.classList.toggle('open');
+      burger.textContent = open ? '✕' : '≡';
+    });
+  }
+  document.querySelectorAll('[data-page]').forEach(function(el){
+    el.addEventListener('click',function(){show(this.getAttribute('data-page'))});
+  });
+  document.querySelectorAll('.dbtn').forEach(function(b){
+    b.addEventListener('click',function(){
+      var d=this.getAttribute('data-dev');
+      stage.classList.toggle('mobile',d==='mobile');
+      document.querySelectorAll('.dbtn').forEach(function(x){x.classList.remove('active')});
+      this.classList.add('active');
+      devcap.textContent = d==='mobile' ? 'MOBILE · 390px' : 'DESKTOP · 1280px';
+    });
+  });
+</script>
+</body>
+</html>

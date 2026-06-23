@@ -14,24 +14,17 @@
     --bg2:#ececec;
     --ink:#2A2A2A;         /* brand ink */
     --ink-soft:#565656;
-    --mid:#9C9C9C;         /* brand mid grey (decor/lines only) */
-    --mid-text:#6f6f6f;    /* AA-compliant grey for small text */
+    --mid:#9C9C9C;         /* brand mid grey */
     --line:#e8e8e8;
     --deep:#1f1f1f;        /* cool dark (sparingly) */
     --deep2:#141414;
-    --taupe:#6f6f6f;       /* neutral grey accent (AA on light bg) */
+    --taupe:#8c8c8c;       /* neutral grey accent */
     --serif:'Funnel Display','Noto Serif TC',serif;
     --sans:'Funnel Display','Noto Sans TC',-apple-system,'Segoe UI',sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
   body{font-family:var(--sans);background:#dfdcd6;color:var(--ink);-webkit-font-smoothing:antialiased;font-weight:400}
-
-  /* ---------------- a11y: interactive resets + focus ---------------- */
-  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:inherit}
-  a{color:inherit;text-decoration:none}
-  :focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:2px}
-  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
   /* ---------------- stage / device ---------------- */
   .stage{display:block}
@@ -46,7 +39,7 @@
   .h3{font-family:var(--sans);font-weight:300;font-size:clamp(19px,2vw,24px);line-height:1.45}
   .lead{font-size:clamp(15px,1.5vw,18px);line-height:1.9;color:var(--ink-soft);font-weight:400}
   .body{font-size:15.5px;line-height:1.95;color:var(--ink-soft);font-weight:400}
-  .small{font-size:13px;color:var(--mid-text);line-height:1.7}
+  .small{font-size:13px;color:var(--mid);line-height:1.7}
 
   /* ---------------- layout helpers ---------------- */
   .wrap{max-width:1120px;margin:0 auto;padding:0 56px}
@@ -85,22 +78,22 @@
   .hdr-in{display:flex;flex-direction:column;align-items:center;gap:14px;padding:20px 56px}
   .hdr .logo{height:46px;width:auto;display:block}
   .nav{display:flex;gap:34px}
-  .nav button{font-size:13.5px;letter-spacing:.06em;color:var(--ink-soft);cursor:pointer;position:relative;padding-bottom:3px;transition:.2s}
-  .nav button::after{content:'';position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--ink);transition:.25s}
-  .nav button:hover{color:var(--ink)}
-  .nav button:hover::after,.nav button.on::after{width:100%}
+  .nav span{font-size:13.5px;letter-spacing:.06em;color:var(--ink-soft);cursor:pointer;position:relative;padding-bottom:3px;transition:.2s}
+  .nav span::after{content:'';position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--ink);transition:.25s}
+  .nav span:hover{color:var(--ink)}
+  .nav span:hover::after,.nav span.on::after{width:100%}
   .desk{display:flex}.mob{display:none}
-  .burger{position:absolute;right:24px;top:50%;transform:translateY(-50%);font-size:22px;color:var(--ink);cursor:pointer;user-select:none;line-height:1}
+  .burger{position:absolute;right:24px;top:50%;transform:translateY(-50%);font-size:22px;color:var(--ink);cursor:pointer;user-select:none}
   .mmenu{display:none}
-  .mmenu.open{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;position:absolute;top:0;left:0;right:0;height:100vh;height:100dvh;background:#fff;z-index:200}
-  .mmenu button{display:block;padding:14px 24px;font-size:22px;font-weight:300;letter-spacing:.05em;color:var(--ink);cursor:pointer}
+  .mmenu.open{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;position:absolute;top:0;left:0;right:0;height:100vh;background:#fff;z-index:200}
+  .mmenu span{display:block;padding:14px 24px;font-size:22px;font-weight:300;letter-spacing:.05em;color:var(--ink);cursor:pointer}
 
   /* ---------------- pages ---------------- */
   .page{display:none;animation:fade .4s ease}
   .page.active{display:block}
   @keyframes fade{from{opacity:0}to{opacity:1}}
   .pagehead{background:var(--bg);text-align:center;padding:clamp(70px,9vw,130px) 0 clamp(50px,6vw,80px)}
-  .crumb{font-size:12px;letter-spacing:.05em;color:var(--mid-text);padding:18px 0 0}
+  .crumb{font-size:12px;letter-spacing:.05em;color:var(--mid);padding:18px 0 0}
 
   /* ---------------- hero ---------------- */
   .hero{position:relative;min-height:min(84vh,700px);display:flex;align-items:center;background:linear-gradient(155deg,#f6f6f5 0%,#efefee 60%,#e8e8e7 100%);color:var(--ink);overflow:hidden}
@@ -112,8 +105,6 @@
 
   /* cards */
   .card{background:var(--paper)}
-  /* card buttons: flex column + top-align so content never vertical-centers even when stretched */
-  .pcard,.jcard{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;width:100%;text-align:left;align-self:start}
   .pcard{cursor:pointer}
   .pcard .media{height:clamp(300px,34vw,420px)}
   .pcard:hover .media{filter:brightness(.98)}
@@ -139,7 +130,7 @@
   .faq{max-width:760px;margin:0 auto}
   .faq-item{border-top:1px solid var(--line)}
   .faq-item:last-child{border-bottom:1px solid var(--line)}
-  .faq-q{display:flex;width:100%;justify-content:space-between;align-items:center;gap:20px;padding:clamp(20px,2.4vw,28px) 0;cursor:pointer;font-size:clamp(16px,1.7vw,18px);font-weight:500;color:var(--ink)}
+  .faq-q{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:clamp(20px,2.4vw,28px) 0;cursor:pointer;font-size:clamp(16px,1.7vw,18px);font-weight:500;color:var(--ink)}
   .faq-q .ic{font-family:var(--sans);font-weight:300;font-size:26px;color:var(--taupe);transition:transform .25s;flex-shrink:0;line-height:1}
   .faq-item.open .faq-q .ic{transform:rotate(45deg)}
   .faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease}
@@ -164,8 +155,8 @@
   .ftr-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.8fr;gap:36px}
   .ftr .logo{height:68px;filter:brightness(0) invert(1);opacity:.92}
   .ftr h4{font-family:var(--sans);font-size:14.5px;font-weight:500;letter-spacing:.1em;color:#c6c6c1;margin-bottom:16px}
-  .ftr a,.ftr li,.ftr button{font-size:13.5px;color:#bdbdb8;line-height:2.1;list-style:none;display:block;cursor:pointer;transition:.15s}
-  .ftr a:hover,.ftr button:hover{color:#fff}
+  .ftr a,.ftr li{font-size:13.5px;color:#bdbdb8;line-height:2.1;list-style:none;display:block;cursor:pointer;transition:.15s}
+  .ftr a:hover{color:#fff}
   .ftr .tagline{font-size:13.5px;color:#9a9d9a;line-height:1.9;margin-top:16px}
   .ftr-bottom{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:48px;padding-top:22px;border-top:1px solid rgba(255,255,255,.12);font-size:12px;color:#83867f}
   .ftr-bottom .lang span{cursor:pointer}
@@ -220,22 +211,22 @@
   <header class="hdr">
     <div class="hdr-in">
       <img class="logo" src="images/per-sulii-logo-grayscale.png" alt="沛素 per-sulii">
-      <nav class="nav desk" aria-label="主要導覽">
-        <button type="button" data-page="home">首頁</button>
-        <button type="button" data-page="about">關於</button>
-        <button type="button" data-page="products">產品</button>
-        <button type="button" data-page="journal">專欄</button>
-        <button type="button" data-page="contact">聯絡</button>
+      <nav class="nav desk">
+        <span data-page="home">首頁</span>
+        <span data-page="about">關於</span>
+        <span data-page="products">產品</span>
+        <span data-page="journal">專欄</span>
+        <span data-page="contact">聯絡</span>
       </nav>
-      <button class="burger mob" id="burger" type="button" aria-label="開啟選單" aria-expanded="false" aria-controls="mmenu">≡</button>
+      <div class="burger mob" id="burger">≡</div>
     </div>
-    <nav class="mmenu" id="mmenu" aria-label="行動版導覽">
-      <button type="button" data-page="home">首頁</button>
-      <button type="button" data-page="about">關於</button>
-      <button type="button" data-page="products">產品</button>
-      <button type="button" data-page="journal">專欄</button>
-      <button type="button" data-page="contact">聯絡</button>
-    </nav>
+    <div class="mmenu" id="mmenu">
+      <span data-page="home">首頁</span>
+      <span data-page="about">關於</span>
+      <span data-page="products">產品</span>
+      <span data-page="journal">專欄</span>
+      <span data-page="contact">聯絡</span>
+    </div>
   </header>
 
   <!-- ============ HOME ============ -->
@@ -249,8 +240,8 @@
           <h1 class="display mt20" style="font-size:clamp(30px,4vw,52px)">宅養顏<br>在家養出好肌膚</h1>
           <p class="lead mt24">以科研萃取豐沛成分，回歸肌膚真正需要。</p>
           <div class="mt40">
-            <button type="button" class="btn solid" data-page="products">探索產品</button>
-            <button type="button" class="btn ghost" data-page="about" style="margin-left:10px">品牌故事</button>
+            <span class="btn solid" data-page="products">探索產品</span>
+            <span class="btn ghost" data-page="about" style="margin-left:10px">品牌故事</span>
           </div>
         </div>
       </div>
@@ -286,7 +277,20 @@
           <div class="eyebrow">Products</div>
           <h2 class="h2 mt16">在家養出好肌膚</h2>
         </div>
-        <div class="grid g2 mt56" id="home-products"></div>
+        <div class="grid g2 mt56">
+          <div class="pcard" data-page="product">
+            <div class="media product" data-mono="S"></div>
+            <h3 class="h3 mt24">S-essence 外泌體多胜肽修護精華</h3>
+            <p class="body mt8">每日簡單保養，維持肌膚穩定狀態。</p>
+            <div class="mt16"><span class="tlink">了解更多 →</span></div>
+          </div>
+          <div class="pcard" data-page="product">
+            <div class="media product" data-mono="V"></div>
+            <h3 class="h3 mt24">V-essence 精萃蜂胜肽 PLUS 精華</h3>
+            <p class="body mt8">淡化紋路，緊緻肌膚，鎖住青春肌密。</p>
+            <div class="mt16"><span class="tlink">了解更多 →</span></div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -304,19 +308,19 @@
         <div class="eyebrow">Journal</div>
         <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:20px">
           <h2 class="h2 mt12">最新文章</h2>
-          <button type="button" class="tlink" data-page="journal">所有文章 →</button>
+          <span class="tlink" data-page="journal">所有文章 →</span>
         </div>
         <div class="grid g2 mt40">
-          <button type="button" class="jcard" data-page="journal">
+          <div class="jcard" data-page="journal">
             <div class="media" data-mono="01"></div>
             <div class="small mt16">保養知識</div>
             <h3 class="h3 mt8">外泌體是什麼？</h3>
-          </button>
-          <button type="button" class="jcard" data-page="journal">
+          </div>
+          <div class="jcard" data-page="journal">
             <div class="media" data-mono="02"></div>
             <div class="small mt16">日常保養</div>
             <h3 class="h3 mt8">如何建立簡單保養？</h3>
-          </button>
+          </div>
         </div>
       </div>
     </section>
@@ -327,7 +331,7 @@
         <div class="eyebrow">Become a Partner</div>
         <h2 class="h2 mt16">合作夥伴</h2>
         <p class="lead mt16 maxw center">與沛素一同推廣更理性的保養理念。</p>
-        <div class="mt32"><button type="button" class="btn solid" data-page="contact">成為合作夥伴</button></div>
+        <div class="mt32"><span class="btn solid" data-page="contact">成為合作夥伴</span></div>
       </div>
     </section>
   </div>
@@ -431,13 +435,81 @@
     </section>
     <section class="sec">
       <div class="wrap">
-        <div class="grid g2" id="product-list"></div>
+        <div class="grid g2">
+          <div class="pcard" data-page="product">
+            <div class="media product" data-mono="S" style="height:clamp(360px,40vw,480px)"></div>
+            <h3 class="h3 mt24">S-essence 外泌體多胜肽修護精華</h3>
+            <p class="body mt8">每日簡單保養，維持肌膚穩定狀態。</p>
+            <div class="mt16"><span class="tlink">了解更多 →</span></div>
+          </div>
+          <div class="pcard" data-page="product">
+            <div class="media product" data-mono="V" style="height:clamp(360px,40vw,480px)"></div>
+            <h3 class="h3 mt24">V-essence 精萃蜂胜肽 PLUS 精華</h3>
+            <p class="body mt8">淡化紋路，緊緻肌膚，鎖住青春肌密。</p>
+            <div class="mt16"><span class="tlink">了解更多 →</span></div>
+          </div>
+        </div>
       </div>
     </section>
   </div>
 
-  <!-- ============ PRODUCT DETAIL (rendered from PRODUCTS data) ============ -->
-  <div class="page" id="page-product"></div>
+  <!-- ============ PRODUCT DETAIL ============ -->
+  <div class="page" id="page-product">
+    <div class="wrap"><div class="crumb">首頁 / 產品 / S-essence 外泌體多胜肽修護精華</div></div>
+
+    <section class="sec tight">
+      <div class="wrap split" style="align-items:flex-start">
+        <div class="media product" data-mono="S" style="height:clamp(360px,46vw,540px)"></div>
+        <div>
+          <div class="eyebrow">S-essence</div>
+          <h1 class="h2 mt12">外泌體多胜肽修護精華</h1>
+          <p class="lead mt16">每日簡單保養，維持肌膚穩定狀態。</p>
+          <p class="body mt16">以小分子多胜肽搭配外泌體技術，溫和支持肌膚日常修護，幫助維持穩定、水嫩的健康狀態。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec tight" style="background:var(--bg)">
+      <div class="wrap maxw">
+        <h2 class="h3">產品特色</h2>
+        <p class="body mt16">專為亞洲肌膚設計的修護配方，溫和不刺激，適合每日使用。以科研精神精密萃取，兼顧穩定性與吸收效率。</p>
+      </div>
+    </section>
+
+    <section class="sec tight">
+      <div class="wrap maxw">
+        <h2 class="h3">關鍵成分</h2>
+        <div class="mt24"><div class="eyebrow">Exosome</div><h3 class="h3 mt8" style="font-size:20px">外泌體</h3><p class="body mt8">支持肌膚的修護訊號，幫助維持穩定狀態。</p></div>
+        <hr class="divider mt24">
+        <div class="mt24"><div class="eyebrow">Peptides</div><h3 class="h3 mt8" style="font-size:20px">多胜肽</h3><p class="body mt8">小分子設計，溫和滲透，支持肌膚日常保養。</p></div>
+        <hr class="divider mt24">
+        <div class="mt24"><div class="eyebrow">Micro Extraction</div><h3 class="h3 mt8" style="font-size:20px">小分子萃取</h3><p class="body mt8">精密萃取技術，兼顧穩定性與吸收效率。</p></div>
+      </div>
+    </section>
+
+    <section class="sec tight" style="background:var(--bg)">
+      <div class="wrap maxw">
+        <h2 class="h3">使用方式</h2>
+        <p class="body mt16"><span class="num">01</span>　潔顏後取適量於掌心</p>
+        <p class="body mt8"><span class="num">02</span>　均勻塗抹全臉</p>
+        <p class="body mt8"><span class="num">03</span>　輕拍至吸收</p>
+        <p class="body mt8"><span class="num">04</span>　接續後續保養</p>
+      </div>
+    </section>
+
+    <section class="sec tight">
+      <div class="wrap maxw">
+        <h2 class="h3">規格與認證</h2>
+        <p class="body mt16">容量 / 規格：——</p>
+        <p class="body mt8">成分標示：依國際 INCI 命名系統</p>
+        <p class="body mt8">品質認證：TFDA PIF ｜ INCI ｜ GMP</p>
+        <div class="pn mt56">
+          <div class="pn-i" data-page="product"><div class="eyebrow">← 上一個商品</div><div class="nm">V-essence 精萃蜂胜肽 PLUS 精華</div></div>
+          <div class="pn-i" data-page="product" style="text-align:right"><div class="eyebrow">下一個商品 →</div><div class="nm">V-essence 精萃蜂胜肽 PLUS 精華</div></div>
+        </div>
+      </div>
+    </section>
+  </div>
 
   <!-- ============ JOURNAL ============ -->
   <div class="page" id="page-journal">
@@ -449,10 +521,10 @@
     <section class="sec">
       <div class="wrap">
         <div class="grid g3">
-          <button type="button" class="jcard" data-page="journal"><div class="media" data-mono="01"></div><div class="small mt16">保養知識</div><h3 class="h3 mt8">外泌體是什麼？</h3></button>
-          <button type="button" class="jcard" data-page="journal"><div class="media" data-mono="02"></div><div class="small mt16">日常保養</div><h3 class="h3 mt8">如何建立簡單保養？</h3></button>
-          <button type="button" class="jcard" data-page="journal"><div class="media" data-mono="03"></div><div class="small mt16">肌膚科學</div><h3 class="h3 mt8">為什麼肌膚需要穩定而非過度刺激？</h3></button>
-          <button type="button" class="jcard" data-page="journal"><div class="media" data-mono="04"></div><div class="small mt16">保養觀念</div><h3 class="h3 mt8">25 歲後應該開始注意什麼？</h3></button>
+          <div class="jcard" data-page="journal"><div class="media" data-mono="01"></div><div class="small mt16">保養知識</div><h3 class="h3 mt8">外泌體是什麼？</h3></div>
+          <div class="jcard" data-page="journal"><div class="media" data-mono="02"></div><div class="small mt16">日常保養</div><h3 class="h3 mt8">如何建立簡單保養？</h3></div>
+          <div class="jcard" data-page="journal"><div class="media" data-mono="03"></div><div class="small mt16">肌膚科學</div><h3 class="h3 mt8">為什麼肌膚需要穩定而非過度刺激？</h3></div>
+          <div class="jcard" data-page="journal"><div class="media" data-mono="04"></div><div class="small mt16">保養觀念</div><h3 class="h3 mt8">25 歲後應該開始注意什麼？</h3></div>
         </div>
       </div>
     </section>
@@ -461,17 +533,17 @@
   <!-- ============ CONTACT ============ -->
   <div class="page" id="page-contact">
     <section class="sec" style="padding-top:clamp(38px,4.8vw,72px);padding-bottom:clamp(38px,4.8vw,72px)">
-      <form class="wrap" style="max-width:620px" onsubmit="return false">
+      <div class="wrap" style="max-width:620px">
         <h1 class="h2 center" style="margin-bottom:40px">與我們聯繫</h1>
-        <div class="field"><label for="f-company">公司 / 品牌名稱</label><input id="f-company" name="company" type="text" placeholder="請輸入"></div>
-        <div class="field"><label for="f-contact">聯絡人</label><input id="f-contact" name="contact" type="text" placeholder="請輸入"></div>
+        <div class="field"><label>公司 / 品牌名稱</label><input type="text" placeholder="請輸入"></div>
+        <div class="field"><label>聯絡人</label><input type="text" placeholder="請輸入"></div>
         <div class="grid g2" style="gap:18px">
-          <div class="field"><label for="f-phone">電話</label><input id="f-phone" name="phone" type="tel" placeholder="請輸入"></div>
-          <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" placeholder="請輸入"></div>
+          <div class="field"><label>電話</label><input type="tel" placeholder="請輸入"></div>
+          <div class="field"><label>Email</label><input type="email" placeholder="請輸入"></div>
         </div>
-        <div class="field"><label for="f-msg">需求說明</label><textarea id="f-msg" name="message" rows="5" placeholder="請簡述合作需求"></textarea></div>
-        <div class="center mt32"><button type="submit" class="btn solid">送出洽詢</button></div>
-      </form>
+        <div class="field"><label>需求說明</label><textarea rows="5" placeholder="請簡述合作需求"></textarea></div>
+        <div class="center mt32"><span class="btn solid">送出洽詢</span></div>
+      </div>
     </section>
   </div>
 
@@ -482,19 +554,19 @@
         <h1 class="h2 center" style="margin-bottom:40px">常見問答</h1>
         <div class="faq">
           <div class="faq-item">
-            <button type="button" class="faq-q" aria-expanded="false"><span>沛素的銷售模式是什麼？</span><span class="ic" aria-hidden="true">+</span></button>
+            <div class="faq-q">沛素的銷售模式是什麼？<span class="ic">+</span></div>
             <div class="faq-a"><div class="inner">沛素採單層直銷，僅透過合作經銷商販售，官網不直接販售產品，但您可在官網瀏覽完整產品資訊。</div></div>
           </div>
           <div class="faq-item">
-            <button type="button" class="faq-q" aria-expanded="false"><span>如何成為經銷合作夥伴？</span><span class="ic" aria-hidden="true">+</span></button>
+            <div class="faq-q">如何成為經銷合作夥伴？<span class="ic">+</span></div>
             <div class="faq-a"><div class="inner">請填寫聯絡頁的合作洽詢表單，留下公司與聯絡資訊，我們將盡快與您聯繫洽談合作細節。</div></div>
           </div>
           <div class="faq-item">
-            <button type="button" class="faq-q" aria-expanded="false"><span>產品通過哪些品質認證？</span><span class="ic" aria-hidden="true">+</span></button>
+            <div class="faq-q">產品通過哪些品質認證？<span class="ic">+</span></div>
             <div class="faq-a"><div class="inner">沛素產品符合台灣 TFDA PIF 制度、採用國際 INCI 成分命名系統，並以 GMP 品質管理，從原料到成品嚴格把關。</div></div>
           </div>
           <div class="faq-item">
-            <button type="button" class="faq-q" aria-expanded="false"><span>目前有哪些產品？未來會擴充嗎？</span><span class="ic" aria-hidden="true">+</span></button>
+            <div class="faq-q">目前有哪些產品？未來會擴充嗎？<span class="ic">+</span></div>
             <div class="faq-a"><div class="inner">目前主打 S-essence 外泌體多胜肽修護精華與 V-essence 精萃蜂胜肽 PLUS 精華，未來將陸續推出，總計規劃 7 款產品。</div></div>
           </div>
         </div>
@@ -512,14 +584,14 @@
         </div>
         <div>
           <h4>產品</h4>
-          <button type="button" data-page="product" data-id="v-essence">V-essence 精萃蜂胜肽 PLUS</button>
-          <button type="button" data-page="product" data-id="s-essence">S-essence 外泌體多胜肽</button>
+          <a data-page="product">V-essence 精萃蜂胜肽 PLUS</a>
+          <a data-page="product">S-essence 外泌體多胜肽</a>
         </div>
         <div>
           <h4>關於</h4>
-          <button type="button" data-page="about">品牌理念</button>
-          <button type="button" data-page="about">研發團隊</button>
-          <button type="button" data-page="faq">常見問答</button>
+          <a data-page="about">品牌理念</a>
+          <a data-page="about">研發團隊</a>
+          <a data-page="faq">常見問答</a>
         </div>
         <div>
           <h4>聯絡</h4>
@@ -542,123 +614,26 @@
 </div><!-- /stage -->
 
 <script>
-  /* ============ PRODUCT DATA (extensible to 7) ============ */
-  var PRODUCTS=[
-    {
-      id:'s-essence', code:'S', en:'S-essence', name:'外泌體多胜肽修護精華',
-      tagline:'每日簡單保養，維持肌膚穩定狀態。',
-      intro:'以小分子多胜肽搭配外泌體技術，溫和支持肌膚日常修護，幫助維持穩定、水嫩的健康狀態。',
-      feature:'專為亞洲肌膚設計的修護配方，溫和不刺激，適合每日使用。以科研精神精密萃取，兼顧穩定性與吸收效率。',
-      ingredients:[
-        {en:'Exosome', zh:'外泌體', desc:'支持肌膚的修護訊號，幫助維持穩定狀態。'},
-        {en:'Peptides', zh:'多胜肽', desc:'小分子設計，溫和滲透，支持肌膚日常保養。'},
-        {en:'Micro Extraction', zh:'小分子萃取', desc:'精密萃取技術，兼顧穩定性與吸收效率。'}
-      ],
-      usage:['潔顏後取適量於掌心','均勻塗抹全臉','輕拍至吸收','接續後續保養'],
-      specs:{size:'——', inci:'依國際 INCI 命名系統', cert:'TFDA PIF ｜ INCI ｜ GMP'}
-    },
-    {
-      id:'v-essence', code:'V', en:'V-essence', name:'精萃蜂胜肽 PLUS 精華',
-      tagline:'淡化紋路，緊緻肌膚，鎖住青春肌密。',
-      intro:'以蜂胜肽搭配多重胜肽複方，集中支持肌膚緊緻與彈性，幫助淡化細紋、維持青春光澤。',
-      feature:'針對熟齡與彈性流失設計的精華配方，質地清爽好吸收，溫和不刺激，適合每日早晚使用。',
-      ingredients:[
-        {en:'Bee Peptide', zh:'蜂胜肽', desc:'支持肌膚緊緻與彈性，幫助維持飽滿狀態。'},
-        {en:'Multi-Peptides', zh:'多重胜肽', desc:'複方協同，集中支持紋路與輪廓的日常保養。'},
-        {en:'Micro Extraction', zh:'小分子萃取', desc:'精密萃取技術，兼顧穩定性與吸收效率。'}
-      ],
-      usage:['潔顏後取適量於掌心','由內而外均勻按摩全臉','加強塗抹於紋路處','輕拍至吸收後接續保養'],
-      specs:{size:'——', inci:'依國際 INCI 命名系統', cert:'TFDA PIF ｜ INCI ｜ GMP'}
-    }
-  ];
-  function productById(id){for(var i=0;i<PRODUCTS.length;i++){if(PRODUCTS[i].id===id)return PRODUCTS[i];}return PRODUCTS[0];}
-
-  /* ============ render helpers ============ */
-  function productCard(p, mediaH){
-    var h=mediaH?(' style="height:'+mediaH+'"'):'';
-    return '<button type="button" class="pcard" data-page="product" data-id="'+p.id+'">'
-      + '<div class="media product" data-mono="'+p.code+'"'+h+'></div>'
-      + '<h3 class="h3 mt24">'+p.en+' '+p.name+'</h3>'
-      + '<p class="body mt8">'+p.tagline+'</p>'
-      + '<div class="mt16"><span class="tlink">了解更多 →</span></div>'
-      + '</button>';
-  }
-  function renderProductLists(){
-    var home=document.getElementById('home-products');
-    if(home){home.innerHTML=PRODUCTS.map(function(p){return productCard(p);}).join('');}
-    var list=document.getElementById('product-list');
-    if(list){list.innerHTML=PRODUCTS.map(function(p){return productCard(p,'clamp(360px,40vw,480px)');}).join('');}
-  }
-  function renderProductDetail(id){
-    var idx=PRODUCTS.findIndex(function(p){return p.id===id;}); if(idx<0)idx=0;
-    var p=PRODUCTS[idx];
-    var prev=PRODUCTS[(idx-1+PRODUCTS.length)%PRODUCTS.length];
-    var next=PRODUCTS[(idx+1)%PRODUCTS.length];
-    var ing=p.ingredients.map(function(c,i){
-      return (i>0?'<hr class="divider mt24">':'')
-        +'<div class="mt24"><div class="eyebrow">'+c.en+'</div><h3 class="h3 mt8" style="font-size:20px">'+c.zh+'</h3><p class="body mt8">'+c.desc+'</p></div>';
-    }).join('');
-    var use=p.usage.map(function(s,i){
-      var n=('0'+(i+1)).slice(-2);
-      return '<p class="body '+(i===0?'mt16':'mt8')+'"><span class="num">'+n+'</span>　'+s+'</p>';
-    }).join('');
-    var html=''
-      +'<div class="wrap"><div class="crumb">首頁 / 產品 / '+p.en+' '+p.name+'</div></div>'
-      +'<section class="sec tight"><div class="wrap split" style="align-items:flex-start">'
-        +'<div class="media product" data-mono="'+p.code+'" style="height:clamp(360px,46vw,540px)"></div>'
-        +'<div><div class="eyebrow">'+p.en+'</div><h1 class="h2 mt12">'+p.name+'</h1>'
-        +'<p class="lead mt16">'+p.tagline+'</p><p class="body mt16">'+p.intro+'</p></div>'
-      +'</div></section>'
-      +'<section class="sec tight" style="background:var(--bg)"><div class="wrap maxw">'
-        +'<h2 class="h3">產品特色</h2><p class="body mt16">'+p.feature+'</p></div></section>'
-      +'<section class="sec tight"><div class="wrap maxw"><h2 class="h3">關鍵成分</h2>'+ing+'</div></section>'
-      +'<section class="sec tight" style="background:var(--bg)"><div class="wrap maxw"><h2 class="h3">使用方式</h2>'+use+'</div></section>'
-      +'<section class="sec tight"><div class="wrap maxw"><h2 class="h3">規格與認證</h2>'
-        +'<p class="body mt16">容量 / 規格：'+p.specs.size+'</p>'
-        +'<p class="body mt8">成分標示：'+p.specs.inci+'</p>'
-        +'<p class="body mt8">品質認證：'+p.specs.cert+'</p>'
-        +'<div class="pn mt56">'
-          +'<button type="button" class="pn-i" data-page="product" data-id="'+prev.id+'"><div class="eyebrow">← 上一個商品</div><div class="nm">'+prev.en+' '+prev.name+'</div></button>'
-          +'<button type="button" class="pn-i" data-page="product" data-id="'+next.id+'" style="text-align:right"><div class="eyebrow">下一個商品 →</div><div class="nm">'+next.en+' '+next.name+'</div></button>'
-        +'</div>'
-      +'</div></section>';
-    document.getElementById('page-product').innerHTML=html;
-  }
-
-  /* ============ navigation ============ */
+  var stage=document.getElementById('stage');
   var mmenu=document.getElementById('mmenu');
   var burger=document.getElementById('burger');
-  function closeMenu(){mmenu.classList.remove('open');burger.textContent='≡';burger.setAttribute('aria-expanded','false');burger.setAttribute('aria-label','開啟選單');}
-  function show(p, id){
-    if(p==='product'){renderProductDetail(id||PRODUCTS[0].id);}
+  function closeMenu(){mmenu.classList.remove('open');burger.textContent='≡';}
+  function show(p){
     document.querySelectorAll('.page').forEach(function(el){el.classList.remove('active')});
     var t=document.getElementById('page-'+p); if(t)t.classList.add('active');
-    document.querySelectorAll('.nav button').forEach(function(s){
-      var on=s.getAttribute('data-page')===p; s.classList.toggle('on',on);
-      if(on){s.setAttribute('aria-current','page');}else{s.removeAttribute('aria-current');}
-    });
+    document.querySelectorAll('.nav span').forEach(function(s){s.classList.toggle('on',s.getAttribute('data-page')===p)});
     closeMenu();
     window.scrollTo({top:0,behavior:'smooth'});
   }
-  /* delegated click so dynamically rendered cards work too */
-  document.addEventListener('click',function(e){
-    var el=e.target.closest('[data-page]'); if(!el)return;
-    show(el.getAttribute('data-page'), el.getAttribute('data-id'));
+  document.querySelectorAll('[data-page]').forEach(function(el){
+    el.addEventListener('click',function(){show(this.getAttribute('data-page'))});
   });
   burger.addEventListener('click',function(){
-    var open=mmenu.classList.toggle('open');
-    burger.textContent=open?'✕':'≡';
-    burger.setAttribute('aria-expanded',open?'true':'false');
-    burger.setAttribute('aria-label',open?'關閉選單':'開啟選單');
+    var open=mmenu.classList.toggle('open'); burger.textContent=open?'✕':'≡';
   });
   document.querySelectorAll('.faq-q').forEach(function(q){
-    q.addEventListener('click',function(){
-      var open=this.parentElement.classList.toggle('open');
-      this.setAttribute('aria-expanded',open?'true':'false');
-    });
+    q.addEventListener('click',function(){ this.parentElement.classList.toggle('open'); });
   });
-
-  renderProductLists();
 </script>
 </body>
 </html>

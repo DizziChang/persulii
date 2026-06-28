@@ -1,0 +1,27 @@
+<!-- ============================================================
+     header.html — Header 元件片段（參考用）
+     實際由 js/components.js 注入每一頁。
+     ============================================================ -->
+<header class="hdr">
+  <div class="hdr-in" style="position:relative">
+    <a href="index.html">
+      <img class="logo" src="../images/per-sulii-logo-grayscale.png" alt="沛素 per-sulii">
+    </a>
+    <nav class="nav desk" aria-label="主要導覽">
+      <a href="index.html"    data-page="home">首頁</a>
+      <a href="about.html"    data-page="about">關於</a>
+      <a href="products.html" data-page="products">產品</a>
+      <a href="journal.html"  data-page="journal">專欄</a>
+      <a href="contact.html"  data-page="contact">聯絡</a>
+    </nav>
+    <button class="burger mob" id="burger" type="button"
+      aria-label="開啟選單" aria-expanded="false" aria-controls="mmenu">≡</button>
+  </div>
+  <nav class="mmenu" id="mmenu" aria-label="行動版導覽">
+    <a href="index.html">首頁</a>
+    <a href="about.html">關於</a>
+    <a href="products.html">產品</a>
+    <a href="journal.html">專欄</a>
+    <a href="contact.html">聯絡</a>
+  </nav>
+</header>

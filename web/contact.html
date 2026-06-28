@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>聯絡我們 — 沛素 per-sulii</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+</head>
+<body data-page="contact">
+
+<div id="site-header"></div>
+
+<main>
+
+  <section class="sec" style="padding-top:clamp(38px,4.8vw,72px);padding-bottom:clamp(38px,4.8vw,72px)">
+    <form class="wrap" style="max-width:620px" onsubmit="return false">
+      <h1 class="h2 center" style="margin-bottom:40px">與我們聯繫</h1>
+      <div class="field">
+        <label for="f-company">公司 / 品牌名稱</label>
+        <input id="f-company" name="company" type="text" placeholder="請輸入">
+      </div>
+      <div class="field">
+        <label for="f-contact">聯絡人</label>
+        <input id="f-contact" name="contact" type="text" placeholder="請輸入">
+      </div>
+      <div class="grid g2" style="gap:18px">
+        <div class="field">
+          <label for="f-phone">電話</label>
+          <input id="f-phone" name="phone" type="tel" placeholder="請輸入">
+        </div>
+        <div class="field">
+          <label for="f-email">Email</label>
+          <input id="f-email" name="email" type="email" placeholder="請輸入">
+        </div>
+      </div>
+      <div class="field">
+        <label for="f-msg">需求說明</label>
+        <textarea id="f-msg" name="message" rows="5" placeholder="請簡述合作需求"></textarea>
+      </div>
+      <div class="center mt32">
+        <button type="submit" class="btn solid">送出洽詢</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- 聯絡資訊 -->
+  <section class="sec tight" style="background:var(--bg)">
+    <div class="wrap center">
+      <div class="eyebrow">Contact Info</div>
+      <h2 class="h3 mt16">媛和媄生醫美容有限公司</h2>
+      <p class="body mt24">service@persulii.com</p>
+      <p class="body mt8">0912-125-856</p>
+      <p class="body mt8">高雄市鼓山區龍水二路 32 號 29 樓</p>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="js/components.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

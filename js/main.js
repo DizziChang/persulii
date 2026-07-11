@@ -63,7 +63,7 @@ function renderProductList() {
   var el = document.getElementById('product-list');
   if (!el) return;
   el.innerHTML = PRODUCTS.map(function (p) {
-    return productCardHTML(p, 'clamp(360px,40vw,480px)');
+    return productCardHTML(p);
   }).join('');
 }
 
@@ -98,7 +98,7 @@ function renderProductDetail() {
   container.innerHTML =
     '<div class="wrap"><div class="crumb"><a href="index.html">首頁</a> / <a href="products.html">產品</a> / ' + p.en + ' ' + p.name + '</div></div>'
     + '<section class="sec tight"><div class="wrap split" style="align-items:flex-start">'
-    + '<div class="media product" id="product-hero-media" data-mono="' + p.code + '" style="height:clamp(360px,46vw,540px)"></div>'
+    + '<div class="media product" id="product-hero-media" data-mono="' + p.code + '"></div>'
     + '<div><div class="eyebrow">' + p.en + '</div>'
     + '<h1 class="h2 mt12">' + p.name + '</h1>'
     + '<p class="lead mt16">' + p.tagline + '</p>'

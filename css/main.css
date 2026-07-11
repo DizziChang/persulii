@@ -335,7 +335,11 @@ h3 {
 }
 
 .media.product {
-  background: #f0f0ef
+  background: #f0f0ef;
+  width: 100%;
+  max-width: 628px;
+  aspect-ratio: 628 / 540;
+  height: auto
 }
 
 /* ---- HEADER ---- */
@@ -519,7 +523,10 @@ h3 {
 }
 
 .pcard .media {
-  height: clamp(300px, 34vw, 420px)
+  width: 100%;
+  max-width: 628px;
+  aspect-ratio: 628 / 540;
+  height: auto
 }
 
 .pcard:hover .media {
@@ -960,7 +967,7 @@ h3 {
 }
 
 .bi-title {
-  font-size: 15.5px;
+  font-size: 28px;
   color: var(--mid-text);
   transition: .15s
 }
@@ -1060,11 +1067,11 @@ h3 {
   }
 
   .pcard .media {
-    height: 230px !important
+    height: auto !important
   }
 
   #product-hero-media {
-    height: 300px !important
+    height: auto !important
   }
 
   .flist .fitem {

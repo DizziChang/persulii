@@ -16,8 +16,8 @@
 (function () {
 
   /* ---- 圖片路徑（相對於各 html 頁） ---- */
-  var IMG_LOGO_GREY = 'images/per-sulii-logo-grayscale.png';
-  var IMG_LOGO_WHITE = 'images/per-sulii Logo-logo-whitepng.png';
+  var IMG_LOGO_GREY = 'images/per-sulii-logo-grayscale.webp';
+  var IMG_LOGO_WHITE = 'images/per-sulii Logo-logo-whitepng.webp';
 
   /* ---- Header HTML ---- */
   var HEADER = `
@@ -52,14 +52,12 @@
     <div class="ftr-grid">
       <div style="text-align:center">
         <img class="logo" src="${IMG_LOGO_GREY}" alt="沛素 per-sulii" style="margin:0 auto">
+         
+      <p class="ftr-cert-sub">台灣科研美學・專為肌膚自然修護</p>
       </div>
+     
       <div>
-        <h4>產品</h4>
-        <a href="product.html?id=v-essence">沛素-V 精萃蜂胜肽 PLUS</a>
-        <a href="product.html?id=s-essence">沛素-S 外泌體多胜肽</a>
-      </div>
-      <div>
-        <h4>關於</h4>
+        <a href="products.html">產品研發</a>
         <a href="about.html">品牌理念</a>
         <a href="about.html#faq">常見問答</a>
         <a href="contact.html#team">成為合作夥伴</a>
@@ -67,27 +65,34 @@
       <div>
         <h4>聯絡</h4>
         <ul>
+          <li>諾田康美有限公司</li>
           <li>service@persulii.com</li>
           <li>0912-125-856</li>
-          <li>Line ｜ Facebook ｜ Instagram</li>
         </ul>
       </div>
-    </div>
-    <div class="ftr-cert">
-      <span class="ftr-cert-chip">符合 TFDA PIF · 國際 INCI 認證</span>
-      <p class="ftr-cert-sub">台灣科研美學・專為肌膚自然修護</p>
+       <div>
+       <ul>
+           <li>
+           <span>© per-sulii 2026</span>
+          </li>
+         
+          <li class="ftr-social">
+            <a href="https://lin.ee/ZiwmByI" target="_blank" rel="noopener" aria-label="Line" title="Line">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5C6.2 2.5 1.5 6.3 1.5 11c0 4.2 3.7 7.7 8.7 8.4.34.07.8.22.92.51.1.27.07.68.03.95l-.15.9c-.04.27-.21 1.05.92.57 1.13-.47 6.07-3.57 8.28-6.12 1.53-1.66 2.3-3.36 2.3-5.21 0-4.7-4.7-8.5-10.5-8.5zM7.3 13.6H5.2a.55.55 0 0 1-.55-.55V8.9a.55.55 0 0 1 1.1 0v3.6h1.55a.55.55 0 0 1 0 1.1zm1.9-.55a.55.55 0 0 1-1.1 0V8.9a.55.55 0 0 1 1.1 0v4.15zm5.1 0a.55.55 0 0 1-.99.33l-2.06-2.8v2.47a.55.55 0 0 1-1.1 0V8.9a.55.55 0 0 1 .99-.33l2.06 2.8V8.9a.55.55 0 0 1 1.1 0v4.15zm3.5-2.63a.55.55 0 0 1 0 1.1h-1.55v.98h1.55a.55.55 0 0 1 0 1.1h-2.1a.55.55 0 0 1-.55-.55V8.9c0-.3.25-.55.55-.55h2.1a.55.55 0 0 1 0 1.1h-1.55v.97h1.55z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/persulii" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.07C24 5.44 18.63.07 12 .07S0 5.44 0 12.07c0 5.99 4.39 10.95 10.13 11.85v-8.38H7.08v-3.47h3.05V9.43c0-3.01 1.79-4.67 4.53-4.67 1.31 0 2.69.23 2.69.23v2.96H15.83c-1.49 0-1.96.92-1.96 1.87v2.25h3.33l-.53 3.47h-2.8v8.38C19.61 23.02 24 18.06 24 12.07z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/persulii/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="2.5" width="19" height="19" rx="5.2"/><circle cx="12" cy="12" r="4.4"/><circle cx="17.4" cy="6.6" r="1.2" fill="currentColor" stroke="none"/></svg>
+            </a>
+          </li>
+        </ul>
+       </div>
     </div>
     <div class="ftr-bottom">
-      <span>© per-sulii 2026 ｜ 媛和媄生醫美容有限公司　統編 00000000</span>
-      <span class="lang">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
-          style="vertical-align:-2px;margin-right:7px">
-          <circle cx="12" cy="12" r="9"/>
-          <path d="M3 12h18"/>
-          <path d="M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>
-        </svg>
-        <span class="on">繁中</span> ／ <span>English</span>
-      </span>
+      <span class="ftr-cert-chip">符合 TFDA PIF · 國際 INCI 認證</span>
+      
     </div>
   </div>
 </footer>`;
@@ -98,6 +103,7 @@
     var fp = document.getElementById('site-footer');
     if (hp) hp.innerHTML = HEADER;
     if (fp) fp.innerHTML = FOOTER;
+    initHeaderScroll();
 
     /* active nav */
     var currentPage = document.body.dataset.page;
@@ -128,6 +134,45 @@
         });
       });
     }
+  }
+
+  /* ---- 捲動方向控制 header logo 顯示 ---- */
+  function initHeaderScroll() {
+    var hdr = document.querySelector('.hdr');
+    var holder = document.getElementById('site-header');
+    if (!hdr || !holder) return;
+
+    /* 固定佔位高度：logo 收合時文件高度不變，杜絕捲動抖動 */
+    function lockHeight() {
+      var wasHidden = hdr.classList.contains('logo-hidden');
+      hdr.classList.add('no-anim');
+      hdr.classList.remove('logo-hidden');
+      holder.style.height = hdr.offsetHeight + 'px';
+      if (wasHidden) hdr.classList.add('logo-hidden');
+      void hdr.offsetHeight; /* 強制 reflow 後再恢復動畫 */
+      hdr.classList.remove('no-anim');
+    }
+    lockHeight();
+    window.addEventListener('resize', lockHeight);
+    var lastY = window.scrollY;
+    var ticking = false;
+    var DELTA = 12; /* 捲動超過此距離才切換，避免高度變化造成的抖動 */
+    function update() {
+      var y = window.scrollY;
+      var diff = y - lastY;
+      if (Math.abs(diff) > DELTA) {
+        if (diff > 0 && y > 120) {
+          hdr.classList.add('logo-hidden');   /* 往下捲：隱藏 */
+        } else if (diff < 0) {
+          hdr.classList.remove('logo-hidden'); /* 往上捲：顯示 */
+        }
+        lastY = y;
+      }
+      ticking = false;
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
   }
 
   if (document.readyState === 'loading') {

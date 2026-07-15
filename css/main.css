@@ -16,6 +16,7 @@
   --taupe: #6f6f6f;
   --serif: 'Funnel Display', 'Noto Serif TC', serif;
   --sans: 'Funnel Display', 'Noto Sans TC', -apple-system, 'Segoe UI', sans-serif;
+  --img-radius: 20px;
 }
 
 * {
@@ -150,7 +151,6 @@ h3 {
 }
 
 .story .wrap {
-  background: var(--paper);
   padding: 40px;
   border-radius: 24px;
   margin: 40px auto;
@@ -158,6 +158,10 @@ h3 {
 
 .sec {
   padding: clamp(76px, 9.5vw, 144px) 0
+}
+
+.sec.paper {
+  background: var(--paper);
 }
 
 .story.sec {
@@ -215,7 +219,7 @@ h3 {
 
 .grid {
   display: grid;
-  gap: clamp(20px, 3vw, 44px)
+  gap: clamp(20px, 1vw, 44px)
 }
 
 .g2 {
@@ -307,8 +311,8 @@ h3 {
 .media {
   position: relative;
   overflow: hidden;
-  background: #efefee;
-  border-radius: 2px
+  background: var(--paper);
+  border-radius: var(--img-radius)
 }
 
 .media::after {
@@ -324,6 +328,55 @@ h3 {
   color: rgba(42, 42, 42, .055);
   letter-spacing: 4px;
   user-select: none
+}
+
+.media .media-hover {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity .45s ease;
+  z-index: 1
+}
+
+.pcard:hover .media-hover {
+  opacity: 1
+}
+
+.media .media-cap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  padding: 48px 28px 24px;
+  background: linear-gradient(to top, rgba(20, 20, 20, .55), rgba(20, 20, 20, 0));
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .45s ease, transform .45s ease
+}
+
+.media .media-cap-t {
+  font-family: var(--sans, sans-serif);
+  font-size: 36px;
+  letter-spacing: 2px
+}
+
+.media .media-cap-d {
+  font-family: var(--sans, sans-serif);
+  font-size: 28px;
+  letter-spacing: 1.5px;
+  color: rgba(255, 255, 255, .85)
+}
+
+.pcard:hover .media-cap {
+  opacity: 1;
+  transform: translateY(0)
 }
 
 .media.dark {
@@ -352,7 +405,6 @@ h3 {
 .hdr {
   background: rgba(255, 255, 255, .94);
   backdrop-filter: saturate(140%) blur(10px);
-  border-bottom: 1px solid var(--line)
 }
 
 .hdr-in {
@@ -366,7 +418,27 @@ h3 {
 .hdr .logo {
   height: 46px;
   width: auto;
-  display: block
+  display: block;
+  transition: height .35s ease, opacity .3s ease
+}
+
+.hdr.no-anim,
+.hdr.no-anim * {
+  transition: none !important
+}
+
+/* 往下捲時收起 logo，往上捲時展開（由 components.js 切換 class） */
+.hdr.logo-hidden .logo {
+  height: 0;
+  opacity: 0
+}
+
+.hdr.logo-hidden .hdr-in {
+  gap: 0
+}
+
+.hdr-in {
+  transition: gap .35s ease
 }
 
 .nav {
@@ -375,7 +447,7 @@ h3 {
 }
 
 .nav a {
-  font-size: 13.5px;
+  font-size: 1.25rem;
   letter-spacing: .06em;
   color: var(--ink-soft);
   cursor: pointer;
@@ -472,7 +544,11 @@ h3 {
 /* hero */
 .hero {
   position: relative;
-  min-height: min(84vh, 760px);
+  --hero-p: 0;
+  min-height: min(calc(84vh - 50vh * var(--hero-p)), calc(760px - 300px * var(--hero-p)));
+  max-width: 90vw;
+  margin: 40px auto;
+  border-radius: calc(8rem - 4rem * var(--hero-p));
   display: flex;
   align-items: center;
   background-size: cover;
@@ -533,11 +609,30 @@ h3 {
   filter: brightness(.98)
 }
 
+.acard-group {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .acard {
-  background: var(--paper);
-  border: 1px solid var(--line);
   padding: clamp(28px, 3vw, 40px);
-  border-radius: 3px
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding-top: 80px;
+
+  background-repeat: no-repeat;
+  background-position: 40px 8px;
+}
+
+.acard.jp {
+  background-image: url(/images/jp.webp);
+  background-size: 80px;
+}
+
+.acard.usa {
+  background-image: url(/images/usa.webp);
+  background-size: 105px;
 }
 
 .num {
@@ -690,13 +785,17 @@ h3 {
 
 /* signature / director */
 .sign {
-  font-family: var(--serif);
-  font-style: italic;
-  font-weight: 500;
+  font-family: var(--sans);
+  font-weight: 300;
   font-size: 30px;
   color: #3a3a3a;
   line-height: 1;
   margin-top: 6px
+}
+
+.sign img {
+  max-width: 200px;
+  margin-right: 20px;
 }
 
 .drole {
@@ -727,12 +826,85 @@ h3 {
   height: clamp(200px, 22vw, 260px)
 }
 
+.jcard .media.jcard-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-align: center;
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: clamp(20px, 2.3vw, 27px);
+  letter-spacing: 1.5px;
+  color: var(--ink);
+  transition: .2s
+}
+
+.jcard .media.jcard-title::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid #c1c1c1;
+  opacity: 0;
+  transition: inset .4s ease, opacity .4s ease;
+  pointer-events: none
+}
+
+.jcard:hover .media.jcard-title::before {
+  inset: 20px;
+  opacity: 1
+}
+
+.jcard .jcard-cat {
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--mid-text);
+  margin-bottom: 10px
+}
+
+.jcard:hover .media.jcard-title {
+  color: var(--taupe)
+}
+
 .jcard:hover .h3 {
   color: var(--taupe)
 }
 
 .jcard .h3 {
   transition: .2s
+}
+
+/* footer 社群 icon */
+.ftr li.ftr-social {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px
+}
+
+.ftr .ftr-social a {
+  display: inline-flex;
+  align-items: center;
+  color: inherit;
+  transition: color .2s, opacity .2s;
+  opacity: .8
+}
+
+.ftr .ftr-social a:hover {
+  opacity: 1
+}
+
+.ftr .ftr-social svg {
+  width: 22px;
+  height: 22px
+}
+
+/* Line 的圖形本身內縮，放大補償視覺大小 */
+.ftr .ftr-social a:first-child svg {
+  width: 26px;
+  height: 26px
 }
 
 /* ---- FOOTER ---- */
@@ -748,14 +920,15 @@ h3 {
 
 .ftr-grid {
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr 1.8fr;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
   gap: 36px
 }
 
 .ftr .logo {
   height: 68px;
   filter: brightness(0) invert(1);
-  opacity: .92
+  opacity: .92;
+  margin-bottom: 8px
 }
 
 .ftr h4 {
@@ -770,7 +943,7 @@ h3 {
 .ftr a,
 .ftr li,
 .ftr button {
-  font-size: 13.5px;
+  font-size: 1rem;
   color: #bdbdb8;
   line-height: 2.1;
   list-style: none;
@@ -785,7 +958,7 @@ h3 {
 }
 
 .ftr .tagline {
-  font-size: 13.5px;
+  font-size: 1rem;
   color: #9a9d9a;
   line-height: 1.9;
   margin-top: 16px
@@ -817,7 +990,7 @@ h3 {
 
 .ftr-bottom {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   gap: 14px;
   flex-wrap: wrap;
   margin-top: 18px;
@@ -1013,6 +1186,7 @@ h3 {
     padding: 64px 0
   }
 
+
   .g2,
   .g3,
   .split {
@@ -1092,5 +1266,9 @@ h3 {
     grid-template-columns: 1fr;
     gap: 28px;
     text-align: center
+  }
+
+  .story .wrap {
+    padding: 0px;
   }
 }

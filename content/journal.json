@@ -1,9 +1,0 @@
-{
-  "items": [
-    { "slug": "exosome-intro", "cat": "保養知識", "line1": "醫美界的新寵兒，", "line2": "外泌體是什麼？", "date": "2026-06-01", "home": true, "body": "（文章內容待補，夥伴可在後台編輯此欄位，支援 Markdown 格式。）" },
-    { "slug": "pore-care", "cat": "日常保養", "line1": "毛孔粗大，", "line2": "你一直都用錯保養方式", "date": "2026-06-08", "home": true, "body": "（文章內容待補。）" },
-    { "slug": "anti-wrinkle-5", "cat": "肌膚科學", "line1": "對抗皺紋，", "line2": "研究證實有效的5種成分", "date": "2026-06-15", "home": true, "body": "（文章內容待補。）" },
-    { "slug": "pif-regulation", "cat": "產業趨勢", "line1": "專櫃都要下架，", "line2": "PIF 台灣化粧品新制上路", "date": "2026-06-22", "home": false, "body": "（文章內容待補。）" },
-    { "slug": "medical-beauty-3x", "cat": "保養觀念", "line1": "醫美這樣做，", "line2": "效果值三倍", "date": "2026-06-29", "home": false, "body": "（文章內容待補。）" }
-  ]
-}

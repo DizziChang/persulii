@@ -135,8 +135,7 @@ function renderArticle(ARTICLES) {
 function renderHome(data) {
   if (document.body.dataset.page !== 'home') return;
   var h = data.hero;
-  var hero = document.querySelector('.hero');
-  if (hero && h.image) hero.style.backgroundImage = "url('" + h.image + "')";
+  initHeroCarousel(h);
   setText('hero-eyebrow', h.eyebrow);
   setHTML('hero-title', nl2br(h.title));
   setText('hero-lead', h.lead);
@@ -170,6 +169,31 @@ function renderHome(data) {
   if (pb) { pb.textContent = pt.btn_text; pb.href = pt.btn_link; }
 
   initStoryTabs(data.story);
+}
+
+
+/* ---- Hero 輪播 ---- */
+function initHeroCarousel(h) {
+  var hero = document.querySelector('.hero');
+  if (!hero) return;
+  var imgs = (h.images && h.images.length) ? h.images : (h.image ? [h.image] : []);
+  if (!imgs.length) return;
+  hero.style.backgroundImage = 'none';
+  var slides = imgs.map(function (src, i) {
+    var d = document.createElement('div');
+    d.className = 'hero-slide' + (i === 0 ? ' active' : '');
+    d.style.backgroundImage = "url('" + src + "')";
+    hero.insertBefore(d, hero.firstChild);
+    return d;
+  });
+  if (slides.length < 2) return;
+  var cur = 0;
+  var sec = Math.max(2, parseFloat(h.interval) || 5);
+  setInterval(function () {
+    slides[cur].classList.remove('active');
+    cur = (cur + 1) % slides.length;
+    slides[cur].classList.add('active');
+  }, sec * 1000);
 }
 
 /* ---- 品牌故事 Tabs ---- */

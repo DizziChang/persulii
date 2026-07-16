@@ -82,7 +82,8 @@ collections:
             label: 主視覺 Banner
             widget: object
             fields:
-              - { name: image, label: 背景圖, widget: image }
+              - { name: images, label: 背景輪播圖（可多張，依序播放）, widget: list, field: { name: img, label: 圖片, widget: image } }
+              - { name: interval, label: 輪播間隔（秒）, widget: number, default: 5, value_type: float }
               - { name: eyebrow, label: 小標, widget: string }
               - { name: title, label: 主標題（可換行）, widget: text }
               - { name: lead, label: 副標語, widget: string }

@@ -561,12 +561,13 @@ h3 {
   content: '';
   position: absolute;
   inset: 0;
+  z-index: 1;
   background: linear-gradient(to right, rgba(255, 255, 255, 10) 15%, rgba(255, 255, 255, 0.65) 50%, rgba(255, 255, 255, 0) 60%)
 }
 
 .hero .wrap {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   width: 100%
 }
 
@@ -1272,3 +1273,14 @@ h3 {
     padding: 0px;
   }
 }
+/* hero 輪播 */
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center top;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+.hero-slide.active { opacity: 1 }

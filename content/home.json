@@ -1,7 +1,9 @@
 {
   "hero": {
     "images": [
-      "images/V+S 01.webp"
+      "images/V+S 01.webp",
+      "/images/Banner01.jpg",
+      "/images/Banner02.png"
     ],
     "interval": 5,
     "eyebrow": "TAIWAN 科研實力",

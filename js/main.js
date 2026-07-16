@@ -1,75 +1,32 @@
 /* ============================================================
-   main.js — 共用資料與互動邏輯
+   main.js — 內容載入與互動邏輯
+   所有可編輯內容存於 content/*.json（由 Sveltia CMS 管理）
    ============================================================ */
 
-/* ---- 產品資料 ---- */
-var PRODUCTS = [
-  {
-    id: 's-essence', code: 'S', en: 'S-essence', name: '外泌體多胜肽修護精華',
-    img: 'images/S03.webp', hoverImg: 'images/S04.webp',
-    hoverTitle: '沛素-S', hoverDesc: '外泌體細緻膚質',
-    tagline: '優質人體細胞外泌體，維持肌膚穩定狀態。',
-    intro: '以小分子多胜肽搭配外泌體技術，溫和守護肌膚日常平衡，幫助維持穩定、柔嫩細緻的健康狀態。',
-    feature: '專為亞洲肌膚設計的修護配方，溫和不刺激，適合每日使用。科研精密萃取，兼顧穩定性與吸收效率。',
-    ingredients: [
-      { en: 'Exosome', zh: '外泌體', desc: '喚醒肌膚的平衡，維持穩定狀態。' },
-      { en: 'Peptides', zh: '多胜肽', desc: '小分子設計，溫和滲透，支持肌膚日常保養。' },
-      { en: 'Micro Extraction', zh: '小分子萃取', desc: '精密萃取技術，兼顧穩定性與吸收效率。' }
-    ],
-    usage: ['潔顏後取適量於掌心', '均勻塗抹全臉', '輕拍至吸收', '接續後續保養'],
-    specs: { size: '——', inci: '符合國內外認證', cert: 'TFDA PIF ｜ INCI ｜ GMP' }
-  },
-  {
-    id: 'v-essence', code: 'V', en: 'V-essence', name: '精萃蜂胜肽 PLUS 精華',
-    img: 'images/V03.webp', hoverImg: 'images/V01.webp',
-    hoverTitle: '沛素-V', hoverDesc: '蜂胜肽緊緻撫紋',
-    tagline: '淡化紋路，緊緻肌膚，鎖住青春肌密。',
-    intro: '以蜂胜肽搭配多重胜肽複方，集中支持肌膚緊緻與彈性，幫助淡化細紋、維持青春光澤。',
-    feature: '針對熟齡與彈性流失設計的精華配方，質地清爽好吸收，溫和不刺激，適合每日早晚使用。',
-    ingredients: [
-      { en: 'Bee Peptide', zh: '蜂胜肽', desc: '支持肌膚緊緻與彈性，幫助維持飽滿狀態。' },
-      { en: 'Multi-Peptides', zh: '多重胜肽', desc: '複方協同，集中支持紋路與輪廓的日常保養。' },
-      { en: 'Micro Extraction', zh: '小分子萃取', desc: '精密萃取技術，兼顧穩定性與吸收效率。' }
-    ],
-    usage: ['潔顏後取適量於掌心', '由內而外均勻按摩全臉', '加強塗抹於紋路處', '輕拍至吸收後接續保養'],
-    specs: { size: '——', inci: '符合國內外認證', cert: 'TFDA PIF ｜ INCI ｜ GMP' }
+/* ---- JSON 載入器（含快取） ---- */
+var __cache = {};
+function getJSON(url) {
+  if (!__cache[url]) {
+    __cache[url] = fetch(url).then(function (r) {
+      if (!r.ok) throw new Error(url + ' ' + r.status);
+      return r.json();
+    });
   }
-];
-
-/* ---- 專欄文章資料 ---- */
-var ARTICLES = [
-  { cat: '保養知識', line1: '醫美界的新寵兒，', line2: '外泌體是什麼？' },
-  { cat: '日常保養', line1: '毛孔粗大，', line2: '你一直都用錯保養方式' },
-  { cat: '肌膚科學', line1: '對抗皺紋，', line2: '研究證實有效的5種成分' },
-  { cat: '產業趨勢', line1: '專櫃都要下架，', line2: 'PIF 台灣化粧品新制上路' },
-  { cat: '保養觀念', line1: '醫美這樣做，', line2: '效果值三倍' }
-];
-
-/* 首頁顯示哪三篇：改這裡的索引即可（0 = 第一篇） */
-var HOME_ARTICLES = [0, 1, 2];
-
-function journalCardHTML(a) {
-  return '<a href="journal.html" class="jcard">'
-    + '<div class="media jcard-title"><span class="jcard-cat">' + a.cat + '</span><span>' + a.line1 + '</span><span>' + a.line2 + '</span></div>'
-    + '</a>';
+  return __cache[url];
 }
 
-function renderJournal() {
-  var home = document.getElementById('home-journal');
-  if (home) home.innerHTML = HOME_ARTICLES.map(function (i) { return journalCardHTML(ARTICLES[i]); }).join('');
-  var list = document.getElementById('journal-list');
-  if (list) list.innerHTML = ARTICLES.map(journalCardHTML).join('');
+/* 換行字串 → 以 <br> 連接（不允許 HTML 注入以外的內容） */
+function nl2br(s) { return (s || '').split('\n').join('<br>'); }
+/* 雙換行 → 段落 */
+function paragraphs(s, firstClass, restClass) {
+  return (s || '').split(/\n{2,}/).map(function (p, i) {
+    return '<p class="body ' + (i === 0 ? firstClass : restClass) + '">' + nl2br(p) + '</p>';
+  }).join('');
 }
+function setText(id, v) { var el = document.getElementById(id); if (el && v != null) el.textContent = v; }
+function setHTML(id, v) { var el = document.getElementById(id); if (el && v != null) el.innerHTML = v; }
 
-/* ---- 取得產品 ---- */
-function productById(id) {
-  for (var i = 0; i < PRODUCTS.length; i++) {
-    if (PRODUCTS[i].id === id) return PRODUCTS[i];
-  }
-  return PRODUCTS[0];
-}
-
-/* ---- 產品卡片 HTML ---- */
+/* ============ 產品 ============ */
 function productCardHTML(p, mediaH) {
   var style = (p.img ? 'background-image:url(\'' + p.img + '\');background-size:cover;background-position:center;' : '')
     + (mediaH ? 'height:' + mediaH : '');
@@ -85,24 +42,15 @@ function productCardHTML(p, mediaH) {
     + '</a>';
 }
 
-/* ---- 渲染首頁產品列表 ---- */
-function renderHomeProducts() {
-  var el = document.getElementById('home-products');
-  if (!el) return;
-  el.innerHTML = PRODUCTS.map(function (p) { return productCardHTML(p); }).join('');
+function renderProducts(PRODUCTS) {
+  var home = document.getElementById('home-products');
+  if (home) home.innerHTML = PRODUCTS.map(function (p) { return productCardHTML(p); }).join('');
+  var list = document.getElementById('product-list');
+  if (list) list.innerHTML = PRODUCTS.map(function (p) { return productCardHTML(p); }).join('');
+  renderProductDetail(PRODUCTS);
 }
 
-/* ---- 渲染產品列表頁 ---- */
-function renderProductList() {
-  var el = document.getElementById('product-list');
-  if (!el) return;
-  el.innerHTML = PRODUCTS.map(function (p) {
-    return productCardHTML(p);
-  }).join('');
-}
-
-/* ---- 渲染產品詳細頁 ---- */
-function renderProductDetail() {
+function renderProductDetail(PRODUCTS) {
   var container = document.getElementById('product-detail');
   if (!container) return;
 
@@ -152,6 +100,164 @@ function renderProductDetail() {
     + '</div></div></section>';
 }
 
+/* ============ 專欄 ============ */
+function journalCardHTML(a) {
+  return '<a href="article.html?slug=' + encodeURIComponent(a.slug) + '" class="jcard">'
+    + '<div class="media jcard-title"><span class="jcard-cat">' + a.cat + '</span><span>' + a.line1 + '</span><span>' + a.line2 + '</span></div>'
+    + '</a>';
+}
+
+function renderJournal(ARTICLES, homeCount) {
+  var sorted = ARTICLES.slice().sort(function (a, b) { return (b.date || '').localeCompare(a.date || ''); });
+  var home = document.getElementById('home-journal');
+  if (home) {
+    var picks = sorted.filter(function (a) { return a.home; });
+    if (!picks.length) picks = sorted;
+    home.innerHTML = picks.slice(0, homeCount || 3).map(journalCardHTML).join('');
+  }
+  var list = document.getElementById('journal-list');
+  if (list) list.innerHTML = sorted.map(journalCardHTML).join('');
+}
+
+function renderArticle(ARTICLES) {
+  var el = document.getElementById('article-body');
+  if (!el) return;
+  var slug = new URLSearchParams(window.location.search).get('slug');
+  var a = ARTICLES.find(function (x) { return x.slug === slug; }) || ARTICLES[0];
+  document.title = a.line1 + a.line2 + ' — 沛素 per-sulii';
+  setText('article-cat', a.cat);
+  setHTML('article-title', a.line1 + '<br>' + a.line2);
+  setText('article-date', a.date || '');
+  el.innerHTML = (window.marked ? marked.parse(a.body || '') : paragraphs(a.body, 'mt16', 'mt16'));
+}
+
+/* ============ 首頁內容 ============ */
+function renderHome(data) {
+  if (document.body.dataset.page !== 'home') return;
+  var h = data.hero;
+  var hero = document.querySelector('.hero');
+  if (hero && h.image) hero.style.backgroundImage = "url('" + h.image + "')";
+  setText('hero-eyebrow', h.eyebrow);
+  setHTML('hero-title', nl2br(h.title));
+  setText('hero-lead', h.lead);
+  var b1 = document.getElementById('hero-btn1'), b2 = document.getElementById('hero-btn2');
+  if (b1) { b1.textContent = h.btn1_text; b1.href = h.btn1_link; }
+  if (b2) { b2.textContent = h.btn2_text; b2.href = h.btn2_link; }
+
+  var s = data.science;
+  setText('sci-eyebrow', s.eyebrow);
+  setText('sci-title', s.title);
+  setHTML('sci-lead', nl2br(s.lead));
+  var dg = document.getElementById('sci-doctors');
+  if (dg) dg.innerHTML = s.doctors.map(function (d) {
+    return '<div class="acard ' + d.style + '">'
+      + '<div class="drole">' + d.role1 + '</div>'
+      + '<div class="drole">' + d.role2 + '</div>'
+      + '<div class="sign"><img src="' + d.sign_img + '" alt="' + d.sign_alt + '"><span>' + d.suffix + '</span></div>'
+      + '</div>';
+  }).join('');
+
+  setText('prods-eyebrow', data.products_section.eyebrow);
+  setText('prods-title', data.products_section.title);
+  setText('journal-eyebrow', data.journal_section.eyebrow);
+  setText('journal-title', data.journal_section.title);
+
+  var pt = data.partner;
+  setText('partner-eyebrow', pt.eyebrow);
+  setText('partner-title', pt.title);
+  setText('partner-lead', pt.lead);
+  var pb = document.getElementById('partner-btn');
+  if (pb) { pb.textContent = pt.btn_text; pb.href = pt.btn_link; }
+
+  initStoryTabs(data.story);
+}
+
+/* ---- 品牌故事 Tabs ---- */
+function initStoryTabs(story) {
+  var contentEl = document.getElementById('btabs-content');
+  var imgEl = document.getElementById('btabs-img');
+  var navEl = document.getElementById('btabs-nav');
+  if (!contentEl || !imgEl || !navEl) return;
+  var TABS = story.tabs;
+  var current = 0;
+  if (story.image) imgEl.style.backgroundImage = "url('" + story.image + "')";
+
+  contentEl.className = 'btabs-panels';
+  contentEl.innerHTML = TABS.map(function (t, i) {
+    return '<div class="btabs-panel' + (i === 0 ? ' active' : '') + '">'
+      + '<div class="eyebrow">' + t.en + '</div>'
+      + '<h2 class="h2 mt16">' + t.title + '</h2>'
+      + paragraphs(t.body, 'mt24', 'mt16')
+      + '</div>';
+  }).join('');
+
+  var panels = contentEl.querySelectorAll('.btabs-panel');
+  imgEl.setAttribute('data-mono', '01');
+
+  navEl.innerHTML = TABS.map(function (t, i) {
+    var n = ('0' + (i + 1)).slice(-2);
+    return '<button type="button" class="btabs-item' + (i === 0 ? ' active' : '') + '" data-i="' + i + '">'
+      + '<span class="bi-num">' + n + '</span>'
+      + '<span class="bi-title">' + (t.label || '') + '</span>'
+      + '</button>';
+  }).join('');
+
+  navEl.querySelectorAll('.btabs-item').forEach(function (btn) {
+    function activate() {
+      var i = parseInt(btn.dataset.i);
+      if (i === current) return;
+      current = i;
+      panels.forEach(function (p, idx) { p.classList.toggle('active', idx === i); });
+      navEl.querySelectorAll('.btabs-item').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      imgEl.setAttribute('data-mono', ('0' + (i + 1)).slice(-2));
+    }
+    btn.addEventListener('mouseenter', activate);
+    btn.addEventListener('click', activate);
+  });
+}
+
+/* ============ 關於頁 ============ */
+function renderAbout(data) {
+  if (document.body.dataset.page !== 'about') return;
+  data.sections.forEach(function (s, i) {
+    var n = i + 1;
+    setText('about-eyebrow-' + n, s.eyebrow);
+    setHTML('about-title-' + n, nl2br(s.title));
+    setHTML('about-body-' + n, paragraphs(s.body, 'mt32', 'mt16').replace(/class="body /g, 'class="body '));
+    if (s.image) {
+      var img = document.getElementById('about-img-' + n);
+      if (img) img.style.backgroundImage = "url('" + s.image + "')";
+    }
+  });
+  setText('team-eyebrow', data.team.eyebrow);
+  setText('team-title', data.team.title);
+  setText('team-lead', data.team.lead);
+  var ti = document.getElementById('team-img');
+  if (ti) { ti.src = data.team.image; ti.alt = data.team.image_alt; }
+
+  var faq = document.getElementById('faq-list');
+  if (faq) {
+    faq.innerHTML = data.faq.map(function (f) {
+      return '<div class="faq-item">'
+        + '<button type="button" class="faq-q" aria-expanded="false">'
+        + '<span>' + f.q + '</span><span class="ic" aria-hidden="true">+</span></button>'
+        + '<div class="faq-a"><div class="inner">' + f.a + '</div></div>'
+        + '</div>';
+    }).join('');
+    initFAQ();
+  }
+}
+
+/* ============ 聯絡頁 ============ */
+function renderContact(settings) {
+  if (document.body.dataset.page !== 'contact') return;
+  var c = settings.contact_page;
+  setText('contact-company', c.company);
+  setText('contact-phone', c.phone);
+  setText('contact-address', c.address);
+}
+
 /* ---- FAQ accordion ---- */
 function initFAQ() {
   document.querySelectorAll('.faq-q').forEach(function (btn) {
@@ -162,7 +268,7 @@ function initFAQ() {
   });
 }
 
-/* ---- Hero 捲動漸變（0→300px 之間內縮） ---- */
+/* ---- Hero 捲動漸變 ---- */
 function initHeroScroll() {
   var hero = document.querySelector('.hero');
   if (!hero) return;
@@ -180,10 +286,22 @@ function initHeroScroll() {
 
 /* ---- 初始化 ---- */
 document.addEventListener('DOMContentLoaded', function () {
-  renderHomeProducts();
-  renderJournal();
-  renderProductList();
-  renderProductDetail();
-  initFAQ();
   initHeroScroll();
+
+  var page = document.body.dataset.page;
+
+  getJSON('content/products.json').then(function (d) { renderProducts(d.items); }).catch(console.error);
+  getJSON('content/journal.json').then(function (d) {
+    var count = 3;
+    if (page === 'home') {
+      getJSON('content/home.json').then(function (h) { renderJournal(d.items, h.journal_section.count); });
+    } else {
+      renderJournal(d.items, count);
+    }
+    renderArticle(d.items);
+  }).catch(console.error);
+
+  if (page === 'home') getJSON('content/home.json').then(renderHome).catch(console.error);
+  if (page === 'about') getJSON('content/about.json').then(renderAbout).catch(console.error);
+  if (page === 'contact') getJSON('content/settings.json').then(renderContact).catch(console.error);
 });

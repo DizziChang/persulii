@@ -45,17 +45,17 @@
   </nav>
 </header>`;
 
-  /* ---- Footer HTML ---- */
-  var FOOTER = `
+  /* ---- Footer HTML（內容來自 content/settings.json） ---- */
+  function footerHTML(s) {
+    var f = s.footer;
+    return `
 <footer class="ftr">
   <div class="wrap">
     <div class="ftr-grid">
       <div style="text-align:center">
         <img class="logo" src="${IMG_LOGO_GREY}" alt="沛素 per-sulii" style="margin:0 auto">
-         
-      <p class="ftr-cert-sub">台灣科研美學・專為肌膚自然修護</p>
+      <p class="ftr-cert-sub">${f.tagline}</p>
       </div>
-     
       <div>
         <a href="products.html">產品研發</a>
         <a href="about.html">品牌理念</a>
@@ -65,25 +65,24 @@
       <div>
         <h4>聯絡</h4>
         <ul>
-          <li>諾田康美有限公司</li>
-          <li>service@persulii.com</li>
-          <li>0912-125-856</li>
+          <li>${f.company}</li>
+          <li>${f.email}</li>
+          <li>${f.phone}</li>
         </ul>
       </div>
        <div>
        <ul>
            <li>
-           <span>© per-sulii 2026</span>
+           <span>${f.copyright}</span>
           </li>
-         
           <li class="ftr-social">
-            <a href="https://lin.ee/ZiwmByI" target="_blank" rel="noopener" aria-label="Line" title="Line">
+            <a href="${f.social.line}" target="_blank" rel="noopener" aria-label="Line" title="Line">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5C6.2 2.5 1.5 6.3 1.5 11c0 4.2 3.7 7.7 8.7 8.4.34.07.8.22.92.51.1.27.07.68.03.95l-.15.9c-.04.27-.21 1.05.92.57 1.13-.47 6.07-3.57 8.28-6.12 1.53-1.66 2.3-3.36 2.3-5.21 0-4.7-4.7-8.5-10.5-8.5zM7.3 13.6H5.2a.55.55 0 0 1-.55-.55V8.9a.55.55 0 0 1 1.1 0v3.6h1.55a.55.55 0 0 1 0 1.1zm1.9-.55a.55.55 0 0 1-1.1 0V8.9a.55.55 0 0 1 1.1 0v4.15zm5.1 0a.55.55 0 0 1-.99.33l-2.06-2.8v2.47a.55.55 0 0 1-1.1 0V8.9a.55.55 0 0 1 .99-.33l2.06 2.8V8.9a.55.55 0 0 1 1.1 0v4.15zm3.5-2.63a.55.55 0 0 1 0 1.1h-1.55v.98h1.55a.55.55 0 0 1 0 1.1h-2.1a.55.55 0 0 1-.55-.55V8.9c0-.3.25-.55.55-.55h2.1a.55.55 0 0 1 0 1.1h-1.55v.97h1.55z"/></svg>
             </a>
-            <a href="https://www.facebook.com/persulii" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook">
+            <a href="${f.social.facebook}" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.07C24 5.44 18.63.07 12 .07S0 5.44 0 12.07c0 5.99 4.39 10.95 10.13 11.85v-8.38H7.08v-3.47h3.05V9.43c0-3.01 1.79-4.67 4.53-4.67 1.31 0 2.69.23 2.69.23v2.96H15.83c-1.49 0-1.96.92-1.96 1.87v2.25h3.33l-.53 3.47h-2.8v8.38C19.61 23.02 24 18.06 24 12.07z"/></svg>
             </a>
-            <a href="https://www.instagram.com/persulii/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
+            <a href="${f.social.instagram}" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="2.5" width="19" height="19" rx="5.2"/><circle cx="12" cy="12" r="4.4"/><circle cx="17.4" cy="6.6" r="1.2" fill="currentColor" stroke="none"/></svg>
             </a>
           </li>
@@ -91,18 +90,22 @@
        </div>
     </div>
     <div class="ftr-bottom">
-      <span class="ftr-cert-chip">符合 TFDA PIF · 國際 INCI 認證</span>
-      
+      <span class="ftr-cert-chip">${f.cert_chip}</span>
     </div>
   </div>
 </footer>`;
+  }
 
   /* ---- 注入 ---- */
   function inject() {
     var hp = document.getElementById('site-header');
     var fp = document.getElementById('site-footer');
     if (hp) hp.innerHTML = HEADER;
-    if (fp) fp.innerHTML = FOOTER;
+    if (fp) {
+      fetch('content/settings.json').then(function (r) { return r.json(); }).then(function (s) {
+        fp.innerHTML = footerHTML(s);
+      }).catch(console.error);
+    }
     initHeaderScroll();
 
     /* active nav */

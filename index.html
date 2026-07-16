@@ -23,24 +23,22 @@
     <section class="hero" style="background-image:url('./images/V+S 01.webp')">
       <div class="wrap">
         <div class="maxw">
-          <div class="eyebrow">TAIWAN 科研實力</div>
-          <h1 class="display mt20" style="font-size:clamp(30px,4vw,52px)">宅養顏<br>在家養出好肌膚</h1>
-          <p class="lead mt24">每天30秒，悄悄變美</p>
+          <div class="eyebrow" id="hero-eyebrow">TAIWAN 科研實力</div>
+          <h1 class="display mt20" id="hero-title" style="font-size:clamp(30px,4vw,52px)">宅養顏<br>在家養出好肌膚</h1>
+          <p class="lead mt24" id="hero-lead">每天30秒，悄悄變美</p>
           <div class="mt40">
-            <a href="products.html" class="btn solid">探索產品</a>
-            <a href="about.html" class="btn ghost" style="margin-left:10px">品牌故事</a>
+            <a href="products.html" class="btn solid" id="hero-btn1">探索產品</a>
+            <a href="about.html" class="btn ghost" id="hero-btn2" style="margin-left:10px">品牌故事</a>
           </div>
         </div>
       </div>
     </section>
     <section class="sec paper">
       <div class="wrap center">
-        <div class="eyebrow">Science Behind Every Formula</div>
-        <h2 class="h2 mt16">國際製藥廠經驗領導研發</h2>
-        <p class="lead maxw center scilead" style="margin-top:28px">
-          豐富精萃科研配方，小分子天然多胜肽，<br>從成分出發，為亞洲肌膚設計自然修護配方。
-        </p>
-        <div class="grid g2 mt56 acard-group" style="text-align:left">
+        <div class="eyebrow" id="sci-eyebrow">Science Behind Every Formula</div>
+        <h2 class="h2 mt16" id="sci-title">國際製藥廠經驗領導研發</h2>
+        <p class="lead maxw center scilead" id="sci-lead" style="margin-top:28px"></p>
+        <div class="grid g2 mt56 acard-group" id="sci-doctors" style="text-align:left">
           <div class="acard jp">
             <div class="drole">田邊製藥前研發部部長</div>
             <div class="drole">日本京都大學博士</div>
@@ -78,108 +76,13 @@
       </div>
     </section>
 
-    <script>
-      (function () {
-        var TABS = [
-          {
-            en: 'Natural Beauty at Home',
-            title: '宅養顏自然美學',
-            body: [
-              '讓忙碌的現代人每一天都能修護因環境、壓力、生活作息、工作熬夜造成的肌膚受損。「自然美顏養護機制」讓現代男性、女性，甚至青少年，都能透過日常養護，輕鬆養出健康素顏美肌，輕鬆「宅養顏」，天天「悄悄變美」。'
-            ],
-            mono: '01'
-          },
-          {
-            en: 'Our Origin',
-            title: '素顏美才是美',
-            body: [
-              '自然養護是養成美麗、健康、自然」肌膚的唯一方式。',
-              '因此我們投入科研、生產「沛素 per-sulii」養護肌膚產品。為追求肌膚素顏美提供高效、安心的保養選擇。'
-            ],
-            mono: '02'
-          },
-          {
-            en: 'Precision Science',
-            title: '精準科研',
-            body: [
-              '我們主張將「自然養護肌膚，落實在生活中」，喚醒人體肌膚的「自我養護機制」。',
-              '透過天然成分製成微小分子，能高效穿透肌膚底層，有效吸收。讓肌膚自然展現出「健康、透亮、光澤」，養出原生「素顏美」。'
-            ],
-            mono: '03'
-          },
-          {
-            en: 'Made in Taiwan',
-            title: '台灣美學科研',
-            body: [
-              'per-sulii 沛素系列產品，源自台灣科研，GMP 藥廠製造，由具有國際製藥廠經驗的專家精心研發，精準詮釋「自然養護」的宅養顏美學產品。',
-              '沛素 per-sulii「蜂胜肽＋外泌體多胜肽」精華雙核加乘，不在改變「肌膚結構」，而是直接改善「肌膚本質」。'
-            ],
-            mono: '04'
-          }
-        ];
-
-        function init() {
-          var contentEl = document.getElementById('btabs-content');
-          var imgEl = document.getElementById('btabs-img');
-          var navEl = document.getElementById('btabs-nav');
-          var current = 0;
-
-          /* 一次把全部 panel 渲染進 DOM，疊在同一 grid cell */
-          contentEl.className = 'btabs-panels';
-          contentEl.innerHTML = TABS.map(function (t, i) {
-            var bodyHTML = t.body.map(function (p, idx) {
-              return '<p class="body ' + (idx === 0 ? 'mt24' : 'mt16') + '">' + p + '</p>';
-            }).join('');
-            return '<div class="btabs-panel' + (i === 0 ? ' active' : '') + '">'
-              + '<div class="eyebrow">' + t.en + '</div>'
-              + '<h2 class="h2 mt16">' + t.title + '</h2>'
-              + bodyHTML
-              + '</div>';
-          }).join('');
-
-          var panels = contentEl.querySelectorAll('.btabs-panel');
-          imgEl.setAttribute('data-mono', TABS[0].mono);
-
-          /* 頁籤導覽 */
-          var nums = ['01', '02', '03', '04'];
-          var labels = ['mission', 'philosophy', 'methodology', 'practice'];
-          navEl.innerHTML = TABS.map(function (t, i) {
-            return '<button type="button" class="btabs-item' + (i === 0 ? ' active' : '') + '" data-i="' + i + '">'
-              + '<span class="bi-num">' + nums[i] + '</span>'
-              + '<span class="bi-title">' + labels[i] + '</span>'
-              + '</button>';
-          }).join('');
-
-          navEl.querySelectorAll('.btabs-item').forEach(function (btn) {
-            function activate() {
-              var i = parseInt(btn.dataset.i);
-              if (i === current) return;
-              current = i;
-              /* 切換 panel：只改 opacity，容器高度不變 */
-              panels.forEach(function (p, idx) { p.classList.toggle('active', idx === i); });
-              navEl.querySelectorAll('.btabs-item').forEach(function (b) { b.classList.remove('active'); });
-              btn.classList.add('active');
-              imgEl.setAttribute('data-mono', TABS[i].mono);
-            }
-            btn.addEventListener('mouseenter', activate);
-            btn.addEventListener('click', activate);   /* touch fallback */
-          });
-        }
-
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', init);
-        } else {
-          init();
-        }
-      })();
-    </script>
 
     <!-- 產品 -->
     <section class="sec">
       <div class="wrap">
         <div class="center">
-          <div class="eyebrow">Products</div>
-          <h2 class="h2 mt16">V+S 宅養顏雙效精華</h2>
+          <div class="eyebrow" id="prods-eyebrow">Products</div>
+          <h2 class="h2 mt16" id="prods-title">V+S 宅養顏雙效精華</h2>
         </div>
         <div class="grid g2 mt56" id="home-products"></div>
       </div>
@@ -189,8 +92,8 @@
     <section class="sec">
       <div class="wrap">
         <div style="text-align:center">
-          <div class="eyebrow">Journal</div>
-          <h2 class="h2 mt12">最新文章</h2>
+          <div class="eyebrow" id="journal-eyebrow">Journal</div>
+          <h2 class="h2 mt12" id="journal-title">最新文章</h2>
         </div>
         <div class="grid g3 mt40" id="home-journal"></div>
         <div style="text-align:center" class="mt40">
@@ -202,11 +105,11 @@
     <!-- 合作夥伴 -->
     <section class="sec center">
       <div class="wrap">
-        <div class="eyebrow">Become a Partner</div>
-        <h2 class="h2 mt16">合作夥伴</h2>
-        <p class="lead mt16 maxw center">與沛素一同推廣更理性的保養理念。</p>
+        <div class="eyebrow" id="partner-eyebrow">Become a Partner</div>
+        <h2 class="h2 mt16" id="partner-title">合作夥伴</h2>
+        <p class="lead mt16 maxw center" id="partner-lead">與沛素一同推廣更理性的保養理念。</p>
         <div class="mt32">
-          <a href="contact.html" class="btn solid">成為合作夥伴</a>
+          <a href="contact.html" class="btn solid" id="partner-btn">成為合作夥伴</a>
         </div>
       </div>
     </section>

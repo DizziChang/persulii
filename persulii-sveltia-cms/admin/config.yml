@@ -1,0 +1,203 @@
+backend:
+  name: github
+  repo: DizziChang/persulii
+  branch: master
+  base_url: https://api.netlify.com   # 使用 Netlify 的 GitHub OAuth 服務
+  auth_endpoint: auth
+
+site_url: https://persulii-test.netlify.app
+display_url: https://persulii-test.netlify.app
+media_folder: images
+public_folder: images
+
+collections:
+  - name: journal
+    label: 專欄文章
+    files:
+      - name: articles
+        label: 文章列表
+        file: content/journal.json
+        fields:
+          - name: items
+            label: 文章
+            widget: list
+            add_to_top: true
+            summary: "{{fields.cat}}｜{{fields.line1}}{{fields.line2}}"
+            fields:
+              - { name: slug, label: 網址代稱（英文、不可重複）, widget: string, hint: "例如 exosome-intro，發布後請勿更改" }
+              - { name: cat, label: 分類, widget: string }
+              - { name: line1, label: 標題（上行）, widget: string }
+              - { name: line2, label: 標題（下行）, widget: string }
+              - { name: date, label: 日期, widget: string, hint: "格式 YYYY-MM-DD" }
+              - { name: home, label: 顯示在首頁, widget: boolean, default: false }
+              - { name: body, label: 內文, widget: markdown }
+
+  - name: products
+    label: 產品
+    files:
+      - name: products
+        label: 產品列表
+        file: content/products.json
+        fields:
+          - name: items
+            label: 產品
+            widget: list
+            summary: "{{fields.en}} {{fields.name}}"
+            fields:
+              - { name: id, label: 產品代稱（英文、不可重複）, widget: string }
+              - { name: code, label: 代號（單一字母）, widget: string }
+              - { name: en, label: 英文名稱, widget: string }
+              - { name: name, label: 中文名稱, widget: string }
+              - { name: img, label: 主圖, widget: image }
+              - { name: hoverImg, label: 滑過顯示圖, widget: image, required: false }
+              - { name: hoverTitle, label: 滑過標題, widget: string, required: false }
+              - { name: hoverDesc, label: 滑過說明, widget: string, required: false }
+              - { name: tagline, label: 一句話賣點, widget: string }
+              - { name: intro, label: 產品簡介, widget: text }
+              - { name: feature, label: 產品特色, widget: text }
+              - name: ingredients
+                label: 關鍵成分
+                widget: list
+                fields:
+                  - { name: en, label: 英文名, widget: string }
+                  - { name: zh, label: 中文名, widget: string }
+                  - { name: desc, label: 說明, widget: string }
+              - { name: usage, label: 使用方式（逐步驟）, widget: list, field: { name: step, label: 步驟, widget: string } }
+              - name: specs
+                label: 規格與認證
+                widget: object
+                fields:
+                  - { name: size, label: 容量 / 規格, widget: string }
+                  - { name: inci, label: 成分標示, widget: string }
+                  - { name: cert, label: 品質認證, widget: string }
+
+  - name: pages
+    label: 頁面內容
+    files:
+      - name: home
+        label: 首頁
+        file: content/home.json
+        fields:
+          - name: hero
+            label: 主視覺 Banner
+            widget: object
+            fields:
+              - { name: image, label: 背景圖, widget: image }
+              - { name: eyebrow, label: 小標, widget: string }
+              - { name: title, label: 主標題（可換行）, widget: text }
+              - { name: lead, label: 副標語, widget: string }
+              - { name: btn1_text, label: 按鈕1文字, widget: string }
+              - { name: btn1_link, label: 按鈕1連結, widget: string }
+              - { name: btn2_text, label: 按鈕2文字, widget: string }
+              - { name: btn2_link, label: 按鈕2連結, widget: string }
+          - name: science
+            label: 科研區塊
+            widget: object
+            fields:
+              - { name: eyebrow, label: 英文小標, widget: string }
+              - { name: title, label: 標題, widget: string }
+              - { name: lead, label: 說明（可換行）, widget: text }
+              - name: doctors
+                label: 博士卡片
+                widget: list
+                fields:
+                  - { name: style, label: 樣式代稱（jp/usa）, widget: string }
+                  - { name: role1, label: 頭銜1, widget: string }
+                  - { name: role2, label: 頭銜2, widget: string }
+                  - { name: sign_img, label: 簽名圖, widget: image }
+                  - { name: sign_alt, label: 姓名, widget: string }
+                  - { name: suffix, label: 稱謂, widget: string }
+          - name: story
+            label: 品牌故事 Tabs
+            widget: object
+            fields:
+              - { name: image, label: 右側圖片, widget: image }
+              - name: tabs
+                label: 頁籤
+                widget: list
+                summary: "{{fields.title}}"
+                fields:
+                  - { name: en, label: 英文小標, widget: string }
+                  - { name: label, label: 頁籤英文標籤, widget: string }
+                  - { name: title, label: 標題, widget: string }
+                  - { name: body, label: 內文（空一行分段）, widget: text }
+          - name: products_section
+            label: 產品區標題
+            widget: object
+            fields:
+              - { name: eyebrow, label: 英文小標, widget: string }
+              - { name: title, label: 標題, widget: string }
+          - name: journal_section
+            label: 文章區標題
+            widget: object
+            fields:
+              - { name: eyebrow, label: 英文小標, widget: string }
+              - { name: title, label: 標題, widget: string }
+              - { name: count, label: 顯示篇數, widget: number, default: 3 }
+          - name: partner
+            label: 合作夥伴區
+            widget: object
+            fields:
+              - { name: eyebrow, label: 英文小標, widget: string }
+              - { name: title, label: 標題, widget: string }
+              - { name: lead, label: 說明, widget: string }
+              - { name: btn_text, label: 按鈕文字, widget: string }
+              - { name: btn_link, label: 按鈕連結, widget: string }
+      - name: about
+        label: 關於頁
+        file: content/about.json
+        fields:
+          - name: sections
+            label: 內容區塊（共4段）
+            widget: list
+            allow_add: false
+            summary: "{{fields.title}}"
+            fields:
+              - { name: eyebrow, label: 英文小標, widget: string }
+              - { name: title, label: 標題（可換行）, widget: text }
+              - { name: body, label: 內文（空一行分段）, widget: text }
+              - { name: image, label: 圖片, widget: image, required: false }
+          - name: team
+            label: 研發團隊
+            widget: object
+            fields:
+              - { name: eyebrow, label: 英文小標, widget: string }
+              - { name: title, label: 標題, widget: string }
+              - { name: lead, label: 說明, widget: string }
+              - { name: image, label: 圖片, widget: image }
+              - { name: image_alt, label: 圖片說明, widget: string }
+          - name: faq
+            label: 常見問答
+            widget: list
+            summary: "{{fields.q}}"
+            fields:
+              - { name: q, label: 問題, widget: string }
+              - { name: a, label: 回答, widget: text }
+      - name: settings
+        label: 網站設定（Footer / 聯絡資訊）
+        file: content/settings.json
+        fields:
+          - name: footer
+            label: Footer
+            widget: object
+            fields:
+              - { name: tagline, label: 品牌標語, widget: string }
+              - { name: company, label: 公司名稱, widget: string }
+              - { name: email, label: Email, widget: string }
+              - { name: phone, label: 電話, widget: string }
+              - { name: copyright, label: 版權文字, widget: string }
+              - { name: cert_chip, label: 認證標章文字, widget: string }
+              - name: social
+                label: 社群連結
+                widget: object
+                fields:
+                  - { name: line, label: Line, widget: string }
+                  - { name: facebook, label: Facebook, widget: string }
+                  - { name: instagram, label: Instagram, widget: string }
+          - name: contact_page
+            label: 聯絡頁資訊
+            widget: object
+            fields:
+              - { name: company, label: 公司名稱, widget: string }
+              - { name: phone, label: 電話, widget: string }
+              - { name: address, label: 地址, widget: string }

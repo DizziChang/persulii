@@ -209,6 +209,10 @@ h3 {
   margin-top: 56px
 }
 
+.maxwl {
+  max-width: 1200px
+}
+
 .maxw {
   max-width: 680px
 }
@@ -1273,6 +1277,7 @@ h3 {
     padding: 0px;
   }
 }
+
 /* hero 輪播 */
 .hero-slide {
   position: absolute;
@@ -1283,4 +1288,7 @@ h3 {
   opacity: 0;
   transition: opacity 1.2s ease;
 }
-.hero-slide.active { opacity: 1 }
+
+.hero-slide.active {
+  opacity: 1
+}

@@ -10,6 +10,12 @@
         "btn1_link": "products.html",
         "btn2_text": "品牌故事",
         "btn2_link": "about.html"
+      },
+      {
+        "img": "/images/Banner01.jpg"
+      },
+      {
+        "img": "/images/Banner02.png"
       }
     ],
     "interval": 5

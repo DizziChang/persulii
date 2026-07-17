@@ -42,9 +42,30 @@ function productCardHTML(p, mediaH) {
     + '</a>';
 }
 
+/* 首頁圖文並排：V-essence 文左圖右，S-essence 圖左文右 */
+function homeProductRowHTML(p, imageFirst) {
+  var media = '<div class="media product" style="background-image:url(\'' + p.img + '\');background-size:cover;background-position:center"></div>';
+  var text = '<div>'
+    + '<div class="eyebrow">' + p.en + '</div>'
+    + '<h3 class="h3 mt12">' + p.name + '</h3>'
+    + '<p class="body mt16">' + p.tagline + '</p>'
+    + '<div class="mt24"><span class="tlink">了解更多 →</span></div>'
+    + '</div>';
+  return '<a href="product.html?id=' + p.id + '" class="pfeature">'
+    + (imageFirst ? media + text : text + media)
+    + '</a>';
+}
+
 function renderProducts(PRODUCTS) {
   var home = document.getElementById('home-products');
-  if (home) home.innerHTML = PRODUCTS.map(function (p) { return productCardHTML(p); }).join('');
+  if (home) {
+    var v = PRODUCTS.find(function (p) { return p.id === 'V-essence'; });
+    var s = PRODUCTS.find(function (p) { return p.id === 'S-essence'; });
+    var rows = [];
+    if (v) rows.push(homeProductRowHTML(v, false));
+    if (s) rows.push(homeProductRowHTML(s, true));
+    home.innerHTML = rows.join('');
+  }
   var list = document.getElementById('product-list');
   if (list) list.innerHTML = PRODUCTS.map(function (p) { return productCardHTML(p); }).join('');
   renderProductDetail(PRODUCTS);
@@ -152,8 +173,6 @@ function renderHome(data) {
 
   setText('prods-eyebrow', data.products_section.eyebrow);
   setText('prods-title', data.products_section.title);
-  setText('journal-eyebrow', data.journal_section.eyebrow);
-  setText('journal-title', data.journal_section.title);
 
   var pt = data.partner;
   setText('partner-eyebrow', pt.eyebrow);
@@ -374,12 +393,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   getJSON('content/products.json').then(function (d) { renderProducts(d.items); }).catch(console.error);
   getJSON('content/journal.json').then(function (d) {
-    var count = 3;
-    if (page === 'home') {
-      getJSON('content/home.json').then(function (h) { renderJournal(d.items, h.journal_section.count); });
-    } else {
-      renderJournal(d.items, count);
-    }
+    renderJournal(d.items, 3);
     renderArticle(d.items);
   }).catch(console.error);
 

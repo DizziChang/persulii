@@ -30,7 +30,6 @@
       <a href="index.html"    data-page="home">首頁</a>
       <a href="about.html"    data-page="about">關於</a>
       <a href="products.html" data-page="products">產品</a>
-      <a href="journal.html"  data-page="journal">專欄</a>
       <a href="contact.html"  data-page="contact">聯絡</a>
     </nav>
     <button class="burger mob" id="burger" type="button"
@@ -40,7 +39,6 @@
     <a href="index.html">首頁</a>
     <a href="about.html">關於</a>
     <a href="products.html">產品</a>
-    <a href="journal.html">專欄</a>
     <a href="contact.html">聯絡</a>
   </nav>
 </header>`;
@@ -57,13 +55,12 @@
       <p class="ftr-cert-sub">${f.tagline}</p>
       </div>
       <div>
-        <a href="products.html">產品研發</a>
-        <a href="about.html">品牌理念</a>
-        <a href="about.html#faq">常見問答</a>
-        <a href="contact.html#team">成為合作夥伴</a>
+        <a href="index.html">首頁</a>
+        <a href="about.html">關於</a>
+        <a href="products.html">產品</a>
+        <a href="contact.html">聯絡</a>
       </div>
       <div>
-        <h4>聯絡</h4>
         <ul>
           <li>${f.company}</li>
           <li>${f.email}</li>

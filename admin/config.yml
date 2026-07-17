@@ -133,13 +133,6 @@ collections:
             fields:
               - { name: eyebrow, label: 英文小標, widget: string }
               - { name: title, label: 標題, widget: string }
-          - name: journal_section
-            label: 文章區標題
-            widget: object
-            fields:
-              - { name: eyebrow, label: 英文小標, widget: string }
-              - { name: title, label: 標題, widget: string }
-              - { name: count, label: 顯示篇數, widget: number, default: 3 }
           - name: partner
             label: 合作夥伴區
             widget: object

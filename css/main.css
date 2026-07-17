@@ -145,7 +145,8 @@ h3 {
 
 /* layout */
 .wrap {
-  max-width: 1440px;
+  /* box-sizing:border-box 會讓 padding 吃掉 max-width，用 calc 補回來，讓內容實際維持 1100px */
+  max-width: calc(1100px + 56px * 2);
   margin: 0 auto;
   padding: 0 56px
 }
@@ -550,23 +551,14 @@ h3 {
   position: relative;
   --hero-p: 0;
   min-height: min(calc(84vh - 50vh * var(--hero-p)), calc(760px - 300px * var(--hero-p)));
-  max-width: 90vw;
-  margin: 40px auto;
-  border-radius: calc(8rem - 4rem * var(--hero-p));
+  width: 100%;
+  margin: 40px 0;
   display: flex;
   align-items: center;
   background-size: cover;
   background-position: center top;
   color: var(--ink);
   overflow: hidden
-}
-
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(to right, rgba(255, 255, 255, 10) 15%, rgba(255, 255, 255, 0.65) 50%, rgba(255, 255, 255, 0) 60%)
 }
 
 .hero .wrap {
@@ -611,6 +603,31 @@ h3 {
 }
 
 .pcard:hover .media {
+  filter: brightness(.98)
+}
+
+/* 首頁產品圖文並排 */
+.pfeatures {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(48px, 6vw, 96px)
+}
+
+.pfeature {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(32px, 5vw, 72px);
+  align-items: center;
+  text-align: left
+}
+
+.pfeature .media {
+  width: 100%;
+  aspect-ratio: 628 / 540;
+  height: auto
+}
+
+.pfeature:hover .media {
   filter: brightness(.98)
 }
 
@@ -1194,7 +1211,8 @@ h3 {
 
   .g2,
   .g3,
-  .split {
+  .split,
+  .pfeature {
     grid-template-columns: 1fr
   }
 
@@ -1271,6 +1289,10 @@ h3 {
     grid-template-columns: 1fr;
     gap: 28px;
     text-align: center
+  }
+
+  .ftr li.ftr-social {
+    justify-content: center
   }
 
   .story .wrap {

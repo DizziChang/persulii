@@ -1,34 +1,84 @@
 {
   "items": [
     {
-      "id": "s-essence", "code": "S", "en": "S-essence", "name": "外泌體多胜肽修護精華",
-      "img": "images/S03.webp", "hoverImg": "images/S04.webp",
-      "hoverTitle": "沛素-S", "hoverDesc": "外泌體細緻膚質",
+      "id": "S-essence",
+      "code": "S",
+      "en": "S-essence",
+      "name": "外泌體多胜肽修護精華",
+      "img": "images/S03.webp",
+      "hoverImg": "images/S04.webp",
+      "hoverTitle": "沛素-S",
+      "hoverDesc": "外泌體細緻膚質",
       "tagline": "優質人體細胞外泌體，維持肌膚穩定狀態。",
       "intro": "以小分子多胜肽搭配外泌體技術，溫和守護肌膚日常平衡，幫助維持穩定、柔嫩細緻的健康狀態。",
       "feature": "專為亞洲肌膚設計的修護配方，溫和不刺激，適合每日使用。科研精密萃取，兼顧穩定性與吸收效率。",
       "ingredients": [
-        { "en": "Exosome", "zh": "外泌體", "desc": "喚醒肌膚的平衡，維持穩定狀態。" },
-        { "en": "Peptides", "zh": "多胜肽", "desc": "小分子設計，溫和滲透，支持肌膚日常保養。" },
-        { "en": "Micro Extraction", "zh": "小分子萃取", "desc": "精密萃取技術，兼顧穩定性與吸收效率。" }
+        {
+          "en": "Exosome",
+          "zh": "外泌體",
+          "desc": "喚醒肌膚的平衡，維持穩定狀態。"
+        },
+        {
+          "en": "Peptides",
+          "zh": "多胜肽",
+          "desc": "小分子設計，溫和滲透，支持肌膚日常保養。"
+        },
+        {
+          "en": "Micro Extraction",
+          "zh": "小分子萃取",
+          "desc": "精密萃取技術，兼顧穩定性與吸收效率。"
+        }
       ],
-      "usage": ["潔顏後取適量於掌心", "均勻塗抹全臉", "輕拍至吸收", "接續後續保養"],
-      "specs": { "size": "——", "inci": "符合國內外認證", "cert": "TFDA PIF ｜ INCI ｜ GMP" }
+      "usage": [
+        "潔顏後取適量於掌心",
+        "均勻塗抹全臉",
+        "接續後續保養"
+      ],
+      "specs": {
+        "size": "35ml",
+        "inci": "符合國內外認證",
+        "cert": "TFDA PIF ｜ INCI ｜ GMP"
+      }
     },
     {
-      "id": "v-essence", "code": "V", "en": "V-essence", "name": "精萃蜂胜肽 PLUS 精華",
-      "img": "images/V03.webp", "hoverImg": "images/V01.webp",
-      "hoverTitle": "沛素-V", "hoverDesc": "蜂胜肽緊緻撫紋",
+      "id": "V-essence",
+      "code": "V",
+      "en": "V-essence",
+      "name": "精萃蜂胜肽 PLUS 精華",
+      "img": "images/V03.webp",
+      "hoverImg": "images/V01.webp",
+      "hoverTitle": "沛素-V",
+      "hoverDesc": "蜂胜肽緊緻撫紋",
       "tagline": "淡化紋路，緊緻肌膚，鎖住青春肌密。",
       "intro": "以蜂胜肽搭配多重胜肽複方，集中支持肌膚緊緻與彈性，幫助淡化細紋、維持青春光澤。",
-      "feature": "針對熟齡與彈性流失設計的精華配方，質地清爽好吸收，溫和不刺激，適合每日早晚使用。",
+      "feature": "針對紋路與彈性流失設計的精華配方，質地清爽好吸收，溫和不刺激，適合每日早晚使用。",
       "ingredients": [
-        { "en": "Bee Peptide", "zh": "蜂胜肽", "desc": "支持肌膚緊緻與彈性，幫助維持飽滿狀態。" },
-        { "en": "Multi-Peptides", "zh": "多重胜肽", "desc": "複方協同，集中支持紋路與輪廓的日常保養。" },
-        { "en": "Micro Extraction", "zh": "小分子萃取", "desc": "精密萃取技術，兼顧穩定性與吸收效率。" }
+        {
+          "en": "Bee Peptide",
+          "zh": "蜂胜肽",
+          "desc": "支持肌膚緊緻與彈性，幫助維持飽滿狀態。"
+        },
+        {
+          "en": "Multi-Peptides",
+          "zh": "多重胜肽",
+          "desc": "複方協同，集中支持紋路與輪廓的日常保養。"
+        },
+        {
+          "en": "Micro Extraction",
+          "zh": "小分子萃取",
+          "desc": "精密萃取技術，兼顧穩定性與吸收效率。"
+        }
       ],
-      "usage": ["潔顏後取適量於掌心", "由內而外均勻按摩全臉", "加強塗抹於紋路處", "輕拍至吸收後接續保養"],
-      "specs": { "size": "——", "inci": "符合國內外認證", "cert": "TFDA PIF ｜ INCI ｜ GMP" }
+      "usage": [
+        "潔顏後取適量於掌心",
+        "由內而外均勻輕抹全臉",
+        "加強塗抹於紋路處"
+      ],
+      "specs": {
+        "size": "35ml",
+        "inci": "符合國內外認證",
+        "cert": "TFDA PIF ｜ INCI ｜ GMP"
+      }
     }
   ]
 }

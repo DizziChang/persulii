@@ -1279,6 +1279,12 @@ h3 {
 }
 
 /* hero 輪播 */
+.hero.has-swipe {
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+}
+
 .hero-slide {
   position: absolute;
   inset: 0;

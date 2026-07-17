@@ -136,12 +136,6 @@ function renderHome(data) {
   if (document.body.dataset.page !== 'home') return;
   var h = data.hero;
   initHeroCarousel(h);
-  setText('hero-eyebrow', h.eyebrow);
-  setHTML('hero-title', nl2br(h.title));
-  setText('hero-lead', h.lead);
-  var b1 = document.getElementById('hero-btn1'), b2 = document.getElementById('hero-btn2');
-  if (b1) { b1.textContent = h.btn1_text; b1.href = h.btn1_link; }
-  if (b2) { b2.textContent = h.btn2_text; b2.href = h.btn2_link; }
 
   var s = data.science;
   setText('sci-eyebrow', s.eyebrow);
@@ -176,24 +170,88 @@ function renderHome(data) {
 function initHeroCarousel(h) {
   var hero = document.querySelector('.hero');
   if (!hero) return;
-  var imgs = (h.images && h.images.length) ? h.images : (h.image ? [h.image] : []);
-  if (!imgs.length) return;
+  var slidesData = (h.images && h.images.length) ? h.images : [];
+  if (!slidesData.length) return;
   hero.style.backgroundImage = 'none';
-  var slides = imgs.map(function (src, i) {
+  var slideEls = slidesData.map(function (s, i) {
     var d = document.createElement('div');
     d.className = 'hero-slide' + (i === 0 ? ' active' : '');
-    d.style.backgroundImage = "url('" + src + "')";
+    d.style.backgroundImage = "url('" + (s.img || s) + "')";
     hero.insertBefore(d, hero.firstChild);
     return d;
   });
-  if (slides.length < 2) return;
   var cur = 0;
+  setHeroText(slidesData[cur]);
+  if (slideEls.length < 2) return;
+  hero.classList.add('has-swipe');
+
+  function goTo(i) {
+    slideEls[cur].classList.remove('active');
+    cur = (i + slideEls.length) % slideEls.length;
+    slideEls[cur].classList.add('active');
+    setHeroText(slidesData[cur]);
+  }
+
   var sec = Math.max(2, parseFloat(h.interval) || 5);
-  setInterval(function () {
-    slides[cur].classList.remove('active');
-    cur = (cur + 1) % slides.length;
-    slides[cur].classList.add('active');
-  }, sec * 1000);
+  var timer = null;
+  function startAuto() {
+    clearInterval(timer);
+    timer = setInterval(function () { goTo(cur + 1); }, sec * 1000);
+  }
+  startAuto();
+
+  /* 左右滑動切換（滑鼠拖曳／觸控滑動皆適用） */
+  var startX = 0, startY = 0, dragging = false;
+  hero.addEventListener('pointerdown', function (e) {
+    dragging = true;
+    startX = e.clientX;
+    startY = e.clientY;
+  });
+  hero.addEventListener('pointermove', function (e) {
+    if (!dragging) return;
+    if (Math.abs(e.clientX - startX) > Math.abs(e.clientY - startY)) e.preventDefault();
+  });
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (evt) {
+    hero.addEventListener(evt, function (e) {
+      if (!dragging) return;
+      dragging = false;
+      var dx = e.clientX - startX, dy = e.clientY - startY;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+        goTo(cur + (dx < 0 ? 1 : -1));
+        startAuto();
+      }
+    });
+  });
+}
+
+/* 依當前輪播圖片顯示對應文字，未填寫的欄位則隱藏 */
+function setHeroText(s) {
+  s = s || {};
+  setTextOrHide('hero-eyebrow', s.eyebrow);
+  var titleEl = document.getElementById('hero-title');
+  if (titleEl) {
+    if (s.title) { titleEl.innerHTML = nl2br(s.title); titleEl.style.display = ''; }
+    else { titleEl.style.display = 'none'; }
+  }
+  setTextOrHide('hero-lead', s.lead);
+  var b1 = document.getElementById('hero-btn1'), b2 = document.getElementById('hero-btn2');
+  if (b1) {
+    if (s.btn1_text) { b1.textContent = s.btn1_text; b1.href = s.btn1_link || '#'; b1.style.display = ''; }
+    else { b1.style.display = 'none'; }
+  }
+  if (b2) {
+    if (s.btn2_text) { b2.textContent = s.btn2_text; b2.href = s.btn2_link || '#'; b2.style.display = ''; }
+    else { b2.style.display = 'none'; }
+  }
+  var btnWrap = document.getElementById('hero-btns');
+  if (btnWrap) btnWrap.style.display = (s.btn1_text || s.btn2_text) ? '' : 'none';
+}
+
+function setTextOrHide(id, text) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  if (text) { el.textContent = text; el.style.display = ''; }
+  else { el.style.display = 'none'; }
 }
 
 /* ---- 品牌故事 Tabs ---- */

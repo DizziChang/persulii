@@ -82,15 +82,20 @@ collections:
             label: 主視覺 Banner
             widget: object
             fields:
-              - { name: images, label: 背景輪播圖（可多張，依序播放）, widget: list, field: { name: img, label: 圖片, widget: image } }
+              - name: images
+                label: 輪播圖片（可多張，依序播放，每張可各自設定文字，留空則不顯示）
+                widget: list
+                summary: "{{fields.eyebrow}} {{fields.title}}"
+                fields:
+                  - { name: img, label: 圖片, widget: image }
+                  - { name: eyebrow, label: 小標, widget: string, required: false }
+                  - { name: title, label: 主標題（可換行）, widget: text, required: false }
+                  - { name: lead, label: 副標語, widget: string, required: false }
+                  - { name: btn1_text, label: 按鈕1文字, widget: string, required: false }
+                  - { name: btn1_link, label: 按鈕1連結, widget: string, required: false }
+                  - { name: btn2_text, label: 按鈕2文字, widget: string, required: false }
+                  - { name: btn2_link, label: 按鈕2連結, widget: string, required: false }
               - { name: interval, label: 輪播間隔（秒）, widget: number, default: 5, value_type: float }
-              - { name: eyebrow, label: 小標, widget: string }
-              - { name: title, label: 主標題（可換行）, widget: text }
-              - { name: lead, label: 副標語, widget: string }
-              - { name: btn1_text, label: 按鈕1文字, widget: string }
-              - { name: btn1_link, label: 按鈕1連結, widget: string }
-              - { name: btn2_text, label: 按鈕2文字, widget: string }
-              - { name: btn2_link, label: 按鈕2連結, widget: string }
           - name: science
             label: 科研區塊
             widget: object

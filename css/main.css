@@ -354,9 +354,9 @@ h3 {
   z-index: 1
 }
 
-.pcard:hover .media-hover {
+/* .pcard:hover .media-hover {
   opacity: 1
-}
+} */
 
 .media .media-cap {
   position: absolute;
@@ -388,10 +388,10 @@ h3 {
   color: rgba(255, 255, 255, .85)
 }
 
-.pcard:hover .media-cap {
+/* .pcard:hover .media-cap {
   opacity: 1;
   transform: translateY(0)
-}
+} */
 
 .media.dark {
   background: radial-gradient(120% 120% at 70% 25%, #3a3a3a 0%, #222 45%, #161616 100%)
@@ -612,9 +612,9 @@ h3 {
   height: auto
 }
 
-.pcard:hover .media {
+/* .pcard:hover .media {
   filter: brightness(.98)
-}
+} */
 
 /* 首頁產品圖文並排 */
 .pfeatures {
@@ -1242,7 +1242,7 @@ h3 {
   }
 
   .sec {
-    padding: 64px 0
+    padding: 48px 0
   }
 
 
@@ -1276,7 +1276,7 @@ h3 {
   }
 
   .hero {
-    min-height: 540px
+    min-height: 240px
   }
 
   .hero .display {
@@ -1370,6 +1370,66 @@ h3 {
 
 .hero-slide.active {
   opacity: 1
+}
+
+.hero-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 60px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+  opacity: .5;
+  transition: opacity .2s;
+}
+
+.hero-arrow img {
+  width: 60%;
+  height: 100%;
+  display: block
+}
+
+.hero-arrow:hover {
+  opacity: 1;
+  background-color: rgba(255,255,255,.3);
+}
+
+.hero-arrow.prev {
+  left: 0
+}
+
+.hero-arrow.next {
+  right: 0
+}
+
+.hero-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 20px 0 0;
+}
+
+.hero-dot {
+  width: 28px;
+  height: 3px;
+  background: var(--line);
+  border-radius: 2px;
+  transition: background .2s;
+}
+
+.hero-dot.active {
+  background: var(--ink)
+}
+
+@media (max-width:768px) {
+  .hero-arrow {
+    display: none
+  }
 }
 
 /* Homepage About Us section styles */

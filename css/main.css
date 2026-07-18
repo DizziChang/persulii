@@ -421,9 +421,10 @@ h3 {
 }
 
 .hdr .logo {
-  height: 46px;
+  height: 76px;
   width: auto;
   display: block;
+  margin-bottom: 12px;
   transition: height .35s ease, opacity .3s ease
 }
 
@@ -902,6 +903,7 @@ h3 {
 .ftr li.ftr-social {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 16px;
   margin-top: 8px
 }
@@ -919,31 +921,45 @@ h3 {
 }
 
 .ftr .ftr-social svg {
-  width: 22px;
-  height: 22px
+  width: 28px;
+  height: 28px
 }
 
 /* Line 的圖形本身內縮，放大補償視覺大小 */
 .ftr .ftr-social a:first-child svg {
-  width: 26px;
-  height: 26px
+  width: 36px;
+  height: 36px
 }
 
 /* ---- FOOTER ---- */
 .ftr {
   background: var(--deep);
   color: #cdcdc8;
-  padding: clamp(56px, 6vw, 84px) 0 32px
-}
-
-.ftr .wrap {
-  max-width: 1120px
+  padding: 32px 32px clamp(56px, 6vw, 84px);
+  background: linear-gradient(0deg, var(--deep) 93%, var(--taupe) 100%);
 }
 
 .ftr-grid {
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1.4fr 1fr;
   gap: 36px
+}
+
+.ftr-flex-item {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, .12);
+  margin-bottom: 24px;
+}
+
+.ftr-flex-item a {
+  display: inline-block;
+  padding: 8px 16px;
 }
 
 .ftr .logo {
@@ -965,7 +981,7 @@ h3 {
 .ftr a,
 .ftr li,
 .ftr button {
-  font-size: 1rem;
+  font-size: 1.2rem;
   color: #bdbdb8;
   line-height: 2.1;
   list-style: none;
@@ -1004,20 +1020,32 @@ h3 {
   border-radius: 2px
 }
 
+.ftr .info li {
+  font-size: 13px;
+  letter-spacing: .04em
+}
+.ftr-flex-cert {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 .ftr-cert-sub {
   font-size: 13px;
-  margin-top: 14px;
-  letter-spacing: .04em
+  margin: 14px auto;
+  letter-spacing: .04em;
+  text-align: center;
 }
 
 .ftr-bottom {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
   gap: 14px;
   flex-wrap: wrap;
-  margin-top: 18px;
-  padding-top: 22px;
-  border-top: 1px solid rgba(255, 255, 255, .12);
+  margin-top: 8px;
+  padding-top: 8px;
+  /* border-top: 1px solid rgba(255, 255, 255, .12); */
   font-size: 12px;
   color: #83867f
 }
@@ -1288,11 +1316,30 @@ h3 {
   .ftr-grid {
     grid-template-columns: 1fr;
     gap: 28px;
-    text-align: center
+  }
+
+  .ftr-logo {
+    text-align: center;
+  }
+
+  .ftr-flex-item {
+    padding-bottom: 12px;
+    margin-bottom: 44px;
+    align-items: flex-start;
+  }
+
+  .ftr-bottom {
+    margin-top: 24px;
   }
 
   .ftr li.ftr-social {
     justify-content: center
+  }
+
+  .ftr a,
+  .ftr li,
+  .ftr button {
+    font-size: 1rem;
   }
 
   .story .wrap {

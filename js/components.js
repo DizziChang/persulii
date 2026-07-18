@@ -48,31 +48,35 @@
     var f = s.footer;
     return `
 <footer class="ftr">
-  <div class="wrap">
+  <div class=" wrap">
+   <div class="ftr-flex-item">
+      <a href="index.html">首頁</a>
+      <a href="about.html">關於</a>
+      <a href="products.html">產品</a>
+      <a href="contact.html">聯絡</a>
+    </div>
     <div class="ftr-grid">
-      <div style="text-align:center">
+      <div class="ftr-logo">
         <img class="logo" src="${IMG_LOGO_GREY}" alt="沛素 per-sulii" style="margin:0 auto">
-      <p class="ftr-cert-sub">${f.tagline}</p>
       </div>
-      <div>
-        <a href="index.html">首頁</a>
-        <a href="about.html">關於</a>
-        <a href="products.html">產品</a>
-        <a href="contact.html">聯絡</a>
+      <div class="ftr-flex-cert">
+        <p class="ftr-cert-sub">${f.tagline}</p>
+        <span class="ftr-cert-chip">${f.cert_chip}</span>
       </div>
-      <div>
-        <ul>
-          <li>${f.company}</li>
-          <li>${f.email}</li>
-          <li>${f.phone}</li>
-        </ul>
+      <div class="ftr-grid-item">
+          <ul class="info">
+            <li>${f.company}</li>
+            <li>聯絡信箱 ｜ ${f.email}</li>
+            <li>聯絡電話 ｜ ${f.phone}</li>
+            <li></li>
+          </ul>
+        </div>
       </div>
-       <div>
-       <ul>
-           <li>
-           <span>${f.copyright}</span>
-          </li>
-          <li class="ftr-social">
+    </div>
+    <div class="ftr-bottom wrap">
+    <span>${f.copyright}</span>
+      <ul>
+         <li class="ftr-social">
             <a href="${f.social.line}" target="_blank" rel="noopener" aria-label="Line" title="Line">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5C6.2 2.5 1.5 6.3 1.5 11c0 4.2 3.7 7.7 8.7 8.4.34.07.8.22.92.51.1.27.07.68.03.95l-.15.9c-.04.27-.21 1.05.92.57 1.13-.47 6.07-3.57 8.28-6.12 1.53-1.66 2.3-3.36 2.3-5.21 0-4.7-4.7-8.5-10.5-8.5zM7.3 13.6H5.2a.55.55 0 0 1-.55-.55V8.9a.55.55 0 0 1 1.1 0v3.6h1.55a.55.55 0 0 1 0 1.1zm1.9-.55a.55.55 0 0 1-1.1 0V8.9a.55.55 0 0 1 1.1 0v4.15zm5.1 0a.55.55 0 0 1-.99.33l-2.06-2.8v2.47a.55.55 0 0 1-1.1 0V8.9a.55.55 0 0 1 .99-.33l2.06 2.8V8.9a.55.55 0 0 1 1.1 0v4.15zm3.5-2.63a.55.55 0 0 1 0 1.1h-1.55v.98h1.55a.55.55 0 0 1 0 1.1h-2.1a.55.55 0 0 1-.55-.55V8.9c0-.3.25-.55.55-.55h2.1a.55.55 0 0 1 0 1.1h-1.55v.97h1.55z"/></svg>
             </a>
@@ -84,10 +88,6 @@
             </a>
           </li>
         </ul>
-       </div>
-    </div>
-    <div class="ftr-bottom">
-      <span class="ftr-cert-chip">${f.cert_chip}</span>
     </div>
   </div>
 </footer>`;

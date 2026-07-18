@@ -2,26 +2,6 @@
   "hero": {
     "images": [
       {
-        "img": "images/V+S 01.webp",
-        "eyebrow": "TAIWAN 科研實力",
-        "title": "宅養顏\n在家養出好肌膚",
-        "lead": "每天30秒，悄悄變美",
-        "btn1_text": "探索產品",
-        "btn1_link": "products.html",
-        "btn2_text": "品牌故事",
-        "btn2_link": "about.html"
-      },
-      {
-        "img": "/images/S__5251083.webp",
-        "eyebrow": "",
-        "title": "",
-        "lead": "",
-        "btn1_text": "",
-        "btn1_link": "",
-        "btn2_text": "",
-        "btn2_link": ""
-      },
-      {
         "img": "/images/1920X687沛素底圖AI投射光第五版.jpg",
         "eyebrow": "",
         "title": "",
@@ -30,14 +10,44 @@
         "btn1_link": "",
         "btn2_text": "",
         "btn2_link": ""
+      },
+      {
+        "img": "/images/蜂咖啡色底圖1920x687V第三版.jpg",
+        "eyebrow": "",
+        "title": "",
+        "lead": "",
+        "btn1_text": "",
+        "btn1_link": "",
+        "btn2_text": "",
+        "btn2_link": ""
+      },
+      {
+        "img": "/images/s底圖1_完稿.jpg",
+        "eyebrow": "",
+        "title": "",
+        "lead": "",
+        "btn1_text": "",
+        "btn1_link": "",
+        "btn2_text": "",
+        "btn2_link": ""
+      },
+      {
+        "img": "images/V+S 01.webp",
+        "eyebrow": "TAIWAN 科研實力",
+        "title": "宅養顏\n在家養出好肌膚",
+        "lead": "每天30秒，悄悄變美",
+        "btn1_text": "探索產品",
+        "btn1_link": "products.html",
+        "btn2_text": "關於我們",
+        "btn2_link": "about.html"
       }
     ],
     "interval": 5
   },
   "science": {
     "eyebrow": "Science Behind Every Formula",
-    "title": "國際製藥廠經驗領導研發",
-    "lead": "豐富精萃科研配方，小分子天然多胜肽，\n從成分出發，為亞洲肌膚設計自然修護配方。",
+    "title": "國際級製藥廠經驗領導研發",
+    "lead": "追求素顏美背後的科研實力",
     "doctors": [
       {
         "style": "jp",

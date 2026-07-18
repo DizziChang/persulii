@@ -106,20 +106,6 @@ collections:
               - { name: btn_text, label: 按鈕文字, widget: string, required: false }
               - { name: btn_link, label: 按鈕連結, widget: string, required: false }
               - { name: image, label: 區塊圖片, widget: image, required: false }
-          - name: story
-            label: 品牌故事 Tabs
-            widget: object
-            fields:
-              - { name: image, label: 右側圖片, widget: image }
-              - name: tabs
-                label: 頁籤
-                widget: list
-                summary: "{{fields.title}}"
-                fields:
-                  - { name: en, label: 英文小標, widget: string }
-                  - { name: label, label: 頁籤英文標籤, widget: string }
-                  - { name: title, label: 標題, widget: string }
-                  - { name: body, label: 內文（空一行分段）, widget: text }
           - name: products_section
             label: 產品區標題
             widget: object

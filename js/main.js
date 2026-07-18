@@ -77,7 +77,7 @@ function renderProductDetail(PRODUCTS) {
 
   var params = new URLSearchParams(window.location.search);
   var id = params.get('id') || PRODUCTS[0].id;
-  var idx = PRODUCTS.findIndex(function (p) { return p.id === id; });
+  var idx = PRODUCTS.findIndex(function (p) { return p.id.toLowerCase() === id.toLowerCase(); });
   if (idx < 0) idx = 0;
   var p = PRODUCTS[idx];
   var prev = PRODUCTS[(idx - 1 + PRODUCTS.length) % PRODUCTS.length];
@@ -183,8 +183,6 @@ function renderHome(data) {
   setText('partner-lead', pt.lead);
   var pb = document.getElementById('partner-btn');
   if (pb) { pb.textContent = pt.btn_text; pb.href = pt.btn_link; }
-
-  initStoryTabs(data.story);
 }
 
 

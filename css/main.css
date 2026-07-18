@@ -16,7 +16,8 @@
   --taupe: #6f6f6f;
   --serif: 'Funnel Display', 'Noto Serif TC', serif;
   --sans: 'Funnel Display', 'Noto Sans TC', -apple-system, 'Segoe UI', sans-serif;
-  --img-radius: 20px;
+  --img-radius: 8px;
+  --link:#7791b0;
 }
 
 * {
@@ -123,24 +124,32 @@ h3 {
   line-height: 1.45
 }
 
+.about-sec-head {
+  padding: 6px 12px; 
+  border-top: 1px solid var(--mid);
+  border-bottom: 1px solid var(--mid);
+  display: inline-block; 
+}
+
 .lead {
-  font-size: clamp(15px, 1.5vw, 18px);
+  font-size: clamp(16px, 1.6vw, 20px);
   line-height: 1.9;
   color: var(--ink-soft);
-  font-weight: 400
+  line-height: 1.95;
+  position: relative;
 }
 
 .body {
-  font-size: clamp(17px, 1.5vw, 19px);
-  line-height: 1.95;
+  font-size: clamp(16px, 1.3vw, 18px);
+  line-height: 2;
   color: var(--ink-soft);
-  font-weight: 400
+  font-weight: 400;
 }
 
 .small {
   font-size: clamp(14px, 1vw, 16px);
   color: var(--mid-text);
-  line-height: 1.7
+  line-height: 1.7;
 }
 
 /* layout */
@@ -158,7 +167,7 @@ h3 {
 }
 
 .sec {
-  padding: clamp(76px, 9.5vw, 144px) 0
+  padding: clamp(40px, 5vw, 60px) 0;
 }
 
 .sec.paper {
@@ -453,7 +462,7 @@ h3 {
 }
 
 .nav a {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   letter-spacing: .06em;
   color: var(--ink-soft);
   cursor: pointer;
@@ -1278,11 +1287,6 @@ h3 {
     font-size: 13.5px
   }
 
-  .scilead {
-    font-size: 12.5px;
-    line-height: 1.75
-  }
-
   .tfda-chip {
     font-size: 12px !important
   }
@@ -1382,4 +1386,15 @@ h3 {
   height: auto;
   border-radius: var(--img-radius);
   box-shadow: 0 16px 32px rgba(0, 0, 0, 0.03);
+}
+
+/* Custom text link styling */
+.text-link {
+  color: var(--link);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.text-link:hover {
+  opacity: 0.8;
 }

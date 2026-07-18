@@ -2,14 +2,14 @@
   "hero": {
     "images": [
       {
-        "img": "images/V+S 01.webp",
-        "eyebrow": "TAIWAN 科研實力",
-        "title": "宅養顏\n在家養出好肌膚",
-        "lead": "每天30秒，悄悄變美",
-        "btn1_text": "探索產品",
-        "btn1_link": "products.html",
-        "btn2_text": "關於我們",
-        "btn2_link": "about.html"
+        "img": "/images/1920X687沛素底圖AI投射光第五版.jpg",
+        "eyebrow": "",
+        "title": "",
+        "lead": "",
+        "btn1_text": "",
+        "btn1_link": "",
+        "btn2_text": "",
+        "btn2_link": ""
       },
       {
         "img": "/images/Banner01.jpg",
@@ -32,14 +32,14 @@
         "btn2_link": ""
       },
       {
-        "img": "/images/1920X687沛素底圖AI投射光第五版.jpg",
-        "eyebrow": "",
-        "title": "",
-        "lead": "",
-        "btn1_text": "",
-        "btn1_link": "",
-        "btn2_text": "",
-        "btn2_link": ""
+        "img": "images/V+S 01.webp",
+        "eyebrow": "TAIWAN 科研實力",
+        "title": "宅養顏\n在家養出好肌膚",
+        "lead": "每天30秒，悄悄變美",
+        "btn1_text": "探索產品",
+        "btn1_link": "products.html",
+        "btn2_text": "關於我們",
+        "btn2_link": "about.html"
       }
     ],
     "interval": 5

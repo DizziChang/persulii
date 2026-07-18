@@ -12,10 +12,14 @@
         "btn2_link": "about.html"
       },
       {
-        "img": "/images/Banner01.jpg"
-      },
-      {
-        "img": "/images/Banner02.png"
+        "img": "/images/Banner02.png",
+        "eyebrow": "",
+        "title": "",
+        "lead": "",
+        "btn1_text": "",
+        "btn1_link": "",
+        "btn2_text": "",
+        "btn2_link": ""
       }
     ],
     "interval": 5

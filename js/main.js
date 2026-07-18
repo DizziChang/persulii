@@ -205,12 +205,45 @@ function initHeroCarousel(h) {
   if (slideEls.length < 2) return;
   hero.classList.add('has-swipe');
 
+  var dotsWrap = document.getElementById('hero-dots');
+  var dotEls = [];
+  if (dotsWrap) {
+    dotsWrap.innerHTML = slidesData.map(function (s, i) {
+      return '<button type="button" class="hero-dot' + (i === 0 ? ' active' : '') + '" data-i="' + i + '" aria-label="第 ' + (i + 1) + ' / ' + slidesData.length + ' 張"></button>';
+    }).join('');
+    dotEls = Array.prototype.slice.call(dotsWrap.querySelectorAll('.hero-dot'));
+    dotEls.forEach(function (d) {
+      d.addEventListener('click', function () {
+        goTo(parseInt(d.dataset.i));
+        startAuto();
+      });
+    });
+  }
+
   function goTo(i) {
     slideEls[cur].classList.remove('active');
+    if (dotEls[cur]) dotEls[cur].classList.remove('active');
     cur = (i + slideEls.length) % slideEls.length;
     slideEls[cur].classList.add('active');
+    if (dotEls[cur]) dotEls[cur].classList.add('active');
     setHeroText(slidesData[cur]);
   }
+
+  var prevBtn = document.createElement('button');
+  prevBtn.type = 'button';
+  prevBtn.className = 'hero-arrow prev';
+  prevBtn.setAttribute('aria-label', '上一張');
+  prevBtn.innerHTML = '<img src="images/icon/left-chevron.svg" alt="">';
+  prevBtn.addEventListener('click', function () { goTo(cur - 1); startAuto(); });
+  hero.appendChild(prevBtn);
+
+  var nextBtn = document.createElement('button');
+  nextBtn.type = 'button';
+  nextBtn.className = 'hero-arrow next';
+  nextBtn.setAttribute('aria-label', '下一張');
+  nextBtn.innerHTML = '<img src="images/icon/right-arrow.svg" alt="">';
+  nextBtn.addEventListener('click', function () { goTo(cur + 1); startAuto(); });
+  hero.appendChild(nextBtn);
 
   var sec = Math.max(2, parseFloat(h.interval) || 5);
   var timer = null;

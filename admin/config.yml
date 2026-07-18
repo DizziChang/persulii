@@ -49,6 +49,7 @@ collections:
               - { name: en, label: 英文名稱, widget: string }
               - { name: name, label: 中文名稱, widget: string }
               - { name: img, label: 主圖, widget: image }
+              - { name: homeImg, label: 首頁圖（橫向）, widget: image, required: false }
               - { name: hoverImg, label: 滑過顯示圖, widget: image, required: false }
               - { name: hoverTitle, label: 滑過標題, widget: string, required: false }
               - { name: hoverDesc, label: 滑過說明, widget: string, required: false }

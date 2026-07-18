@@ -1276,7 +1276,7 @@ h3 {
   }
 
   .hero {
-    min-height: 240px
+    min-height: 300px
   }
 
   .hero .display {
@@ -1367,7 +1367,10 @@ h3 {
   opacity: 0;
   transition: opacity 1.2s ease;
 }
-
+.hero-slide~.wrap{
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
 .hero-slide.active {
   opacity: 1
 }
@@ -1429,6 +1432,14 @@ h3 {
 @media (max-width:768px) {
   .hero-arrow {
     display: none
+  }
+
+  .hero .btn {
+    padding: 8px 12px;
+  }
+
+  .hero .mt40 {
+    margin-top: 24px;
   }
 }
 

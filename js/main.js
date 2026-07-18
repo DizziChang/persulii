@@ -44,7 +44,8 @@ function productCardHTML(p, mediaH) {
 
 /* 首頁圖文並排：V-essence 文左圖右，S-essence 圖左文右 */
 function homeProductRowHTML(p, imageFirst) {
-  var media = '<div class="media product" style="background-image:url(\'' + p.img + '\');background-size:cover;background-position:center"></div>';
+  var img = p.homeImg || p.img;
+  var media = '<div class="media product" style="background-image:url(\'' + img + '\');background-size:cover;background-position:center"></div>';
   var text = '<div>'
     + '<div class="eyebrow">' + p.en + '</div>'
     + '<h3 class="h3 mt12">' + p.name + '</h3>'

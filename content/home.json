@@ -21,27 +21,12 @@
     "interval": 5
   },
   "science": {
-    "eyebrow": "Science Behind Every Formula",
-    "title": "國際製藥廠經驗領導研發",
-    "lead": "豐富精萃科研配方，小分子天然多胜肽，\n從成分出發，為亞洲肌膚設計自然修護配方。",
-    "doctors": [
-      {
-        "style": "jp",
-        "role1": "田邊製藥前研發部部長",
-        "role2": "日本京都大學博士",
-        "sign_img": "images/Dr-Lin.webp",
-        "sign_alt": "林先文",
-        "suffix": "博士"
-      },
-      {
-        "style": "usa",
-        "role1": "諾華製藥前製程研發處長",
-        "role2": "美國賓州大學",
-        "sign_img": "images/Dr-Chen.webp",
-        "sign_alt": "陳高明",
-        "suffix": "博士"
-      }
-    ]
+    "eyebrow": "About Us",
+    "title": "關於我們",
+    "lead": "沛素 per-sulii 主張將「自然養護肌膚，落實在大眾生活中」，喚醒肌膚的自我修護力。\n由擁有國際級製藥廠研發背景的專家團隊精準研發，精選優質活性成分，為亞洲肌膚提供高效、安心的保養選擇，輕鬆養出原生健康素顏美肌。",
+    "btn_text": "More",
+    "btn_link": "about.html",
+    "image": "images/h_about.webp"
   },
   "story": {
     "image": "images/IMG_6041.webp",
@@ -78,9 +63,9 @@
   },
   "partner": {
     "eyebrow": "Become a Partner",
-    "title": "合作夥伴",
+    "title": "成為夥伴",
     "lead": "與沛素一同推廣更理性的保養理念。",
-    "btn_text": "成為合作夥伴",
+    "btn_text": "瞭解更多",
     "btn_link": "contact.html"
   }
 }

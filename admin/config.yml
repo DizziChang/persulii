@@ -97,22 +97,15 @@ collections:
                   - { name: btn2_link, label: 按鈕2連結, widget: string, required: false }
               - { name: interval, label: 輪播間隔（秒）, widget: number, default: 5, value_type: float }
           - name: science
-            label: 科研區塊
+            label: 關於我們區塊
             widget: object
             fields:
               - { name: eyebrow, label: 英文小標, widget: string }
               - { name: title, label: 標題, widget: string }
               - { name: lead, label: 說明（可換行）, widget: text }
-              - name: doctors
-                label: 博士卡片
-                widget: list
-                fields:
-                  - { name: style, label: 樣式代稱（jp/usa）, widget: string }
-                  - { name: role1, label: 頭銜1, widget: string }
-                  - { name: role2, label: 頭銜2, widget: string }
-                  - { name: sign_img, label: 簽名圖, widget: image }
-                  - { name: sign_alt, label: 姓名, widget: string }
-                  - { name: suffix, label: 稱謂, widget: string }
+              - { name: btn_text, label: 按鈕文字, widget: string, required: false }
+              - { name: btn_link, label: 按鈕連結, widget: string, required: false }
+              - { name: image, label: 區塊圖片, widget: image, required: false }
           - name: story
             label: 品牌故事 Tabs
             widget: object

@@ -162,14 +162,17 @@ function renderHome(data) {
   setText('sci-eyebrow', s.eyebrow);
   setText('sci-title', s.title);
   setHTML('sci-lead', nl2br(s.lead));
-  var dg = document.getElementById('sci-doctors');
-  if (dg) dg.innerHTML = s.doctors.map(function (d) {
-    return '<div class="acard ' + d.style + '">'
-      + '<div class="drole">' + d.role1 + '</div>'
-      + '<div class="drole">' + d.role2 + '</div>'
-      + '<div class="sign"><img src="' + d.sign_img + '" alt="' + d.sign_alt + '"><span>' + d.suffix + '</span></div>'
-      + '</div>';
-  }).join('');
+  
+  var mb = document.getElementById('sci-more-btn');
+  if (mb) {
+    if (s.btn_text) mb.textContent = s.btn_text;
+    if (s.btn_link) mb.href = s.btn_link;
+  }
+  
+  var simg = document.getElementById('sci-image');
+  if (simg && s.image) {
+    simg.src = s.image;
+  }
 
   setText('prods-eyebrow', data.products_section.eyebrow);
   setText('prods-title', data.products_section.title);

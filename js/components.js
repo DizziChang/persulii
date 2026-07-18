@@ -30,7 +30,7 @@
       <a href="index.html"    data-page="home">首頁</a>
       <a href="about.html"    data-page="about">關於</a>
       <a href="products.html" data-page="products">產品</a>
-      <a href="contact.html"  data-page="contact">聯絡</a>
+      <a href="contact.html"  data-page="contact">經銷</a>
     </nav>
     <button class="burger mob" id="burger" type="button"
       aria-label="開啟選單" aria-expanded="false" aria-controls="mmenu">≡</button>
@@ -39,7 +39,7 @@
     <a href="index.html">首頁</a>
     <a href="about.html">關於</a>
     <a href="products.html">產品</a>
-    <a href="contact.html">聯絡</a>
+    <a href="contact.html">經銷</a>
   </nav>
 </header>`;
 
@@ -53,7 +53,7 @@
       <a href="index.html">首頁</a>
       <a href="about.html">關於</a>
       <a href="products.html">產品</a>
-      <a href="contact.html">聯絡</a>
+      <a href="contact.html">經銷</a>
     </div>
     <div class="ftr-grid">
       <div class="ftr-logo">

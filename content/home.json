@@ -30,16 +30,6 @@
         "btn1_link": "",
         "btn2_text": "",
         "btn2_link": ""
-      },
-      {
-        "img": "/images/about.webp",
-        "eyebrow": "",
-        "title": "",
-        "lead": "",
-        "btn1_text": "",
-        "btn1_link": "",
-        "btn2_text": "",
-        "btn2_link": ""
       }
     ],
     "interval": 5

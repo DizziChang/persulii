@@ -22,7 +22,24 @@
         "btn2_link": ""
       },
       {
-        "img": "/images/Banner02.png"
+        "img": "/images/Banner02.png",
+        "eyebrow": "",
+        "title": "",
+        "lead": "",
+        "btn1_text": "",
+        "btn1_link": "",
+        "btn2_text": "",
+        "btn2_link": ""
+      },
+      {
+        "img": "/images/1920X687沛素底圖AI投射光第五版.jpg",
+        "eyebrow": "",
+        "title": "",
+        "lead": "",
+        "btn1_text": "",
+        "btn1_link": "",
+        "btn2_text": "",
+        "btn2_link": ""
       }
     ],
     "interval": 5

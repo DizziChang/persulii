@@ -8,11 +8,18 @@
         "lead": "每天30秒，悄悄變美",
         "btn1_text": "探索產品",
         "btn1_link": "products.html",
-        "btn2_text": "品牌故事",
+        "btn2_text": "關於我們",
         "btn2_link": "about.html"
       },
       {
-        "img": "/images/Banner01.jpg"
+        "img": "/images/Banner01.jpg",
+        "eyebrow": "",
+        "title": "",
+        "lead": "",
+        "btn1_text": "",
+        "btn1_link": "",
+        "btn2_text": "",
+        "btn2_link": ""
       },
       {
         "img": "/images/Banner02.png"

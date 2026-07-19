@@ -81,7 +81,6 @@ function renderProductDetail(PRODUCTS) {
   var idx = PRODUCTS.findIndex(function (p) { return p.id.toLowerCase() === id.toLowerCase(); });
   if (idx < 0) idx = 0;
   var p = PRODUCTS[idx];
-  var prev = PRODUCTS[(idx - 1 + PRODUCTS.length) % PRODUCTS.length];
   var next = PRODUCTS[(idx + 1) % PRODUCTS.length];
 
   var ing = p.ingredients.map(function (c, i) {
@@ -97,6 +96,72 @@ function renderProductDetail(PRODUCTS) {
       + '<span class="num">' + n + '</span>　' + s + '</p>';
   }).join('');
 
+  /* 產品特色：有四大功效資料時以一橫排功效卡呈現（左側預留縮圖），否則沿用單段文字 */
+  var featureSection = (p.benefits && p.benefits.length)
+    ? '<h2 class="h3">四大保養功效</h2><div class="benefits-row mt32">'
+      + p.benefits.map(function (b) {
+        return '<div class="benefit-item">'
+          + '<div class="benefit-thumb"' + (b.img ? ' style="background-image:url(\'' + b.img + '\');background-size:cover;background-position:center"' : '') + '></div>'
+          + '<div><h3 class="h3" style="font-size:20px">' + b.title + '</h3>'
+          + '<p class="small mt8">' + nl2br(b.body) + '</p></div></div>';
+      }).join('') + '</div>'
+    : '<h2 class="h3">產品特色</h2><p class="body mt16">' + p.feature + '</p>';
+
+  /* 適用族群／使用方式 左右並排 */
+  var audienceUsageSection = (p.audience && p.audience.length)
+    ? '<section class="sec tight" style="background:var(--bg)"><div class="wrap grid g2">'
+      + '<div><h2 class="h3">適用族群</h2>'
+      + '<ul class="checklist mt24">' + p.audience.map(function (a) { return '<li>' + a + '</li>'; }).join('') + '</ul>'
+      + '</div>'
+      + '<div><h2 class="h3">使用方式</h2>'
+      + (p.usageTitle ? '<p class="eyebrow mt16">' + p.usageTitle + '</p>' : '')
+      + use + '</div>'
+      + '</div></section>'
+    : '<section class="sec tight"><div class="wrap"><h2 class="h3">使用方式</h2>'
+      + (p.usageTitle ? '<p class="eyebrow mt16">' + p.usageTitle + '</p>' : '')
+      + use + '</div></section>';
+
+  var reminderSection = p.reminder
+    ? '<section class="sec tight"><div class="wrap"><h2 class="h3">注意事項</h2>'
+      + '<ul class="checklist dot mt16">' + p.reminder.split(/\n{2,}/).map(function (r) { return '<li>' + r + '</li>'; }).join('') + '</ul>'
+      + '</div></section>'
+    : '';
+
+  var certSection = (p.certifications && p.certifications.length)
+    ? '<p class="body mt16">品質認證：</p><ul class="checklist mt8">'
+      + p.certifications.map(function (c) { return '<li>' + c + '</li>'; }).join('') + '</ul>'
+    : '<p class="body mt8">品質認證：' + p.specs.cert + '</p>';
+
+  var inciSection = p.specs.inciList
+    ? '<p class="body mt8">成分標示：</p>'
+      + '<p class="eyebrow mt16">' + p.specs.inciTitle + '</p>'
+      + '<p class="small mt8">' + p.specs.inciList + '</p>'
+      + (p.specs.inciNote ? '<p class="small mt8">' + p.specs.inciNote + '</p>' : '')
+    : '<p class="body mt8">成分標示：' + p.specs.inci + '</p>';
+
+  var bottleSection = p.bottleInfo
+    ? '<section class="sec tight" style="background:var(--bg)"><div class="wrap">'
+      + '<h2 class="h3">產品資訊</h2><table class="pspecs mt24">'
+      + '<tr><th>品牌</th><td>' + p.bottleInfo.brand + '</td></tr>'
+      + '<tr><th>品名</th><td>' + p.bottleInfo.name + '</td></tr>'
+      + '<tr><th>英文名稱</th><td>' + p.bottleInfo.enName + '</td></tr>'
+      + '<tr><th>容量</th><td>' + p.bottleInfo.volume + '</td></tr>'
+      + '</table>'
+      + '<div class="mt24">' + inciSection + '</div>'
+      + '</div></section>'
+    : '';
+
+  /* 規格與認證：已有產品資訊表格時，容量／成分標示改列於該處，這裡只留品質認證 */
+  var specsSection = p.bottleInfo
+    ? '<section class="sec tight" style="background:var(--bg)"><div class="wrap"><h2 class="h3">規格與認證</h2>'
+      + certSection
+      + '</div></section>'
+    : '<section class="sec tight" style="background:var(--bg)"><div class="wrap"><h2 class="h3">規格與認證</h2>'
+      + '<p class="body mt16">容量 / 規格：' + p.specs.size + '</p>'
+      + inciSection
+      + certSection
+      + '</div></section>';
+
   document.title = p.en + ' ' + p.name + ' — 沛素 per-sulii';
 
   container.innerHTML =
@@ -107,18 +172,19 @@ function renderProductDetail(PRODUCTS) {
     + '<div><div class="eyebrow">' + p.en + '</div>'
     + '<h1 class="h2 mt12">' + p.name + '</h1>'
     + '<p class="lead mt16">' + p.tagline + '</p>'
-    + '<p class="body mt16">' + p.intro + '</p></div>'
+    + '<p class="body mt16">' + p.intro + '</p>'
+    + (p.highlights && p.highlights.length ? '<div class="chips mt24">' + p.highlights.map(function (h) { return '<span class="chip">' + h + '</span>'; }).join('') + '</div>' : '')
+    + '</div>'
     + '</div></section>'
-    + '<section class="sec tight" style="background:var(--bg)"><div class="wrap maxw">'
-    + '<h2 class="h3">產品特色</h2><p class="body mt16">' + p.feature + '</p></div></section>'
-    + '<section class="sec tight"><div class="wrap maxw"><h2 class="h3">關鍵成分</h2>' + ing + '</div></section>'
-    + '<section class="sec tight" style="background:var(--bg)"><div class="wrap maxw"><h2 class="h3">使用方式</h2>' + use + '</div></section>'
-    + '<section class="sec tight"><div class="wrap maxw"><h2 class="h3">規格與認證</h2>'
-    + '<p class="body mt16">容量 / 規格：' + p.specs.size + '</p>'
-    + '<p class="body mt8">成分標示：' + p.specs.inci + '</p>'
-    + '<p class="body mt8">品質認證：' + p.specs.cert + '</p>'
+    + '<section class="sec tight" style="background:var(--bg)"><div class="wrap">' + featureSection + '</div></section>'
+    + '<section class="sec tight"><div class="wrap"><h2 class="h3">關鍵成分</h2>' + ing + '</div></section>'
+    + audienceUsageSection
+    + reminderSection
+    + specsSection
+    + bottleSection
+    + '<section class="sec tight"><div class="wrap">'
     + '<div class="pn mt56">'
-    + '<a href="product.html?id=' + prev.id + '" class="pn-i"><div class="eyebrow">← 上一個商品</div><div class="nm">' + prev.en + ' ' + prev.name + '</div></a>'
+    + '<a href="products.html" class="pn-i"><div class="eyebrow">← 回到產品頁</div></a>'
     + '<a href="product.html?id=' + next.id + '" class="pn-i" style="text-align:right"><div class="eyebrow">下一個商品 →</div><div class="nm">' + next.en + ' ' + next.name + '</div></a>'
     + '</div></div></section>';
 }

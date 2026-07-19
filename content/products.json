@@ -53,9 +53,27 @@
       "hoverImg": "images/V01.webp",
       "hoverTitle": "沛素-V",
       "hoverDesc": "蜂胜肽緊緻撫紋",
-      "tagline": "淡化紋路，緊緻肌膚，鎖住青春肌密。",
-      "intro": "以蜂胜肽搭配多重胜肽複方，集中支持肌膚緊緻與彈性，幫助淡化細紋、維持青春光澤。",
-      "feature": "針對紋路與彈性流失設計的精華配方，質地清爽好吸收，溫和不刺激，適合每日早晚使用。",
+      "tagline": "專為紋路肌膚打造的撫紋精華。",
+      "intro": "蜂胜肽是珍貴的活性多肽成分，有助於促進肌膚彈性與緊緻，改善細紋與乾燥粗糙，讓肌膚展現澎潤光澤與年輕活力。",
+      "highlights": ["改善細紋", "緊緻肌膚", "彈潤光澤", "淡化紋路"],
+      "benefits": [
+        {
+          "title": "淡化紋路",
+          "body": "改善動態與靜態紋路，\n淡化細紋皺紋，\n肌膚更平滑細緻。"
+        },
+        {
+          "title": "緊緻澎潤",
+          "body": "提升肌膚彈性與支撐力，\n使肌膚緊緻飽滿，\n展現年輕輪廓。"
+        },
+        {
+          "title": "彈潤光澤",
+          "body": "注入肌膚活力，\n提升水潤度，\n散發透亮健康光采。"
+        },
+        {
+          "title": "養護防護",
+          "body": "強化肌膚屏障，\n抵禦外界刺激，\n維持肌膚穩定健康。"
+        }
+      ],
       "ingredients": [
         {
           "en": "Bee Peptide",
@@ -73,15 +91,32 @@
           "desc": "精密萃取技術，兼顧穩定性與吸收效率。"
         }
       ],
-      "usage": [
-        "潔顏後取適量於掌心",
-        "均勻輕抹全臉",
-        "加強塗抹於紋路處"
+      "audience": [
+        "在意紋路、出現細紋困擾者",
+        "肌膚缺乏彈性與光澤者",
+        "追求緊緻澎潤、光澤透亮者",
+        "希望延緩肌膚老化者"
       ],
+      "usageTitle": "每天30秒 日常護理",
+      "usage": [
+        "臉部清潔洗淨",
+        "取適量輕抹全臉",
+        "早晚常態使用"
+      ],
+      "reminder": "蜂產品過敏者慎用。\n\n建議先於局部肌膚測試，確認無不適反應後再使用。\n\n建議12歲以上使用。",
       "specs": {
-        "size": "35ml",
-        "inci": "符合國內外認證",
+        "size": "35ml / 1.18 fl. oz.",
+        "inciTitle": "Ingredients / 全成分表",
+        "inciList": "Aqua Water, Glycerine, Glycosyl Trehalose/Hydrogenated Starch Hydrolysate, Oat Beta-Glucan, Niacinamide, Phenoxyethanol, Carbopol, PEG-40 Hydrogenated Castor Oil, Butylene Glycol/Honey Bee Venom, Dipeptide Diaminobutyroyl Benzylamide Diacetate, Hyaluronic Acid, L-Arginine",
+        "inciNote": "Fragrance free",
         "cert": "TFDA PIF ｜ INCI ｜ GMP"
+      },
+      "certifications": ["國際 INCI 認證", "TFDA", "PIF 認證"],
+      "bottleInfo": {
+        "brand": "per-sulii",
+        "name": "沛素-V 精萃蜂胜肽plus精華",
+        "enName": "V-essence　Anti-wrinkle Refining Essence",
+        "volume": "35ml / 1.18 fl. oz."
       }
     }
   ]

@@ -120,7 +120,7 @@ h3 {
 .h3 {
   font-family: var(--sans);
   font-weight: 300;
-  font-size: clamp(19px, 2vw, 24px);
+  font-size: clamp(20px, 2.5vw, 26px);
   line-height: 1.45
 }
 
@@ -321,6 +321,11 @@ h3 {
   color: #000
 }
 
+.quote {
+    padding: 8px 24px;
+    background-color: #f3f3f3;
+    border-radius: 16px;
+}
 /* media placeholders */
 .media {
   position: relative;
@@ -1238,7 +1243,7 @@ h3 {
   }
 
   .wrap {
-    padding: 0 24px
+    padding: 0 32px
   }
 
   .sec {

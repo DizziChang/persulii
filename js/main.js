@@ -101,8 +101,9 @@ function renderProductDetail(PRODUCTS) {
 
   container.innerHTML =
     '<div class="wrap"><div class="crumb"><a href="index.html">首頁</a> / <a href="products.html">產品</a> / ' + p.en + ' ' + p.name + '</div></div>'
+    + (p.banner ? '<div class="pbanner-wrap"><img class="pbanner" src="' + p.banner + '" alt="' + p.en + ' ' + p.name + '"></div>' : '')
     + '<section class="sec tight"><div class="wrap split" style="align-items:flex-start">'
-    + '<div class="media product" id="product-hero-media" data-mono="' + p.code + '"></div>'
+    + '<div class="media product" id="product-hero-media"' + (p.heroImg ? ' style="background-image:url(\'' + p.heroImg + '\');background-size:cover;background-position:center"' : ' data-mono="' + p.code + '"') + '></div>'
     + '<div><div class="eyebrow">' + p.en + '</div>'
     + '<h1 class="h2 mt12">' + p.name + '</h1>'
     + '<p class="lead mt16">' + p.tagline + '</p>'
@@ -366,12 +367,6 @@ function renderAbout(data) {
       if (img) img.style.backgroundImage = "url('" + s.image + "')";
     }
   });
-  setText('team-eyebrow', data.team.eyebrow);
-  setText('team-title', data.team.title);
-  setText('team-lead', data.team.lead);
-  var ti = document.getElementById('team-img');
-  if (ti) { ti.src = data.team.image; ti.alt = data.team.image_alt; }
-
   var faq = document.getElementById('faq-list');
   if (faq) {
     faq.innerHTML = data.faq.map(function (f) {

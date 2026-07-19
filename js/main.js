@@ -48,7 +48,7 @@ function homeProductRowHTML(p, imageFirst) {
   var media = '<div class="media product" style="background-image:url(\'' + img + '\');background-size:cover;background-position:center"></div>';
   var text = '<div>'
     + '<div class="eyebrow">' + p.en + '</div>'
-    + '<h3 class="h3 mt12">' + p.name + '</h3>'
+    + '<h3 class="h2 mt12">' + p.name + '</h3>'
     + '<p class="body mt16">' + p.tagline + '</p>'
     + '<div class="mt24"><span class="tlink">了解更多 →</span></div>'
     + '</div>';
@@ -488,8 +488,49 @@ function initHeroScroll() {
   update();
 }
 
+/* ---- 標題捲動載入動畫（含日後動態插入的標題） ---- */
+function initScrollReveal() {
+  var SELECTOR = 'h1, h2, h3';
+
+  function reveal(el) { el.classList.add('in-view'); }
+
+  if (!('IntersectionObserver' in window)) {
+    document.querySelectorAll(SELECTOR).forEach(reveal);
+    return;
+  }
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        reveal(entry.target);
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
+
+  function observe(el) {
+    if (el.dataset.revealBound) return;
+    el.dataset.revealBound = '1';
+    io.observe(el);
+  }
+
+  document.querySelectorAll(SELECTOR).forEach(observe);
+
+  var mo = new MutationObserver(function (mutations) {
+    mutations.forEach(function (m) {
+      m.addedNodes.forEach(function (node) {
+        if (node.nodeType !== 1) return;
+        if (node.matches && node.matches(SELECTOR)) observe(node);
+        if (node.querySelectorAll) node.querySelectorAll(SELECTOR).forEach(observe);
+      });
+    });
+  });
+  mo.observe(document.body, { childList: true, subtree: true });
+}
+
 /* ---- 初始化 ---- */
 document.addEventListener('DOMContentLoaded', function () {
+  initScrollReveal();
   initHeroScroll();
 
   var page = document.body.dataset.page;

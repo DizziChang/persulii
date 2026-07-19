@@ -56,8 +56,8 @@
   },
   "science": {
     "eyebrow": "Science Behind Every Formula",
-    "title": "國際級製藥廠經驗領導研發",
-    "lead": "沛素~追求素顏美背後的台灣科研實力",
+    "title": "沛素~追求素顏美背後的台灣科研實力",
+    "lead": "安心品質，不妥協的嚴謹製程",
     "btn_text": "",
     "btn_link": "",
     "doctors": [
@@ -87,7 +87,7 @@
     "eyebrow": "Become a Partner",
     "title": "合作夥伴",
     "lead": "與沛素一同推廣更理性的保養理念。",
-    "btn_text": "成為合作夥伴",
+    "btn_text": "成為夥伴",
     "btn_link": "contact.html"
   },
   "story": {

@@ -12,26 +12,6 @@
         "btn2_link": ""
       },
       {
-        "img": "/images/440a2b5b-8564-4621-87a8-6b596324296b.png",
-        "eyebrow": "",
-        "title": "",
-        "lead": "",
-        "btn1_text": "",
-        "btn1_link": "",
-        "btn2_text": "",
-        "btn2_link": ""
-      },
-      {
-        "img": "/images/s底圖1_完稿.jpg",
-        "eyebrow": "",
-        "title": "",
-        "lead": "",
-        "btn1_text": "",
-        "btn1_link": "",
-        "btn2_text": "",
-        "btn2_link": ""
-      },
-      {
         "img": "/images/S底圖7~1版完稿.jpg",
         "eyebrow": "",
         "title": "",
@@ -40,6 +20,16 @@
         "btn1_link": "",
         "btn2_text": "",
         "btn2_link": ""
+      },
+      {
+        "img": "images/V+S 01.webp",
+        "eyebrow": "TAIWAN 科研實力",
+        "title": "宅養顏\n在家養出好肌膚",
+        "lead": "每天30秒，悄悄變美",
+        "btn1_text": "探索產品",
+        "btn1_link": "products.html",
+        "btn2_text": "關於我們",
+        "btn2_link": "about.html"
       },
       {
         "img": "images/V+S 01.webp",

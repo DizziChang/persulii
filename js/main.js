@@ -96,9 +96,10 @@ function renderProductDetail(PRODUCTS) {
       + '<span class="num">' + n + '</span>　' + s + '</p>';
   }).join('');
 
-  /* 產品特色：有四大功效資料時以一橫排功效卡呈現（左側預留縮圖），否則沿用單段文字 */
+  /* 產品特色：有功效資料時以一橫排功效卡呈現（左側預留縮圖），否則沿用單段文字 */
+  var ZH_NUM = { 1: '一', 2: '二', 3: '三', 4: '四', 5: '五', 6: '六' };
   var featureSection = (p.benefits && p.benefits.length)
-    ? '<h2 class="h3">四大保養功效</h2><div class="benefits-row mt32">'
+    ? '<h2 class="h3">' + (ZH_NUM[p.benefits.length] || p.benefits.length) + '大保養功效</h2><div class="benefits-row mt32">'
       + p.benefits.map(function (b) {
         return '<div class="benefit-item">'
           + '<div class="benefit-thumb"' + (b.img ? ' style="background-image:url(\'' + b.img + '\');background-size:cover;background-position:center"' : '') + '></div>'

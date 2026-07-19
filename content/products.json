@@ -5,14 +5,28 @@
       "code": "S",
       "en": "S-essence",
       "name": "外泌體多胜肽修護精華",
+      "banner": "images/pbanner-S.webp",
       "img": "images/S03.webp",
       "homeImg": "images/hproduct_S.webp",
       "hoverImg": "images/S04.webp",
       "hoverTitle": "沛素-S",
       "hoverDesc": "外泌體細緻膚質",
-      "tagline": "優質人體細胞外泌體，維持肌膚穩定狀態。",
-      "intro": "以小分子多胜肽搭配外泌體技術，溫和守護肌膚日常平衡，幫助維持穩定、柔嫩細緻的健康狀態。",
-      "feature": "專為亞洲肌膚設計的修護配方，溫和不刺激，適合每日使用。科研精密萃取，兼顧穩定性與吸收效率。",
+      "tagline": "專為柔潤、透亮臉部肌膚、細緻膚質設計配方。",
+      "intro": "使用優質人體外泌體與多種天然成分，結合多胜肽科研實力，穩定肌膚狀態、增強防護力，讓肌膚健康細緻。",
+      "benefits": [
+        {
+          "title": "細緻毛孔",
+          "body": "調理油脂，細緻毛孔，\n肌膚更平滑細緻。"
+        },
+        {
+          "title": "穩定養護",
+          "body": "強化肌膚屏障，\n舒緩不適，穩定膚況。"
+        },
+        {
+          "title": "賦活光采",
+          "body": "賦活肌底能量，提升光澤，\n展現健康透亮。"
+        }
+      ],
       "ingredients": [
         {
           "en": "Exosome",
@@ -30,15 +44,25 @@
           "desc": "精密萃取技術，兼顧穩定性與吸收效率。"
         }
       ],
+      "usageTitle": "每天30秒 日常護理",
       "usage": [
-        "潔顏後取適量於掌心",
-        "均勻輕抹全臉",
-        "接續後續保養"
+        "臉部清潔完畢",
+        "取適量輕抹全臉",
+        "早晚都能使用"
       ],
       "specs": {
         "size": "35ml",
-        "inci": "符合國內外認證",
+        "inciTitle": "Ingredients / 全成分表",
+        "inciList": "Aqua water, Glycerine, Glycosyl Trehalose & Hydrogenated Starch Hydrolysate, Oat Beta-Glucan, Niacinamide, Phenoxyethanol, Exosome Liquid, Carbopol 980, PEG-40 Hydrogenated Castor Oil, Hyaluronic Acid, L-Arginine",
+        "inciNote": "Fragrance free",
         "cert": "TFDA PIF ｜ INCI ｜ GMP"
+      },
+      "certifications": ["台灣 TFDA PIF 認證", "國際 INCI 認證", "GMP 品質製程"],
+      "bottleInfo": {
+        "brand": "per-sulii",
+        "name": "沛素-S 外泌體多肽復活精萃",
+        "enName": "S-essence<br>Anti-aging Refining Essence<br>Exosome",
+        "volume": "35ml / 1.18 fl oz"
       }
     },
     {

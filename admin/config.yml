@@ -5,6 +5,8 @@ backend:
   base_url: https://api.netlify.com   # 使用 Netlify 的 GitHub OAuth 服務
   auth_endpoint: auth
 
+publish_mode: editorial_workflow
+
 site_url: https://persulii-test.netlify.app
 display_url: https://persulii-test.netlify.app
 media_folder: images

@@ -96,9 +96,9 @@ function renderProductDetail(PRODUCTS) {
       + '<span class="num">' + n + '</span>　' + s + '</p>';
   }).join('');
 
-  /* 產品特色：有功效資料時以一橫排功效卡呈現（左側預留縮圖），否則沿用單段文字 */
+  /* 產品特色：有功效資料時以功效卡呈現（左側預留縮圖），否則沿用單段文字；有影片時功效文字置左、影片置右 */
   var ZH_NUM = { 1: '一', 2: '二', 3: '三', 4: '四', 5: '五', 6: '六' };
-  var featureSection = (p.benefits && p.benefits.length)
+  var benefitsHTML = (p.benefits && p.benefits.length)
     ? '<h2 class="h3">' + (ZH_NUM[p.benefits.length] || p.benefits.length) + '大保養功效</h2><div class="benefits-row mt32">'
       + p.benefits.map(function (b) {
         return '<div class="benefit-item">'
@@ -107,6 +107,12 @@ function renderProductDetail(PRODUCTS) {
           + '<p class="small mt8">' + nl2br(b.body) + '</p></div></div>';
       }).join('') + '</div>'
     : '<h2 class="h3">產品特色</h2><p class="body mt16">' + p.feature + '</p>';
+
+  var featureSection = p.videoId
+    ? '<div class="benefits-layout"><div>' + benefitsHTML + '</div>'
+      + '<div class="benefit-video"><div class="video-frame"><iframe src="https://www.youtube.com/embed/' + p.videoId + '" title="' + p.en + ' 介紹影片" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div></div>'
+      + '</div>'
+    : benefitsHTML;
 
   /* 適用族群／使用方式 左右並排 */
   var audienceUsageSection = (p.audience && p.audience.length)

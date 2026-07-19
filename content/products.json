@@ -6,7 +6,7 @@
       "en": "S-essence",
       "name": "外泌體多胜肽修護精華",
       "banner": "images/pbanner-S.webp",
-      "img": "images/S03.webp",
+      "img": "images/pcard_S.webp",
       "heroImg": "images/S06.webp",
       "homeImg": "images/hproduct_S.webp",
       "hoverImg": "images/S04.webp",
@@ -14,18 +14,22 @@
       "hoverDesc": "外泌體細緻膚質",
       "tagline": "專為柔潤、透亮臉部肌膚、細緻膚質設計配方。",
       "intro": "使用優質人體外泌體與多種天然成分，結合多胜肽科研實力，穩定肌膚狀態、增強防護力，讓肌膚健康細緻。",
+      "videoId": "1J850NPjfvE",
       "benefits": [
         {
           "title": "細緻毛孔",
-          "body": "調理油脂，細緻毛孔，\n肌膚更平滑細緻。"
+          "body": "調理油脂，細緻毛孔，\n肌膚更平滑細緻。",
+          "img": "images/VS功能_S001.webp"
         },
         {
           "title": "穩定養護",
-          "body": "強化肌膚屏障，\n舒緩不適，穩定膚況。"
+          "body": "強化肌膚屏障，\n舒緩不適，穩定膚況。",
+          "img": "images/VS功能_S002.webp"
         },
         {
           "title": "賦活光采",
-          "body": "賦活肌底能量，提升光澤，\n展現健康透亮。"
+          "body": "賦活肌底能量，提升光澤，\n展現健康透亮。",
+          "img": "images/VS功能_S003.webp"
         }
       ],
       "ingredients": [
@@ -72,7 +76,7 @@
       "en": "V-essence",
       "name": "精萃蜂胜肽 PLUS 精華",
       "banner": "images/pbanner-V.webp",
-      "img": "images/V03.webp",
+      "img": "images/pcard_V.webp",
       "heroImg": "images/V02.webp",
       "homeImg": "images/hproduct_V.webp",
       "hoverImg": "images/V01.webp",
@@ -81,22 +85,27 @@
       "tagline": "專為紋路肌膚打造的撫紋精華。",
       "intro": "蜂胜肽是珍貴的活性多肽成分，有助於促進肌膚彈性與緊緻，改善細紋與乾燥粗糙，讓肌膚展現澎潤光澤與年輕活力。",
       "highlights": ["改善細紋", "緊緻肌膚", "彈潤光澤", "淡化紋路"],
+      "videoId": "l9t1W9ygMPs",
       "benefits": [
         {
           "title": "淡化紋路",
-          "body": "改善動態與靜態紋路，\n淡化細紋皺紋，\n肌膚更平滑細緻。"
+          "body": "改善動態與靜態紋路，\n淡化細紋皺紋，\n肌膚更平滑細緻。",
+          "img": "images/VS功能_V001.webp"
         },
         {
           "title": "緊緻澎潤",
-          "body": "提升肌膚彈性與支撐力，\n使肌膚緊緻飽滿，\n展現年輕輪廓。"
+          "body": "提升肌膚彈性與支撐力，\n使肌膚緊緻飽滿，\n展現年輕輪廓。",
+          "img": "images/VS功能_V002.webp"
         },
         {
           "title": "彈潤光澤",
-          "body": "注入肌膚活力，\n提升水潤度，\n散發透亮健康光采。"
+          "body": "注入肌膚活力，\n提升水潤度，\n散發透亮健康光采。",
+          "img": "images/VS功能_V003.webp"
         },
         {
           "title": "養護防護",
-          "body": "強化肌膚屏障，\n抵禦外界刺激，\n維持肌膚穩定健康。"
+          "body": "強化肌膚屏障，\n抵禦外界刺激，\n維持肌膚穩定健康。",
+          "img": "images/VS功能_V004.webp"
         }
       ],
       "ingredients": [

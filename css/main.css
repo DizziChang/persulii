@@ -1278,6 +1278,15 @@ h3 {
     gap: 24px
   }
 
+  /* 商品詳情頁底部按鈕：手機版只顯示標籤文字，不顯示商品名稱 */
+  .pn .pn-i .nm {
+    display: none
+  }
+
+  .pn .pn-i .eyebrow {
+    font-size: 15px
+  }
+
   .hdr-in {
     padding: 16px 24px;
     position: relative;
@@ -1559,7 +1568,7 @@ h3 {
   flex: 0 0 56px;
   width: 56px;
   height: 56px;
-  border: 1px solid var(--line);
+  /* border: 1px solid var(--line); */
   background: var(--bg2);
   border-radius: 4px
 }
@@ -1567,6 +1576,42 @@ h3 {
 @media (max-width: 560px) {
   .benefits-row {
     grid-template-columns: 1fr
+  }
+}
+
+/* 產品頁：功效區塊搭配介紹影片（左文右影片） */
+.benefits-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: clamp(28px, 4vw, 56px);
+  align-items: start
+}
+
+.video-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--bg2)
+}
+
+.video-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0
+}
+
+@media (max-width: 768px) {
+  .benefits-layout {
+    grid-template-columns: 1fr
+  }
+
+  .video-frame {
+    max-width: 320px;
+    margin: 0 auto
   }
 }
 

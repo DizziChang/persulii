@@ -15,6 +15,97 @@ function getJSON(url) {
   return __cache[url];
 }
 
+/* ---- SEO：meta description / canonical / OG / JSON-LD ----
+   網域為暫定值，正式網域確認後全站搜尋取代 https://persulii.com 即可 */
+var SITE_URL = 'https://persulii.com';
+var SITE_NAME = '沛素 per-sulii';
+var DEFAULT_OG_IMAGE = SITE_URL + '/images/home-banner.webp';
+
+function setMetaContent(selector, content) {
+  var el = document.querySelector(selector);
+  if (el && content != null) el.setAttribute('content', content);
+}
+function setCanonical(path) {
+  var el = document.querySelector('link[rel="canonical"]');
+  if (el) el.setAttribute('href', SITE_URL + path);
+}
+/* 產品／文章詳情頁依實際內容覆寫 title/description/canonical/OG（首次渲染時的靜態值僅供無 JS 環境的後備） */
+function setPageMeta(opts) {
+  if (opts.description) {
+    setMetaContent('meta[name="description"]', opts.description);
+    setMetaContent('meta[property="og:description"]', opts.description);
+    setMetaContent('meta[name="twitter:description"]', opts.description);
+  }
+  if (opts.title) {
+    setMetaContent('meta[property="og:title"]', opts.title);
+    setMetaContent('meta[name="twitter:title"]', opts.title);
+  }
+  if (opts.path) {
+    setCanonical(opts.path);
+    setMetaContent('meta[property="og:url"]', SITE_URL + opts.path);
+  }
+  if (opts.image) {
+    setMetaContent('meta[property="og:image"]', opts.image);
+    setMetaContent('meta[name="twitter:image"]', opts.image);
+  }
+}
+function injectJSONLD(id, data) {
+  var existing = document.getElementById(id);
+  if (existing) existing.remove();
+  var s = document.createElement('script');
+  s.type = 'application/ld+json';
+  s.id = id;
+  s.textContent = JSON.stringify(data);
+  document.head.appendChild(s);
+}
+function injectOrganizationLD(settings) {
+  var f = settings.footer || {};
+  var c = settings.contact_page || {};
+  injectJSONLD('ld-org', {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: SITE_NAME,
+    legalName: f.company || c.company,
+    url: SITE_URL + '/',
+    logo: SITE_URL + '/images/per-sulii-logo-grayscale.webp',
+    email: f.email,
+    telephone: f.phone,
+    address: c.address ? { '@type': 'PostalAddress', streetAddress: c.address, addressCountry: 'TW' } : undefined,
+    sameAs: [f.social && f.social.line, f.social && f.social.facebook, f.social && f.social.instagram].filter(Boolean)
+  });
+}
+
+/* ---- 影片分享按鈕：Web Share API，不支援則複製連結 ---- */
+var SHARE_ICON_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.4"/><circle cx="6" cy="12" r="2.4"/><circle cx="18" cy="19" r="2.4"/><path d="M8.1 10.7l7.6-4.3M8.1 13.3l7.6 4.3"/></svg>';
+function shareButtonHTML(url, title) {
+  return '<div class="video-share-wrap">'
+    + '<button type="button" class="btn ghost share-btn" data-share-url="' + url + '" data-share-title="' + (title || '') + '">'
+    + SHARE_ICON_SVG + '<span class="share-btn-label">分享</span>'
+    + '</button></div>';
+}
+function initShareButtons() {
+  document.querySelectorAll('.share-btn').forEach(function (btn) {
+    if (btn.dataset.shareBound) return;
+    btn.dataset.shareBound = '1';
+    btn.addEventListener('click', function () {
+      var url = btn.dataset.shareUrl || window.location.href;
+      var title = btn.dataset.shareTitle || document.title;
+      if (navigator.share) {
+        navigator.share({ title: title, url: url }).catch(function () {});
+        return;
+      }
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(function () {
+          var label = btn.querySelector('.share-btn-label');
+          var original = label.textContent;
+          label.textContent = '已複製連結';
+          setTimeout(function () { label.textContent = original; }, 1800);
+        }).catch(function () {});
+      }
+    });
+  });
+}
+
 /* 換行字串 → 以 <br> 連接（不允許 HTML 注入以外的內容） */
 function nl2br(s) { return (s || '').split('\n').join('<br>'); }
 /* 雙換行 → 段落 */
@@ -28,12 +119,12 @@ function setHTML(id, v) { var el = document.getElementById(id); if (el && v != n
 
 /* ============ 產品 ============ */
 function productCardHTML(p, mediaH) {
-  var style = (p.img ? 'background-image:url(\'' + p.img + '\');background-size:cover;background-position:center;' : '')
-    + (mediaH ? 'height:' + mediaH : '');
-  var h = style ? (' style="' + style + '"') : '';
+  var h = mediaH ? (' style="height:' + mediaH + '"') : '';
+  var alt = p.en + ' ' + p.name;
   return '<a href="product.html?id=' + p.id + '" class="pcard">'
     + '<div class="media product"' + (p.img ? '' : ' data-mono="' + p.code + '"') + h + '>'
-    + (p.hoverImg ? '<div class="media-hover" style="background-image:url(\'' + p.hoverImg + '\')"></div>' : '')
+    + (p.img ? '<img class="media-img" src="' + p.img + '" alt="' + alt + '" loading="lazy">' : '')
+    + (p.hoverImg ? '<div class="media-hover"><img src="' + p.hoverImg + '" alt="' + alt + ' 特寫" loading="lazy"></div>' : '')
     + (p.hoverTitle ? '<div class="media-cap"><span class="media-cap-t">' + p.hoverTitle + '</span><span class="media-cap-d">' + p.hoverDesc + '</span></div>' : '')
     + '</div>'
     + '<h3 class="h3 mt24">' + p.en + ' ' + p.name + '</h3>'
@@ -45,7 +136,7 @@ function productCardHTML(p, mediaH) {
 /* 首頁圖文並排：V-essence 文左圖右，S-essence 圖左文右 */
 function homeProductRowHTML(p, imageFirst) {
   var img = p.homeImg || p.img;
-  var media = '<div class="media product" style="background-image:url(\'' + img + '\');background-size:cover;background-position:center"></div>';
+  var media = '<div class="media product">' + (img ? '<img class="media-img" src="' + img + '" alt="' + p.en + ' ' + p.name + '" loading="lazy">' : '') + '</div>';
   var text = '<div>'
     + '<div class="eyebrow">' + p.en + '</div>'
     + '<h3 class="h2 mt12">' + p.name + '</h3>'
@@ -110,7 +201,8 @@ function renderProductDetail(PRODUCTS) {
 
   var featureSection = p.videoId
     ? '<div class="benefits-layout"><div>' + benefitsHTML + '</div>'
-      + '<div class="benefit-video"><div class="video-frame"><iframe src="https://www.youtube.com/embed/' + p.videoId + '" title="' + p.en + ' 介紹影片" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div></div>'
+      + '<div class="benefit-video"><div class="video-frame"><iframe src="https://www.youtube.com/embed/' + p.videoId + '" title="' + p.en + ' 介紹影片" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>'
+      + shareButtonHTML(SITE_URL + '/product.html?id=' + p.id, p.en + ' ' + p.name) + '</div>'
       + '</div>'
     : benefitsHTML;
 
@@ -169,13 +261,35 @@ function renderProductDetail(PRODUCTS) {
       + certSection
       + '</div></section>';
 
-  document.title = p.en + ' ' + p.name + ' — 沛素 per-sulii';
+  var pageTitle = p.en + ' ' + p.name + ' — ' + SITE_NAME;
+  document.title = pageTitle;
+
+  var ogImage = p.banner ? (SITE_URL + '/' + p.banner) : DEFAULT_OG_IMAGE;
+  var metaDesc = (p.tagline || '') + (p.intro ? ' ' + p.intro : '');
+  if (metaDesc.length > 120) metaDesc = metaDesc.slice(0, 117) + '...';
+  setPageMeta({
+    title: pageTitle,
+    description: metaDesc,
+    path: '/product.html?id=' + p.id,
+    image: ogImage
+  });
+  injectJSONLD('ld-product', {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: p.en + ' ' + p.name,
+    description: metaDesc,
+    image: ogImage,
+    brand: { '@type': 'Brand', name: 'per-sulii 沛素' },
+    url: SITE_URL + '/product.html?id=' + p.id
+  });
 
   container.innerHTML =
     '<div class="wrap"><div class="crumb"><a href="index.html">首頁</a> / <a href="products.html">產品</a> / ' + p.en + ' ' + p.name + '</div></div>'
     + (p.banner ? '<div class="pbanner-wrap"><img class="pbanner" src="' + p.banner + '" alt="' + p.en + ' ' + p.name + '"></div>' : '')
     + '<section class="sec tight"><div class="wrap split" style="align-items:flex-start">'
-    + '<div class="media product" id="product-hero-media"' + (p.heroImg ? ' style="background-image:url(\'' + p.heroImg + '\');background-size:cover;background-position:center"' : ' data-mono="' + p.code + '"') + '></div>'
+    + '<div class="media product" id="product-hero-media"' + (p.heroImg ? '' : ' data-mono="' + p.code + '"') + '>'
+    + (p.heroImg ? '<img class="media-img" src="' + p.heroImg + '" alt="' + p.en + ' ' + p.name + '">' : '')
+    + '</div>'
     + '<div><div class="eyebrow">' + p.en + '</div>'
     + '<h1 class="h2 mt12">' + p.name + '</h1>'
     + '<p class="lead mt16">' + p.tagline + '</p>'
@@ -194,6 +308,8 @@ function renderProductDetail(PRODUCTS) {
     + '<a href="products.html" class="pn-i"><div class="eyebrow">← 回到產品頁</div></a>'
     + '<a href="product.html?id=' + next.id + '" class="pn-i" style="text-align:right"><div class="eyebrow">下一個商品 →</div><div class="nm">' + next.en + ' ' + next.name + '</div></a>'
     + '</div></div></section>';
+
+  initShareButtons();
 }
 
 /* ============ 專欄 ============ */
@@ -220,11 +336,32 @@ function renderArticle(ARTICLES) {
   if (!el) return;
   var slug = new URLSearchParams(window.location.search).get('slug');
   var a = ARTICLES.find(function (x) { return x.slug === slug; }) || ARTICLES[0];
-  document.title = a.line1 + a.line2 + ' — 沛素 per-sulii';
+  var title = a.line1 + a.line2;
+  var pageTitle = title + ' — ' + SITE_NAME;
+  document.title = pageTitle;
   setText('article-cat', a.cat);
   setHTML('article-title', a.line1 + '<br>' + a.line2);
   setText('article-date', a.date || '');
   el.innerHTML = (window.marked ? marked.parse(a.body || '') : paragraphs(a.body, 'mt16', 'mt16'));
+
+  var plain = (a.body || '').replace(/[#*_`>\[\]()-]/g, '').replace(/\s+/g, ' ').trim();
+  var metaDesc = plain ? (plain.length > 120 ? plain.slice(0, 117) + '...' : plain) : (a.cat + '｜' + title);
+  var path = '/article.html?slug=' + encodeURIComponent(a.slug);
+  setPageMeta({ title: pageTitle, description: metaDesc, path: path, image: DEFAULT_OG_IMAGE });
+  injectJSONLD('ld-article', {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: title,
+    description: metaDesc,
+    datePublished: a.date,
+    author: { '@type': 'Organization', name: SITE_NAME },
+    publisher: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      logo: { '@type': 'ImageObject', url: SITE_URL + '/images/per-sulii-logo-grayscale.webp' }
+    },
+    mainEntityOfPage: SITE_URL + path
+  });
 }
 
 /* ============ 首頁內容 ============ */
@@ -267,11 +404,17 @@ function initHeroCarousel(h) {
   if (!hero) return;
   var slidesData = (h.images && h.images.length) ? h.images : [];
   if (!slidesData.length) return;
-  hero.style.backgroundImage = 'none';
+  var fallbackImg = hero.querySelector('.hero-fallback-img');
+  if (fallbackImg) fallbackImg.style.display = 'none';
   var slideEls = slidesData.map(function (s, i) {
     var d = document.createElement('div');
     d.className = 'hero-slide' + (i === 0 ? ' active' : '');
-    d.style.backgroundImage = "url('" + (s.img || s) + "')";
+    var img = document.createElement('img');
+    img.className = 'hero-slide-img';
+    img.src = (s.img || s);
+    img.alt = s.eyebrow || (s.title ? s.title.replace(/\n/g, ' ') : '') || '沛素 per-sulii';
+    img.loading = i === 0 ? 'eager' : 'lazy';
+    d.appendChild(img);
     hero.insertBefore(d, hero.firstChild);
     return d;
   });
@@ -434,23 +577,12 @@ function renderAbout(data) {
     var n = i + 1;
     setText('about-eyebrow-' + n, s.eyebrow);
     setHTML('about-title-' + n, nl2br(s.title));
-    setHTML('about-body-' + n, paragraphs(s.body, 'mt32', 'mt16').replace(/class="body /g, 'class="body '));
+    setHTML('about-body-' + n, paragraphs(s.body, 'mt16', 'mt16').replace(/class="body /g, 'class="body '));
     if (s.image) {
       var img = document.getElementById('about-img-' + n);
       if (img) img.style.backgroundImage = "url('" + s.image + "')";
     }
   });
-  var faq = document.getElementById('faq-list');
-  if (faq) {
-    faq.innerHTML = data.faq.map(function (f) {
-      return '<div class="faq-item">'
-        + '<button type="button" class="faq-q" aria-expanded="false">'
-        + '<span>' + f.q + '</span><span class="ic" aria-hidden="true">+</span></button>'
-        + '<div class="faq-a"><div class="inner">' + f.a + '</div></div>'
-        + '</div>';
-    }).join('');
-    initFAQ();
-  }
 }
 
 /* ============ 聯絡頁 ============ */
@@ -460,16 +592,6 @@ function renderContact(settings) {
   setText('contact-company', c.company);
   setText('contact-phone', c.phone);
   setText('contact-address', c.address);
-}
-
-/* ---- FAQ accordion ---- */
-function initFAQ() {
-  document.querySelectorAll('.faq-q').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var open = this.parentElement.classList.toggle('open');
-      this.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
-  });
 }
 
 /* ---- Hero 捲動漸變 ---- */
@@ -532,9 +654,11 @@ function initScrollReveal() {
 document.addEventListener('DOMContentLoaded', function () {
   initScrollReveal();
   initHeroScroll();
+  initShareButtons();
 
   var page = document.body.dataset.page;
 
+  getJSON('content/settings.json').then(injectOrganizationLD).catch(console.error);
   getJSON('content/products.json').then(function (d) { renderProducts(d.items); }).catch(console.error);
   getJSON('content/journal.json').then(function (d) {
     renderJournal(d.items, 3);

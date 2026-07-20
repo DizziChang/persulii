@@ -19,7 +19,7 @@ function getJSON(url) {
    網域為暫定值，正式網域確認後全站搜尋取代 https://persulii.com 即可 */
 var SITE_URL = 'https://persulii.com';
 var SITE_NAME = '沛素 per-sulii';
-var DEFAULT_OG_IMAGE = SITE_URL + '/images/home-banner.webp';
+var DEFAULT_OG_IMAGE = SITE_URL + '/images/hbanner-homebeauty.webp';
 
 function setMetaContent(selector, content) {
   var el = document.querySelector(selector);

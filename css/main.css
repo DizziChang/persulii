@@ -1657,14 +1657,20 @@ h3.in-view {
   }
 }
 
-/* Homepage About Us section styles */
+/* Homepage About Us section styles：捲動時圖片從 50% 高度展開到 100%，圖片靠上對齊 */
 .h-about-img-wrap {
-  text-align: center;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
 }
 
 .h-about-img {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: auto;
+  display: block;
   box-shadow: 0 16px 32px rgba(0, 0, 0, 0.03);
 }
 

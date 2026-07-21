@@ -540,7 +540,6 @@ h3.in-view {
 
 .media.product~div p {
   max-width: 75%;
-  min-width: 380px;
 }
 
 /* ---- HEADER ---- */
@@ -1390,7 +1389,6 @@ h3.in-view {
     padding: 24px 0
   }
 
-
   .g2,
   .g3,
   .split,
@@ -1501,6 +1499,9 @@ h3.in-view {
     height: auto !important
   }
 
+.media.product~div p {
+  max-width: unset;
+}
   .flist .fitem {
     grid-template-columns: 1fr;
     gap: 10px

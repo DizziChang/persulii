@@ -27,7 +27,8 @@
 }
 
 html {
-  scroll-behavior: smooth
+  scroll-behavior: smooth;
+  overflow-x: hidden
 }
 
 body {
@@ -36,6 +37,7 @@ body {
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
   font-weight: 400;
+  overflow-x: hidden
 }
 
 .hdr,main {
@@ -1400,6 +1402,11 @@ h3.in-view {
 
   .pfeature .media {
     order: 1
+  }
+
+  .media.product~div p {
+    max-width: 100%;
+    min-width: 0
   }
 
   /* 三大保養功效：手機版維持三欄式，改為 icon 在上、文字在下 */

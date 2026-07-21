@@ -2,7 +2,7 @@ backend:
   name: github
   repo: DizziChang/persulii
   branch: master
-  base_url: https://api.netlify.com   # 使用 Netlify 的 GitHub OAuth 服務
+  base_url: https://sveltia-cms-auth.dizzistasks.workers.dev   # Cloudflare Worker OAuth 代理
   auth_endpoint: auth
 
 site_url: https://persulii-test.netlify.app

@@ -1400,12 +1400,12 @@ h3.in-view {
     order: 1
   }
 
-  /* 三大保養功效：手機版維持三欄式，改為 icon 在上、文字在下 */
+  /* 保養功效區塊：手機版維持原本欄數，內容改為 icon 在上、文字在下 */
   .benefits-row.cols-3 {
     gap: 0
   }
 
-  .benefits-row.cols-3 .benefit-item {
+  .benefits-row .benefit-item {
     flex-direction: column;
     align-items: center;
     text-align: center;

@@ -380,9 +380,6 @@ function renderArticle(ARTICLES) {
 /* ============ 首頁內容 ============ */
 function renderHome(data) {
   if (document.body.dataset.page !== 'home') return;
-  var h = data.hero;
-  initHeroCarousel(h);
-
   var s = data.science;
   setText('sci-eyebrow', s.eyebrow);
   setText('sci-title', s.title);
@@ -671,14 +668,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var page = document.body.dataset.page;
 
-  getJSON('content/settings.json').then(injectOrganizationLD).catch(console.error);
+  Promise.all([getJSON('content/settings-footer.json'), getJSON('content/settings-contact.json')])
+    .then(function (r) { injectOrganizationLD(Object.assign({}, r[0], r[1])); })
+    .catch(console.error);
   getJSON('content/products.json').then(function (d) { renderProducts(d.items); }).catch(console.error);
   getJSON('content/journal.json').then(function (d) {
     renderJournal(d.items, 3);
     renderArticle(d.items);
   }).catch(console.error);
 
-  if (page === 'home') getJSON('content/home.json').then(renderHome).catch(console.error);
-  if (page === 'about') getJSON('content/about.json').then(renderAbout).catch(console.error);
-  if (page === 'contact') getJSON('content/settings.json').then(renderContact).catch(console.error);
+  if (page === 'home') {
+    getJSON('content/home.json').then(renderHome).catch(console.error);
+    getJSON('content/home-hero.json').then(initHeroCarousel).catch(console.error);
+  }
+  if (page === 'about') getJSON('content/about-sections.json').then(renderAbout).catch(console.error);
+  if (page === 'contact') getJSON('content/settings-contact.json').then(renderContact).catch(console.error);
 });

@@ -75,28 +75,28 @@ collections:
   - name: pages
     label: 頁面內容
     files:
+      - name: home_hero
+        label: 首頁主視覺 Banner
+        file: content/home-hero.json
+        fields:
+          - name: images
+            label: 輪播圖片（可多張，依序播放，每張可各自設定文字，留空則不顯示）
+            widget: list
+            summary: "{{fields.eyebrow}} {{fields.title}}"
+            fields:
+              - { name: img, label: 圖片, widget: image }
+              - { name: eyebrow, label: 小標, widget: string, required: false }
+              - { name: title, label: 主標題（可換行）, widget: text, required: false }
+              - { name: lead, label: 副標語, widget: string, required: false }
+              - { name: btn1_text, label: 按鈕1文字, widget: string, required: false }
+              - { name: btn1_link, label: 按鈕1連結, widget: string, required: false }
+              - { name: btn2_text, label: 按鈕2文字, widget: string, required: false }
+              - { name: btn2_link, label: 按鈕2連結, widget: string, required: false }
+          - { name: interval, label: 輪播間隔（秒）, widget: number, default: 5, value_type: float }
       - name: home
-        label: 首頁
+        label: 首頁（其他區塊）
         file: content/home.json
         fields:
-          - name: hero
-            label: 主視覺 Banner
-            widget: object
-            fields:
-              - name: images
-                label: 輪播圖片（可多張，依序播放，每張可各自設定文字，留空則不顯示）
-                widget: list
-                summary: "{{fields.eyebrow}} {{fields.title}}"
-                fields:
-                  - { name: img, label: 圖片, widget: image }
-                  - { name: eyebrow, label: 小標, widget: string, required: false }
-                  - { name: title, label: 主標題（可換行）, widget: text, required: false }
-                  - { name: lead, label: 副標語, widget: string, required: false }
-                  - { name: btn1_text, label: 按鈕1文字, widget: string, required: false }
-                  - { name: btn1_link, label: 按鈕1連結, widget: string, required: false }
-                  - { name: btn2_text, label: 按鈕2文字, widget: string, required: false }
-                  - { name: btn2_link, label: 按鈕2連結, widget: string, required: false }
-              - { name: interval, label: 輪播間隔（秒）, widget: number, default: 5, value_type: float }
           - name: science
             label: 關於我們區塊
             widget: object
@@ -122,9 +122,9 @@ collections:
               - { name: lead, label: 說明, widget: string }
               - { name: btn_text, label: 按鈕文字, widget: string }
               - { name: btn_link, label: 按鈕連結, widget: string }
-      - name: about
-        label: 關於頁
-        file: content/about.json
+      - name: about_sections
+        label: 關於頁－內容區塊
+        file: content/about-sections.json
         fields:
           - name: sections
             label: 內容區塊（共4段）
@@ -136,6 +136,10 @@ collections:
               - { name: title, label: 標題（可換行）, widget: text }
               - { name: body, label: 內文（空一行分段）, widget: text }
               - { name: image, label: 圖片, widget: image, required: false }
+      - name: about_team
+        label: 關於頁－研發團隊
+        file: content/about-team.json
+        fields:
           - name: team
             label: 研發團隊
             widget: object
@@ -145,6 +149,10 @@ collections:
               - { name: lead, label: 說明, widget: string }
               - { name: image, label: 圖片, widget: image }
               - { name: image_alt, label: 圖片說明, widget: string }
+      - name: about_faq
+        label: 關於頁－常見問答
+        file: content/about-faq.json
+        fields:
           - name: faq
             label: 常見問答
             widget: list
@@ -152,9 +160,9 @@ collections:
             fields:
               - { name: q, label: 問題, widget: string }
               - { name: a, label: 回答, widget: text }
-      - name: settings
-        label: 網站設定（Footer / 聯絡資訊）
-        file: content/settings.json
+      - name: settings_footer
+        label: 網站設定－Footer
+        file: content/settings-footer.json
         fields:
           - name: footer
             label: Footer
@@ -173,6 +181,10 @@ collections:
                   - { name: line, label: Line, widget: string }
                   - { name: facebook, label: Facebook, widget: string }
                   - { name: instagram, label: Instagram, widget: string }
+      - name: settings_contact
+        label: 網站設定－聯絡頁資訊
+        file: content/settings-contact.json
+        fields:
           - name: contact_page
             label: 聯絡頁資訊
             widget: object

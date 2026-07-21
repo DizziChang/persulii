@@ -43,7 +43,7 @@
   </nav>
 </header>`;
 
-  /* ---- Footer HTML（內容來自 content/settings.json） ---- */
+  /* ---- Footer HTML（內容來自 content/settings-footer.json） ---- */
   function footerHTML(s) {
     var f = s.footer;
     return `
@@ -99,7 +99,7 @@
     var fp = document.getElementById('site-footer');
     if (hp) hp.innerHTML = HEADER;
     if (fp) {
-      fetch('content/settings.json').then(function (r) { return r.json(); }).then(function (s) {
+      fetch('content/settings-footer.json').then(function (r) { return r.json(); }).then(function (s) {
         fp.innerHTML = footerHTML(s);
       }).catch(console.error);
     }

@@ -92,9 +92,8 @@ a {
 /* typography */
 .eyebrow {
   font-family: var(--sans);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: .28em;
+  font-size: clamp(13px, 2vw, 20px);
+  letter-spacing: .1em;
   text-transform: uppercase;
   color: var(--taupe)
 }
@@ -215,7 +214,7 @@ h3.in-view {
 }
 
 .sec.tight {
-  padding: clamp(15px, 1.5vw, 20px) 0
+  padding: clamp(16px, 2vw, 32px) 0;
 }
 
 .sec.hight {
@@ -224,6 +223,19 @@ h3.in-view {
 
 .center {
   text-align: center
+}
+
+/* 標題與 eyebrow 同一行並排 */
+.title-line {
+  display: flex;
+  width: fit-content;
+  margin: 16px auto 0px;
+  align-items: baseline;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-bottom: 0px;
+  border-bottom: 1px solid var(--deep);
 }
 
 .mt8 {
@@ -522,12 +534,12 @@ h3.in-view {
   background: #f0f0ef;
   width: 100%;
   max-width: 628px;
-  aspect-ratio: 628 / 540;
+  aspect-ratio: 628 / 520;
   height: auto
 }
 
 .media.product~div p {
-  max-width: 80%;
+  max-width: 75%;
   min-width: 380px;
 }
 
@@ -673,7 +685,7 @@ h3.in-view {
 }
 
 .crumb {
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: .05em;
   color: var(--mid-text);
   padding: 18px 0 0;
@@ -1215,7 +1227,7 @@ h3.in-view {
 }
 
 .pn .pn-i .eyebrow {
-  font-size: 10.5px
+  font-size: 12px
 }
 
 .pn .pn-i .nm {
@@ -1375,7 +1387,7 @@ h3.in-view {
   }
 
   .sec {
-    padding: 48px 0
+    padding: 24px 0
   }
 
 
@@ -1387,7 +1399,42 @@ h3.in-view {
   }
 
   .pfeature .media {
-    order: -1
+    order: 1
+  }
+
+  /* 三大保養功效：手機版維持三欄式，改為 icon 在上、文字在下 */
+  .benefits-row.cols-3 {
+    gap: 0
+  }
+
+  .benefits-row.cols-3 .benefit-item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px
+  }
+
+  .pfeature-text {
+    min-width: 0
+  }
+
+  .pfeature-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px
+  }
+
+  .pfeature-head .pfeature-copy {
+    flex: 1 1 auto;
+    min-width: 0
+  }
+
+  .pfeature-head .pfeature-more {
+    margin-top: 0;
+    flex: 0 0 auto;
+    white-space: nowrap;
+    padding: 16px 4px;
   }
 
   #product-list {
@@ -1708,6 +1755,26 @@ h3.in-view {
 .benefit-item:nth-child(n+3) {
   border-top: 1px solid var(--line);
   padding-top: clamp(20px, 2.5vw, 32px);
+}
+
+/* 產品頁：三大保養功效（三欄式，項目間灰線分隔，僅單列不需上邊線） */
+.benefits-row.cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.benefits-row.cols-3 .benefit-item {
+  border-top: none;
+  padding-top: 0;
+  padding-right: clamp(16px, 3vw, 32px);
+}
+
+.benefits-row.cols-3 .benefit-item:nth-child(n+2) {
+  border-left: 1px solid var(--line);
+  padding-left: clamp(16px, 3vw, 32px);
+}
+
+.benefits-row.cols-3 .benefit-item:last-child {
+  padding-right: 0;
 }
 
 .benefit-thumb {

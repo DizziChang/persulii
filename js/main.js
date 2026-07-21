@@ -137,11 +137,13 @@ function productCardHTML(p, mediaH) {
 function homeProductRowHTML(p, imageFirst) {
   var img = p.homeImg || p.img;
   var media = '<div class="media product">' + (img ? '<img class="media-img" src="' + img + '" alt="' + p.en + ' ' + p.name + '" loading="lazy">' : '') + '</div>';
-  var text = '<div>'
+  var text = '<div class="pfeature-text">'
     + '<div class="eyebrow">' + p.en + '</div>'
-    + '<h3 class="h2 mt12">' + p.name + '</h3>'
-    + '<p class="body mt16">' + p.tagline + '</p>'
-    + '<div class="mt24"><span class="tlink">了解更多 →</span></div>'
+    + '<div class="pfeature-head">'
+    + '<div class="pfeature-copy"><h3 class="h2 mt12">' + p.name + '</h3>'
+    + '<p class="body mt16">' + p.tagline + '</p></div>'
+    + '<div class="mt24 pfeature-more"><span class="tlink">了解更多 →</span></div>'
+    + '</div>'
     + '</div>';
   return '<a href="product.html?id=' + p.id + '" class="pfeature">'
     + (imageFirst ? media + text : text + media)
@@ -200,7 +202,7 @@ function renderProductDetail(PRODUCTS) {
   /* 產品特色：有功效資料時以功效卡呈現（左側預留縮圖），否則沿用單段文字；有影片時功效文字置左、影片置右 */
   var ZH_NUM = { 1: '一', 2: '二', 3: '三', 4: '四', 5: '五', 6: '六' };
   var benefitsHTML = (p.benefits && p.benefits.length)
-    ? '<h2 class="h3">' + (ZH_NUM[p.benefits.length] || p.benefits.length) + '大保養功效</h2><div class="benefits-row mt32">'
+    ? '<h2 class="h3">' + (ZH_NUM[p.benefits.length] || p.benefits.length) + '大保養功效</h2><div class="benefits-row' + (p.benefits.length === 3 ? ' cols-3' : '') + ' mt32">'
       + p.benefits.map(function (b) {
         return '<div class="benefit-item">'
           + '<div class="benefit-thumb"' + (b.img ? ' style="background-image:url(\'' + b.img + '\');background-size:cover;background-position:center"' : '') + '></div>'
@@ -275,7 +277,8 @@ function renderProductDetail(PRODUCTS) {
   document.title = pageTitle;
 
   var ogImage = p.banner ? (SITE_URL + '/' + p.banner) : DEFAULT_OG_IMAGE;
-  var metaDesc = (p.tagline || '') + (p.intro ? ' ' + p.intro : '');
+  var taglineText = (p.tagline || '').replace(/<br\s*\/?>/gi, ' ');
+  var metaDesc = taglineText + (p.intro ? ' ' + p.intro : '');
   if (metaDesc.length > 120) metaDesc = metaDesc.slice(0, 117) + '...';
   setPageMeta({
     title: pageTitle,
@@ -402,7 +405,7 @@ function renderHome(data) {
   var pt = data.partner;
   setText('partner-eyebrow', pt.eyebrow);
   setText('partner-title', pt.title);
-  setText('partner-lead', pt.lead);
+  setHTML('partner-lead', pt.lead);
   var pb = document.getElementById('partner-btn');
   if (pb) { pb.textContent = pt.btn_text; pb.href = pt.btn_link; }
 }

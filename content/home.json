@@ -2,7 +2,7 @@
   "hero": {
     "images": [
       {
-        "img": "/images/1920X687沛素平台 banner完稿顏色加深點.jpg",
+        "img": "/images/1920X687沛素平台 banner完稿正版.jpg",
         "eyebrow": "",
         "title": "",
         "lead": "",
@@ -12,17 +12,7 @@
         "btn2_link": ""
       },
       {
-        "img": "/images/定稿.jpg",
-        "eyebrow": "",
-        "title": "",
-        "lead": "",
-        "btn1_text": "",
-        "btn1_link": "",
-        "btn2_text": "",
-        "btn2_link": ""
-      },
-      {
-        "img": "/images/S底圖7~1版完稿.jpg",
+        "img": "/images/蜂咖啡色底圖1920x687V第三版.jpg",
         "eyebrow": "",
         "title": "",
         "lead": "",
@@ -42,7 +32,7 @@
         "btn2_link": ""
       },
       {
-        "img": "/images/hbanner-homebeauty.webp",
+        "img": "/images/S底圖7~1版完稿.jpg",
         "eyebrow": "",
         "title": "",
         "lead": "",
@@ -50,14 +40,24 @@
         "btn1_link": "",
         "btn2_text": "",
         "btn2_link": ""
+      },
+      {
+        "img": "images/V+S 01.webp",
+        "eyebrow": "TAIWAN 科研實力",
+        "title": "宅養顏\n在家養出好肌膚",
+        "lead": "每天30秒，悄悄變美",
+        "btn1_text": "探索產品",
+        "btn1_link": "products.html",
+        "btn2_text": "關於我們",
+        "btn2_link": "about.html"
       }
     ],
     "interval": 5
   },
   "science": {
     "eyebrow": "Science Behind Every Formula",
-    "title": "沛素~追求素顏美背後的台灣科研實力",
-    "lead": "安心品質，不妥協的嚴謹製程",
+    "title": "國際級製藥廠經驗領導研發",
+    "lead": "沛素~追求素顏美的台灣科研實力",
     "btn_text": "",
     "btn_link": "",
     "doctors": [
@@ -84,10 +84,10 @@
     "title": "產品"
   },
   "partner": {
-    "eyebrow": "Be Our Partner",
-    "title": "沛素夥伴",
-    "lead": "與沛素一同推廣<strong>自然</strong>保養理念。",
-    "btn_text": "成為夥伴",
+    "eyebrow": "Become a Partner",
+    "title": "合作夥伴",
+    "lead": "與沛素一同推廣更理性的保養理念。",
+    "btn_text": "成為合作夥伴",
     "btn_link": "contact.html"
   },
   "story": {

@@ -174,12 +174,22 @@ function renderProductDetail(PRODUCTS) {
   var p = PRODUCTS[idx];
   var next = PRODUCTS[(idx + 1) % PRODUCTS.length];
 
-  var ing = p.ingredients.map(function (c, i) {
-    return (i > 0 ? '<hr class="divider mt24">' : '')
-      + '<div class="mt24"><div class="eyebrow">' + c.en + '</div>'
-      + '<h3 class="h3 mt8" style="font-size:20px">' + c.zh + '</h3>'
-      + '<p class="body mt8">' + c.desc + '</p></div>';
-  }).join('');
+  /* 關鍵成分：多項成分以「甲 + 乙 ⇨ 丙」流程呈現，說明文字取最後一項成分的描述 */
+  var ing = (p.ingredients && p.ingredients.length > 1)
+    ? (function () {
+        var last = p.ingredients[p.ingredients.length - 1];
+        var head = p.ingredients.slice(0, -1).map(function (c) { return c.zh; }).join(' <span class="ingredient-flow-plus">+</span> ');
+        return '<div class="ingredient-flow mt24">'
+          + '<div class="ingredient-flow-terms">' + head + ' <span class="ingredient-flow-arrow">⇨</span> ' + last.zh + '</div>'
+          + '<p class="ingredient-flow-caption mt8">' + last.desc + '</p>'
+          + '</div>';
+      })()
+    : p.ingredients.map(function (c, i) {
+        return (i > 0 ? '<hr class="divider mt24">' : '')
+          + '<div class="mt24"><div class="eyebrow">' + c.en + '</div>'
+          + '<h3 class="h3 mt8" style="font-size:20px">' + c.zh + '</h3>'
+          + '<p class="body mt8">' + c.desc + '</p></div>';
+      }).join('');
 
   var use = p.usage.map(function (s, i) {
     var n = ('0' + (i + 1)).slice(-2);
@@ -213,11 +223,11 @@ function renderProductDetail(PRODUCTS) {
       + '<ul class="checklist mt24">' + p.audience.map(function (a) { return '<li>' + a + '</li>'; }).join('') + '</ul>'
       + '</div>'
       + '<div><h2 class="h3">使用方式</h2>'
-      + (p.usageTitle ? '<p class="eyebrow mt16">' + p.usageTitle + '</p>' : '')
+      + (p.usageTitle ? '<p class="body mt16">' + p.usageTitle + '</p>' : '')
       + use + '</div>'
       + '</div></section>'
     : '<section class="sec tight"><div class="wrap"><h2 class="h3">使用方式</h2>'
-      + (p.usageTitle ? '<p class="eyebrow mt16">' + p.usageTitle + '</p>' : '')
+      + (p.usageTitle ? '<p class="body mt16">' + p.usageTitle + '</p>' : '')
       + use + '</div></section>';
 
   var reminderSection = p.reminder

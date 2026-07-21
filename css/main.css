@@ -311,6 +311,31 @@ h3.in-view {
   border: 0
 }
 
+.ingredient-flow{
+  background-color: #f1f1f1;
+  border-radius: 8px;
+  padding: 12px; 
+}
+
+.ingredient-flow-terms {
+  font-family: var(--sans);
+  font-size: clamp(18px, 2.7vw, 22px);
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.ingredient-flow-plus,
+.ingredient-flow-arrow {
+  color: var(--mid);
+  font-weight: 400;
+  padding: 0 4px
+}
+
+.ingredient-flow-caption {
+  font-size: clamp(14px, 1.6vw, 17px);
+  color: var(--ink-soft)
+}
+
 /* buttons / links */
 .btn {
   display: inline-block;
@@ -499,6 +524,11 @@ h3.in-view {
   max-width: 628px;
   aspect-ratio: 628 / 540;
   height: auto
+}
+
+.media.product~div p {
+  max-width: 80%;
+  min-width: 380px;
 }
 
 /* ---- HEADER ---- */
@@ -1653,17 +1683,31 @@ h3.in-view {
   font-weight: 400
 }
 
-/* 產品頁：四大保養功效（兩個一行，左側縮圖預留） */
+/* 產品頁：四大保養功效（兩欄式格線，電腦／手機皆維持兩欄，中間十字灰線分隔） */
 .benefits-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: clamp(24px, 3vw, 40px) clamp(20px, 3vw, 32px)
 }
 
 .benefit-item {
   display: flex;
   gap: 14px;
-  align-items: flex-start
+  align-items: flex-start;
+  padding-bottom: clamp(20px, 2.5vw, 32px)
+}
+
+.benefit-item:nth-child(even) {
+  border-left: 1px solid var(--line);
+  padding-left: clamp(16px, 3vw, 32px);
+}
+
+.benefit-item:nth-child(odd) {
+  padding-right: clamp(16px, 3vw, 32px);
+}
+
+.benefit-item:nth-child(n+3) {
+  border-top: 1px solid var(--line);
+  padding-top: clamp(20px, 2.5vw, 32px);
 }
 
 .benefit-thumb {
@@ -1673,12 +1717,6 @@ h3.in-view {
   /* border: 1px solid var(--line); */
   background: var(--bg2);
   border-radius: 4px
-}
-
-@media (max-width: 560px) {
-  .benefits-row {
-    grid-template-columns: 1fr
-  }
 }
 
 /* 產品頁：功效區塊搭配介紹影片（上文下影片） */

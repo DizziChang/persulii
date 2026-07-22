@@ -189,7 +189,7 @@ h3.in-view {
 /* layout */
 .wrap {
   /* box-sizing:border-box 會讓 padding 吃掉 max-width，用 calc 補回來，讓內容實際維持 1100px */
-  max-width: calc(1100px + 56px * 2);
+  max-width: calc(1200px + 56px * 2);
   margin: 0 auto;
   padding: 0 56px
 }
@@ -271,7 +271,7 @@ h3.in-view {
 }
 
 .maxwl {
-  max-width: 1200px
+  max-width: calc(1440px + 56px * 2);
 }
 
 #about-article {
@@ -280,15 +280,19 @@ h3.in-view {
 }
 
 #about-article h2 {
-  text-align: center
+  text-align: left
 }
 
 #about-article p {
-  font-size: clamp(16px, 1.6vw, 20px);
-  line-height: 3;
-  text-align: center
+  font-size: clamp(15px, 1.5vw, 18px);
+  line-height: 2.5;
+  text-align: left;
+  letter-spacing: 0.02em;
 }
-
+#about-article p b {
+  color: var(--ink);
+  font-weight: 500;
+}
 .maxw {
   max-width: 680px
 }
@@ -1413,7 +1417,8 @@ h3.in-view {
   }
 
   .pfeature-text {
-    min-width: 0
+    min-width: 0;
+    padding: 30px;
   }
 
   .pfeature-head {

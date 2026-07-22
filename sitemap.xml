@@ -26,36 +26,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://persulii.com/journal.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://persulii.com/article.html?slug=exosome-intro</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://persulii.com/article.html?slug=pore-care</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://persulii.com/article.html?slug=anti-wrinkle-5</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://persulii.com/article.html?slug=pif-regulation</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://persulii.com/article.html?slug=medical-beauty-3x</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://persulii.com/contact.html</loc>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>

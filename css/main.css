@@ -266,8 +266,15 @@ h3.in-view {
 }
 
 #about-article {
+  width: 100%;
   max-width: 950px;
   margin: 0 auto
+}
+
+.media.about-frame-media {
+  position: sticky;
+  top: 120px;
+  max-width: 540px;
 }
 
 .about-copy h2 {
@@ -1295,6 +1302,11 @@ h3.in-view {
   .about-copy p {
     font-size: 13.5px;
     line-height: 1.75;
+  }
+
+  .media.about-frame-media {
+    position: static;
+    max-width: none;
   }
 
   .g2,

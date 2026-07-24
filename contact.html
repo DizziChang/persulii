@@ -33,7 +33,10 @@
   <main>
 
     <section class="sec" style="padding-top:clamp(38px,4.8vw,72px);padding-bottom:clamp(38px,4.8vw,72px)">
-      <form class="wrap" style="max-width:620px" onsubmit="return false">
+      <form class="wrap" style="max-width:620px" id="contact-form">
+        <input type="hidden" name="access_key" value="c44f2510-388b-477e-a3ec-f2446b1304c2">
+        <input type="hidden" name="subject" value="沛素官網經銷洽詢">
+        <input type="checkbox" name="botcheck" class="sr-only" tabindex="-1" autocomplete="off">
         <h1 class="h2 center" style="margin-bottom:40px">與我們聯繫</h1>
         <div class="field">
           <label for="f-company">公司 / 品牌名稱</label>
@@ -58,7 +61,8 @@
           <textarea id="f-msg" name="message" rows="5" placeholder="請簡述合作需求"></textarea>
         </div>
         <div class="center mt32">
-          <button type="submit" class="btn solid">送出洽詢</button>
+          <button type="submit" class="btn solid" id="contact-submit-btn">送出洽詢</button>
+          <p class="small mt16" id="contact-form-status" style="display:none"></p>
         </div>
       </form>
     </section>

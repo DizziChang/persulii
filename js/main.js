@@ -557,6 +557,45 @@ function renderContact(settings) {
   setText('contact-address', c.address);
 }
 
+/* 經銷洽詢表單：送出至 Web3Forms，轉寄到信箱 */
+function initContactForm() {
+  var form = document.getElementById('contact-form');
+  if (!form) return;
+  var btn = document.getElementById('contact-submit-btn');
+  var status = document.getElementById('contact-form-status');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    btn.disabled = true;
+    btn.textContent = '送出中...';
+    status.style.display = 'none';
+
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(Object.fromEntries(new FormData(form)))
+    })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (data.success) {
+          form.reset();
+          status.textContent = '已送出，我們會盡快與您聯繫。';
+        } else {
+          status.textContent = '送出失敗，請稍後再試一次。';
+        }
+        status.style.display = '';
+      })
+      .catch(function () {
+        status.textContent = '送出失敗，請稍後再試一次。';
+        status.style.display = '';
+      })
+      .finally(function () {
+        btn.disabled = false;
+        btn.textContent = '送出洽詢';
+      });
+  });
+}
+
 /* ---- Hero 捲動漸變 ---- */
 function initHeroScroll() {
   var hero = document.querySelector('.hero');
@@ -618,6 +657,7 @@ document.addEventListener('DOMContentLoaded', function () {
   initScrollReveal();
   initHeroScroll();
   initShareButtons();
+  initContactForm();
 
   var page = document.body.dataset.page;
 

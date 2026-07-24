@@ -1292,6 +1292,10 @@ h3.in-view {
     padding: 24px 0
   }
 
+  #about-article p {
+    font-size: 14px;
+  }
+
   .g2,
   .g3,
   .split,

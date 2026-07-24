@@ -573,45 +573,6 @@ function initHeroScroll() {
   update();
 }
 
-/* ---- 首頁關於圖片：捲動時從 50% 高度展開到 100%，圖片靠上對齊逐漸露出 ---- */
-function initSciImageReveal() {
-  var wrap = document.getElementById('sci-image-wrap');
-  var img = document.getElementById('sci-image');
-  if (!wrap || !img) return;
-
-  var fullHeight = 0;
-  function computeFullHeight() {
-    if (img.naturalWidth && img.naturalHeight) {
-      fullHeight = wrap.clientWidth * (img.naturalHeight / img.naturalWidth);
-    }
-  }
-
-  var ticking = false;
-  function update() {
-    if (!fullHeight) computeFullHeight();
-    if (!fullHeight) { ticking = false; return; }
-    var rect = wrap.getBoundingClientRect();
-    var vh = window.innerHeight;
-    var start = vh * 0.9;
-    var end = vh * 0.35;
-    var p = (start - rect.top) / (start - end);
-    p = Math.min(Math.max(p, 0), 1);
-    wrap.style.height = (fullHeight * (0.5 + 0.5 * p)) + 'px';
-    ticking = false;
-  }
-
-  function onScroll() {
-    if (!ticking) { ticking = true; requestAnimationFrame(update); }
-  }
-
-  if (img.complete) computeFullHeight();
-  else img.addEventListener('load', function () { computeFullHeight(); update(); });
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', function () { computeFullHeight(); update(); });
-  update();
-}
-
 /* ---- 標題捲動載入動畫（含日後動態插入的標題） ---- */
 function initScrollReveal() {
   var SELECTOR = 'h1, h2, h3';
@@ -656,7 +617,6 @@ function initScrollReveal() {
 document.addEventListener('DOMContentLoaded', function () {
   initScrollReveal();
   initHeroScroll();
-  initSciImageReveal();
   initShareButtons();
 
   var page = document.body.dataset.page;

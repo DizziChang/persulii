@@ -1457,6 +1457,16 @@ h3.in-view {
   }
 }
 
+@media (max-width: 560px) {
+  .benefit-item p br {
+    display: none;
+  }
+   .benefit-item p {
+     max-width: 65%;
+     margin: auto;
+  }
+}
+
 /* hero 輪播 */
 .hero.has-swipe {
   touch-action: pan-y;
@@ -1564,17 +1574,12 @@ h3.in-view {
   }
 }
 
-/* Homepage About Us section styles：捲動時圖片從 50% 高度展開到 100%，圖片靠上對齊 */
+/* Homepage About Us section styles */
 .h-about-img-wrap {
-  position: relative;
   width: 100%;
-  overflow: hidden;
 }
 
 .h-about-img {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: auto;
   display: block;

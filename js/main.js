@@ -310,7 +310,7 @@ function renderProductDetail(PRODUCTS) {
     + (p.highlights && p.highlights.length ? '<div class="chips mt24">' + p.highlights.map(function (h) { return '<span class="chip">' + h + '</span>'; }).join('') + '</div>' : '')
     + '</div>'
     + '</div></section>'
-    + '<section class="sec tight" style="background:var(--bg)"><div class="wrap">' + featureSection + '</div></section>'
+    + '<section class="sec tight" id="product-feature-sec" style="background:var(--bg)"><div class="wrap">' + featureSection + '</div></section>'
     + '<section class="sec tight"><div class="wrap"><h2 class="h3">關鍵成分</h2>' + ing + '</div></section>'
     + audienceUsageSection
     + reminderSection

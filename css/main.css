@@ -1366,6 +1366,26 @@ h3.in-view {
     padding-left: 12px;
   }
 
+  #home-products {
+    margin-top: 16px;
+  }
+
+  .pfeatures {
+    gap: 24px;
+  }
+
+  #product-feature-sec h2.h3 {
+    font-size: 17px;
+  }
+
+  #product-feature-sec .small {
+    font-size: 13.5px;
+  }
+
+  #product-feature-sec p.body {
+    font-size: 13.5px;
+  }
+
   #product-list {
     grid-template-columns: 1fr;
     gap: 24px

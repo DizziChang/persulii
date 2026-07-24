@@ -270,18 +270,18 @@ h3.in-view {
   margin: 0 auto
 }
 
-#about-article h2 {
+.about-copy h2 {
   text-align: left
 }
 
-#about-article p {
+.about-copy p {
   font-size: clamp(15px, 1.5vw, 18px);
   line-height: 2.5;
   text-align: left;
   letter-spacing: 0.02em;
 }
 
-#about-article p b {
+.about-copy p b {
   color: var(--ink);
   font-weight: 500;
 }
@@ -1292,8 +1292,9 @@ h3.in-view {
     padding: 24px 0
   }
 
-  #about-article p {
-    font-size: 14px;
+  .about-copy p {
+    font-size: 13.5px;
+    line-height: 1.75;
   }
 
   .g2,

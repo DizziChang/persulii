@@ -1346,6 +1346,26 @@ h3.in-view {
     padding: 16px 4px;
   }
 
+  .pfeature {
+    gap: 10px;
+  }
+
+  .pfeature-copy h3 {
+    font-size: 20px;
+    margin-top: 4px;
+  }
+
+  .pfeature-copy p {
+    margin-top: 6px;
+  }
+
+  .pfeature-more .tlink {
+    border-bottom: none;
+    padding-bottom: 0;
+    border-left: 1px solid var(--ink);
+    padding-left: 12px;
+  }
+
   #product-list {
     grid-template-columns: 1fr;
     gap: 24px

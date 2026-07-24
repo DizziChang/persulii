@@ -15,9 +15,8 @@ function getJSON(url) {
   return __cache[url];
 }
 
-/* ---- SEO：meta description / canonical / OG / JSON-LD ----
-   網域為暫定值，正式網域確認後全站搜尋取代 https://persulii.com 即可 */
-var SITE_URL = 'https://persulii.com';
+/* ---- SEO：meta description / canonical / OG / JSON-LD ---- */
+var SITE_URL = 'https://persulii.com.tw';
 var SITE_NAME = '沛素 per-sulii';
 var DEFAULT_OG_IMAGE = SITE_URL + '/images/hbanner-homebeauty.webp';
 

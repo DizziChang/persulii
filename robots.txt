@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 
-Sitemap: https://persulii.com/sitemap.xml
+Sitemap: https://persulii.com.tw/sitemap.xml

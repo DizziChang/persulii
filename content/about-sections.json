@@ -1,8 +1,28 @@
 {
   "sections": [
-    { "eyebrow": "沛素產品源起", "title": "素顏美才是美", "body": "現代醫美很進步，能快速把肌膚變美\n有些不是醫師做的不完美，而是人類肌膚在<b>過度、多次</b>人工美化後易顯不自然\n從審美視角，不做醫美想要<b>美得自然</b>的人不在少數\n為此沛素專為<b>在家養出好肌膚者</b>研發<b>沛素-V及沛素-S</b>雙合精華液。\n\n沛素V和S，是由<b>國際級製藥廠研發背景的專家</b>領導研發\n精選天然多種胜肽，從安全及功效，精準科研優質配方\n為保護皮膚角層健康，減少光敏傷害，不使用任何A醛、A醇等酸類\n每天使用<b>先V後S</b>，能從容不迫的喚醒肌膚<b>本能</b>，啟動肌膚自體養護力\n自然養出<b>健康、乾淨、有光澤</b>的肌膚，<b>悄悄變美</b>", "image": "images/IMG_6057.webp" },
-    { "eyebrow": "", "title": "沛素雙合精華液", "body": "<b><a href=\"product.html?id=V-essence\" class=\"text-link\">per-sulii 沛素-V｜蜂胜肽 plus</a></b>\n主要為淡化紋路、緊緻毛孔、緊實臉部輪廓，<b>安全、自然</b>。\n\n<b><a href=\"product.html?id=S-essence\" class=\"text-link\">per-sulii 沛素-S｜優質人類合法外泌體＋多胜肽</a></b>\n主要為柔潤、透亮臉部肌膚、細緻膚質，<b>安全、自然</b>。", "image": "" },
-    { "eyebrow": "", "title": "per-sulii，追求 素顏美 魅力", "body": "<b>素顏美，是充滿魅力的美</b>\n沛素雙合精華液不是改變<b>肌膚結構</b>而是改善<b>肌膚本質</b>\n適合男性、女性，青少齡（建議 12 歲以上）\n輕鬆在家養出<b>健康素顏美</b>。", "image": "" },
-    { "eyebrow": "", "title": "TAIWAN科研", "body": "沛素領導科研專家曾在國際級藥廠擔任研發高管\n對於配方及選用原料<b>嚴謹、精準</b>\n產品是由台灣優質GMP藥廠嚴格品質控管\n適用追求自然素顏美\n或醫美後黃金期使用沛素，肌膚美麗持久。<span style=\"display:block;margin-top:32px;line-height:1.4\">per sulii 沛素</span><span style=\"display:block;line-height:1.4;color:var(--mid-text)\">Made in Taiwan</span>", "image": "" }
+    {
+      "eyebrow": "沛素產品源起",
+      "title": "素顏美才是美",
+      "body": "現代醫美很進步，能快速把肌膚變美\n有些不是醫師做的不完美，而是人類肌膚在<b>過度、多次</b>人工美化後易顯不自然\n從審美視角，不做醫美想要<b>美得自然</b>的人不在少數\n為此沛素專為<b>在家養出好肌膚者</b>研發<b>沛素-V及沛素-S</b>雙合精華液。\n\n沛素V和S，是由<b>國際級製藥廠研發背景的專家</b>領導研發\n精選天然多種胜肽，從安全及功效，精準科研優質配方\n為保護皮膚角層健康，減少光敏傷害，不使用任何A醛、A醇等酸類\n每天使用<b>先V後S</b>，能從容不迫的喚醒肌膚<b>本能</b>，啟動肌膚自體養護力\n自然養出<b>健康、乾淨、有光澤</b>的肌膚，<b>悄悄變美</b>",
+      "image": "images/IMG_6057.webp"
+    },
+    {
+      "eyebrow": "",
+      "title": "沛素雙合精華液",
+      "body": "<b><a href=\"product.html?id=V-essence\" class=\"text-link\">per-sulii 沛素-V｜蜂胜肽 plus</a></b>\n主要為淡化紋路、緊緻毛孔、緊實臉部輪廓，<b>安全、自然</b>。\n\n<b><a href=\"product.html?id=S-essence\" class=\"text-link\">per-sulii 沛素-S｜優質人類合法外泌體＋多胜肽</a></b>\n主要為柔潤、透亮肌膚、細緻毛孔，<b>安全、自然</b>。",
+      "image": ""
+    },
+    {
+      "eyebrow": "",
+      "title": "per-sulii，追求 素顏美 魅力",
+      "body": "<b>素顏美，是充滿魅力的美</b>\n沛素雙合精華液不是改變<b>肌膚結構</b>而是改善<b>肌膚本質</b>\n適合男性、女性，青少齡（建議 12 歲以上）\n輕鬆在家養出<b>健康素顏美</b>。",
+      "image": ""
+    },
+    {
+      "eyebrow": "",
+      "title": "TAIWAN科研",
+      "body": "沛素領導科研專家曾在國際級藥廠擔任研發高管\n對於配方及選用原料<b>嚴謹、精準</b>\n產品是由台灣優質GMP藥廠嚴格品質控管\n適用追求自然素顏美\n或醫美後黃金期使用沛素，肌膚美麗持久。<span style=\"display:block;margin-top:32px;line-height:1.4\">per-sulii 沛素</span><span style=\"display:block;line-height:1.4;color:var(--mid-text)\">Made in Taiwan</span>",
+      "image": ""
+    }
   ]
 }

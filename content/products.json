@@ -4,7 +4,7 @@
       "id": "S-essence",
       "code": "S",
       "en": "S-essence",
-      "name": "外泌體多胜肽修護精華",
+      "name": "外泌體多胜肽養護精華",
       "banner": "images/pbanner-S.webp",
       "img": "images/pcard_S.webp",
       "heroImg": "images/S06.webp",
@@ -12,23 +12,23 @@
       "hoverImg": "images/S04.webp",
       "hoverTitle": "沛素-S",
       "hoverDesc": "外泌體細緻膚質",
-      "tagline": "柔潤、透亮臉部肌膚<br>專為細緻膚質設計配方。",
-      "intro": "使用優質人體外泌體與多種天然成分，結合多胜肽科研實力，穩定肌膚狀態、增強防護力，讓肌膚健康細緻。",
+      "tagline": "柔潤、透亮肌膚、細緻毛孔",
+      "intro": "使用優質人體外泌體結合多胜肽，穩定肌膚、增強防護力，讓肌膚健康細緻",
       "videoId": "1J850NPjfvE",
       "benefits": [
         {
           "title": "細緻毛孔",
-          "body": "調理油脂，細緻毛孔，\n肌膚更平滑細緻。",
+          "body": "",
           "img": "images/VS功能_S001.webp"
         },
         {
           "title": "穩定養護",
-          "body": "強化肌膚屏障，\n舒緩不適，穩定膚況。",
+          "body": "",
           "img": "images/VS功能_S002.webp"
         },
         {
           "title": "賦活光采",
-          "body": "賦活肌底能量，提升光澤，\n展現健康透亮。",
+          "body": "",
           "img": "images/VS功能_S003.webp"
         }
       ],
@@ -36,17 +36,17 @@
         {
           "en": "Exosome",
           "zh": "外泌體",
-          "desc": "喚醒肌膚的平衡，維持穩定狀態。"
+          "desc": "喚醒肌膚的平衡，維持穩定狀態"
         },
         {
           "en": "Peptides",
           "zh": "多胜肽",
-          "desc": "小分子設計，溫和滲透，支持肌膚日常保養。"
+          "desc": "小分子設計，溫和滲透，支持肌膚日常保養"
         },
         {
           "en": "Micro Extraction",
           "zh": "小分子萃取",
-          "desc": "精密萃取技術，兼顧穩定性與吸收效率。"
+          "desc": "精密萃取技術，兼顧穩定性與吸收效率"
         }
       ],
       "usageTitle": "每天30秒 日常護理",
@@ -60,9 +60,13 @@
         "inciTitle": "Ingredients / 全成分表",
         "inciList": "Aqua water, Glycerine, Glycosyl Trehalose & Hydrogenated Starch Hydrolysate, Oat Beta-Glucan, Niacinamide, Phenoxyethanol, Exosome Liquid, Carbopol 980, PEG-40 Hydrogenated Castor Oil, Hyaluronic Acid, L-Arginine",
         "inciNote": "Fragrance free",
-        "cert": "TFDA PIF ｜ INCI ｜ GMP"
+        "cert": "TFDA ｜ INCI ｜ GMP"
       },
-      "certifications": ["台灣 TFDA PIF 認證", "國際 INCI 認證", "GMP 品質製程"],
+      "certifications": [
+        "台灣 TFDA 認證",
+        "國際 INCI 認證",
+        "GMP 品質製程"
+      ],
       "bottleInfo": {
         "brand": "per-sulii",
         "name": "沛素-S 外泌體多肽復活精萃",
@@ -84,27 +88,32 @@
       "hoverDesc": "蜂胜肽緊緻撫紋",
       "tagline": "專為紋路肌膚打造的撫紋精華。",
       "intro": "蜂胜肽是珍貴的活性多肽成分，有助於促進肌膚彈性與緊緻，改善細紋與乾燥粗糙，讓肌膚展現澎潤光澤與年輕活力。",
-      "highlights": ["改善細紋", "緊緻肌膚", "彈潤光澤", "淡化紋路"],
+      "highlights": [
+        "改善細紋",
+        "緊緻肌膚",
+        "彈潤光澤",
+        "淡化紋路"
+      ],
       "videoId": "l9t1W9ygMPs",
       "benefits": [
         {
           "title": "淡化紋路",
-          "body": "改善動態與靜態紋路，\n肌膚更平滑細緻。",
+          "body": "改善動態與靜態紋路，\n肌膚更平滑細緻",
           "img": "images/VS功能_V001.webp"
         },
         {
           "title": "緊緻澎潤",
-          "body": "提升肌膚彈性與支撐力，\n使肌膚緊緻飽滿。",
+          "body": "提升肌膚彈性與支撐力，\n使肌膚緊緻飽滿",
           "img": "images/VS功能_V002.webp"
         },
         {
           "title": "彈潤光澤",
-          "body": "提升水潤度，\n使肌膚透亮光采。",
+          "body": "提升水潤度，\n使肌膚透亮光采",
           "img": "images/VS功能_V003.webp"
         },
         {
           "title": "健康肌膚",
-          "body": "強化肌膚防護力，\n養護肌膚健康。",
+          "body": "強化肌膚防護力，\n養護肌膚健康",
           "img": "images/VS功能_V004.webp"
         }
       ],
@@ -112,17 +121,17 @@
         {
           "en": "Bee Peptide",
           "zh": "蜂胜肽",
-          "desc": "支持肌膚緊緻與彈性，幫助維持飽滿狀態。"
+          "desc": "支持肌膚緊緻與彈性，幫助維持飽滿狀態"
         },
         {
           "en": "Multi-Peptides",
           "zh": "多重胜肽",
-          "desc": "複方協同，集中支持紋路與輪廓的日常保養。"
+          "desc": "複方協同，集中支持紋路與輪廓的日常保養"
         },
         {
           "en": "Micro Extraction",
           "zh": "小分子萃取",
-          "desc": "精密萃取技術，兼顧穩定性與吸收效率。"
+          "desc": "精密萃取技術，兼顧穩定性與吸收效率"
         }
       ],
       "audience": [
@@ -143,9 +152,12 @@
         "inciTitle": "Ingredients / 全成分表",
         "inciList": "Aqua Water, Glycerine, Glycosyl Trehalose/Hydrogenated Starch Hydrolysate, Oat Beta-Glucan, Niacinamide, Phenoxyethanol, Carbopol, PEG-40 Hydrogenated Castor Oil, Butylene Glycol/Honey Bee Venom, Dipeptide Diaminobutyroyl Benzylamide Diacetate, Hyaluronic Acid, L-Arginine",
         "inciNote": "Fragrance free",
-        "cert": "TFDA PIF ｜ INCI ｜ GMP"
+        "cert": "TFDA ｜ INCI ｜ GMP"
       },
-      "certifications": ["國際 INCI 認證", "TFDA", "PIF 認證"],
+      "certifications": [
+        "國際 INCI 認證",
+        "TFDA"
+      ],
       "bottleInfo": {
         "brand": "per-sulii",
         "name": "沛素-V 精萃蜂胜肽plus精華",

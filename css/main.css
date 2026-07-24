@@ -17,7 +17,7 @@
   --serif: 'Funnel Display', 'Noto Serif TC', serif;
   --sans: 'Funnel Display', 'Noto Sans TC', -apple-system, 'Segoe UI', sans-serif;
   --img-radius: 8px;
-  --link:#7791b0;
+  --link: #7791b0;
 }
 
 * {
@@ -38,10 +38,12 @@ body {
   font-weight: 400;
 }
 
-.hdr,main {
+.hdr,
+main {
   max-width: 1920px;
   margin: 0 auto;
 }
+
 main {
   padding-bottom: 24px;
 }
@@ -159,10 +161,10 @@ h3.in-view {
 }
 
 .about-sec-head {
-  padding: 6px 12px; 
+  padding: 6px 12px;
   border-top: 1px solid var(--mid);
   border-bottom: 1px solid var(--mid);
-  display: inline-block; 
+  display: inline-block;
 }
 
 .lead {
@@ -194,23 +196,12 @@ h3.in-view {
   padding: 0 56px
 }
 
-.story .wrap {
-  padding: 40px;
-  border-radius: 24px;
-  margin: 40px auto;
-}
-
 .sec {
   padding: clamp(28px, 2.5vw, 40px) 0;
 }
 
 .sec.paper {
   background: var(--paper);
-}
-
-.story.sec {
-  padding-left: 20px;
-  padding-right: 20px;
 }
 
 .sec.tight {
@@ -289,10 +280,12 @@ h3.in-view {
   text-align: left;
   letter-spacing: 0.02em;
 }
+
 #about-article p b {
   color: var(--ink);
   font-weight: 500;
 }
+
 .maxw {
   max-width: 680px
 }
@@ -327,10 +320,10 @@ h3.in-view {
   border: 0
 }
 
-.ingredient-flow{
+.ingredient-flow {
   background-color: #f1f1f1;
   border-radius: 8px;
-  padding: 12px; 
+  padding: 12px;
 }
 
 .ingredient-flow-terms {
@@ -433,10 +426,11 @@ h3.in-view {
 }
 
 .quote {
-    padding: 8px 24px;
-    background-color: #f3f3f3;
-    border-radius: 16px;
+  padding: 8px 24px;
+  background-color: #f3f3f3;
+  border-radius: 16px;
 }
+
 /* media placeholders */
 .media {
   position: relative;
@@ -684,7 +678,7 @@ h3.in-view {
 .pagehead {
   background: var(--bg);
   text-align: center;
-  padding: clamp(25px, 3vw, 40px) 0 
+  padding: clamp(25px, 3vw, 40px) 0
 }
 
 .crumb {
@@ -1181,12 +1175,14 @@ h3.in-view {
   font-size: 13px;
   letter-spacing: .04em
 }
+
 .ftr-flex-cert {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
+
 .ftr-cert-sub {
   font-size: 13px;
   margin: 14px auto;
@@ -1278,105 +1274,8 @@ h3.in-view {
   margin-top: 18px
 }
 
-/* ---- brand story tabs ---- */
-.btabs-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(40px, 6vw, 88px);
-  align-items: stretch;
-  min-height: clamp(520px, 52vw, 700px)
-}
-
-.btabs-img {
-  border-radius: 20px;
-  height: 100%
-}
-
-/* 左欄 flex column，讓 panels 撐滿剩餘高度 */
-.btabs-left {
-  display: flex;
-  flex-direction: column;
-  height: 100%
-}
-
-/* panels: all stacked in same grid cell — height固定為最高的那張，不跳動 */
-.btabs-panels {
-  display: grid;
-  flex: 1
-}
-
-.btabs-panel {
-  grid-area: 1/1;
-  opacity: 0;
-  transition: opacity .2s ease;
-  pointer-events: none
-}
-
-.btabs-panel.active {
-  opacity: 1;
-  pointer-events: auto
-}
-
-.btabs-nav {
-  margin-top: 48px
-}
-
-.btabs-item {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 20px 0;
-  border-top: 1px solid var(--line);
-  cursor: pointer;
-  transition: .15s;
-  width: 100%
-}
-
-.btabs-item:last-child {
-  border-bottom: 1px solid var(--line)
-}
-
-.bi-num {
-  font-family: var(--serif);
-  font-size: 13px;
-  color: var(--taupe);
-  letter-spacing: .1em;
-  min-width: 20px;
-  flex-shrink: 0;
-  transition: .15s
-}
-
-.bi-title {
-  font-size: 28px;
-  color: var(--mid-text);
-  transition: .15s
-}
-
-.btabs-item.active .bi-num,
-.btabs-item.active .bi-title {
-  color: var(--ink)
-}
-
-.btabs-item.active .bi-title {
-  font-weight: 500
-}
-
-.btabs-item:hover .bi-title {
-  color: var(--ink)
-}
-
 /* ---- responsive ---- */
 @media (max-width:768px) {
-  .btabs-layout {
-    grid-template-columns: 1fr;
-    min-height: auto
-  }
-
-  .btabs-img {
-    min-height: 260px;
-    order: -1
-  }
-
   .display {
     font-size: 36px
   }
@@ -1397,10 +1296,12 @@ h3.in-view {
   .g3,
   .split,
   .pfeature {
-    grid-template-columns: 1fr
+    grid-template-columns: 1fr;
+    gap: clamp(16px, 1vw, 32px);
   }
 
-  .pfeature .media {
+  .pfeature .media,
+  .split .media {
     order: 1
   }
 
@@ -1418,7 +1319,7 @@ h3.in-view {
 
   .pfeature-text {
     min-width: 0;
-    padding: 30px;
+    padding: 16px 0;
   }
 
   .pfeature-head {
@@ -1504,9 +1405,10 @@ h3.in-view {
     height: auto !important
   }
 
-.media.product~div p {
-  max-width: unset;
-}
+  .media.product~div p {
+    max-width: unset;
+  }
+
   .flist .fitem {
     grid-template-columns: 1fr;
     gap: 10px
@@ -1521,7 +1423,7 @@ h3.in-view {
     gap: 12px
   }
 
-  .ftr>.wrap{
+  .ftr>.wrap {
     padding: 0 8px;
   }
 
@@ -1553,10 +1455,6 @@ h3.in-view {
   .ftr button {
     font-size: 1rem;
   }
-
-  .story .wrap {
-    padding: 0px;
-  }
 }
 
 /* hero 輪播 */
@@ -1573,6 +1471,7 @@ h3.in-view {
   opacity: 0;
   transition: opacity 1.2s ease;
 }
+
 .hero-slide-img,
 .hero-fallback-img {
   position: absolute;
@@ -1583,13 +1482,16 @@ h3.in-view {
   object-position: center top;
   display: block;
 }
+
 .hero-fallback-img {
   z-index: 0;
 }
-.hero-slide~.wrap{
+
+.hero-slide~.wrap {
   padding-top: 12px;
   padding-bottom: 12px;
 }
+
 .hero-slide.active {
   opacity: 1
 }
@@ -1617,7 +1519,7 @@ h3.in-view {
 
 .hero-arrow:hover {
   opacity: 1;
-  background-color: rgba(255,255,255,.3);
+  background-color: rgba(255, 255, 255, .3);
 }
 
 .hero-arrow.prev {

@@ -91,7 +91,7 @@ function initShareButtons() {
       var url = btn.dataset.shareUrl || window.location.href;
       var title = btn.dataset.shareTitle || document.title;
       if (navigator.share) {
-        navigator.share({ title: title, url: url }).catch(function () {});
+        navigator.share({ title: title, url: url }).catch(function () { });
         return;
       }
       if (navigator.clipboard) {
@@ -100,7 +100,7 @@ function initShareButtons() {
           var original = label.textContent;
           label.textContent = '已複製連結';
           setTimeout(function () { label.textContent = original; }, 1800);
-        }).catch(function () {});
+        }).catch(function () { });
       }
     });
   });
@@ -179,19 +179,19 @@ function renderProductDetail(PRODUCTS) {
   /* 關鍵成分：多項成分以「甲 + 乙 ⇨ 丙」流程呈現，說明文字取最後一項成分的描述 */
   var ing = (p.ingredients && p.ingredients.length > 1)
     ? (function () {
-        var last = p.ingredients[p.ingredients.length - 1];
-        var head = p.ingredients.slice(0, -1).map(function (c) { return c.zh; }).join(' <span class="ingredient-flow-plus">+</span> ');
-        return '<div class="ingredient-flow mt24">'
-          + '<div class="ingredient-flow-terms">' + head + ' <span class="ingredient-flow-arrow">⇨</span> ' + last.zh + '</div>'
-          + '<p class="ingredient-flow-caption mt8">' + last.desc + '</p>'
-          + '</div>';
-      })()
+      var last = p.ingredients[p.ingredients.length - 1];
+      var head = p.ingredients.slice(0, -1).map(function (c) { return c.zh; }).join(' <span class="ingredient-flow-plus">+</span> ');
+      return '<div class="ingredient-flow mt24">'
+        + '<div class="ingredient-flow-terms">' + head + ' <span class="ingredient-flow-arrow">⇨</span> ' + last.zh + '</div>'
+        + '<p class="ingredient-flow-caption mt8">' + last.desc + '</p>'
+        + '</div>';
+    })()
     : p.ingredients.map(function (c, i) {
-        return (i > 0 ? '<hr class="divider mt24">' : '')
-          + '<div class="mt24"><div class="eyebrow">' + c.en + '</div>'
-          + '<h3 class="h3 mt8" style="font-size:20px">' + c.zh + '</h3>'
-          + '<p class="body mt8">' + c.desc + '</p></div>';
-      }).join('');
+      return (i > 0 ? '<hr class="divider mt24">' : '')
+        + '<div class="mt24"><div class="eyebrow">' + c.en + '</div>'
+        + '<h3 class="h3 mt8" style="font-size:20px">' + c.zh + '</h3>'
+        + '<p class="body mt8">' + c.desc + '</p></div>';
+    }).join('');
 
   var use = p.usage.map(function (s, i) {
     var n = ('0' + (i + 1)).slice(-2);
@@ -203,75 +203,75 @@ function renderProductDetail(PRODUCTS) {
   var ZH_NUM = { 1: '一', 2: '二', 3: '三', 4: '四', 5: '五', 6: '六' };
   var benefitsHTML = (p.benefits && p.benefits.length)
     ? '<h2 class="h3">' + (ZH_NUM[p.benefits.length] || p.benefits.length) + '大保養功效</h2><div class="benefits-row' + (p.benefits.length === 3 ? ' cols-3' : '') + ' mt32">'
-      + p.benefits.map(function (b) {
-        return '<div class="benefit-item">'
-          + '<div class="benefit-thumb"' + (b.img ? ' style="background-image:url(\'' + b.img + '\');background-size:cover;background-position:center"' : '') + '></div>'
-          + '<div><h3 class="h3" style="font-size:20px">' + b.title + '</h3>'
-          + '<p class="small mt8">' + nl2br(b.body) + '</p></div></div>';
-      }).join('') + '</div>'
+    + p.benefits.map(function (b) {
+      return '<div class="benefit-item">'
+        + '<div class="benefit-thumb"' + (b.img ? ' style="background-image:url(\'' + b.img + '\');background-size:cover;background-position:center"' : '') + '></div>'
+        + '<div><h3 class="h3" style="font-size:20px">' + b.title + '</h3>'
+        + '<p class="small mt8">' + nl2br(b.body) + '</p></div></div>';
+    }).join('') + '</div>'
     : '<h2 class="h3">產品特色</h2><p class="body mt16">' + p.feature + '</p>';
 
   var featureSection = p.videoId
     ? '<div class="benefits-layout"><div>' + benefitsHTML + '</div>'
-      + '<div class="benefit-video"><div class="video-frame"><iframe src="https://www.youtube.com/embed/' + p.videoId + '" title="' + p.en + ' 介紹影片" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>'
-      + shareButtonHTML(SITE_URL + '/product.html?id=' + p.id, p.en + ' ' + p.name) + '</div>'
-      + '</div>'
+    + '<div class="benefit-video"><div class="video-frame"><iframe src="https://www.youtube.com/embed/' + p.videoId + '" title="' + p.en + ' 介紹影片" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>'
+    + shareButtonHTML(SITE_URL + '/product.html?id=' + p.id, p.en + ' ' + p.name) + '</div>'
+    + '</div>'
     : benefitsHTML;
 
   /* 適用族群／使用方式 左右並排 */
   var audienceUsageSection = (p.audience && p.audience.length)
     ? '<section class="sec tight" style="background:var(--bg)"><div class="wrap grid g2">'
-      + '<div><h2 class="h3">適用族群</h2>'
-      + '<ul class="checklist mt24">' + p.audience.map(function (a) { return '<li>' + a + '</li>'; }).join('') + '</ul>'
-      + '</div>'
-      + '<div><h2 class="h3">使用方式</h2>'
-      + (p.usageTitle ? '<p class="body mt16">' + p.usageTitle + '</p>' : '')
-      + use + '</div>'
-      + '</div></section>'
+    + '<div><h2 class="h3">適用族群</h2>'
+    + '<ul class="checklist mt24">' + p.audience.map(function (a) { return '<li>' + a + '</li>'; }).join('') + '</ul>'
+    + '</div>'
+    + '<div><h2 class="h3">使用方式</h2>'
+    + (p.usageTitle ? '<p class="body mt16">' + p.usageTitle + '</p>' : '')
+    + use + '</div>'
+    + '</div></section>'
     : '<section class="sec tight"><div class="wrap"><h2 class="h3">使用方式</h2>'
-      + (p.usageTitle ? '<p class="body mt16">' + p.usageTitle + '</p>' : '')
-      + use + '</div></section>';
+    + (p.usageTitle ? '<p class="body mt16">' + p.usageTitle + '</p>' : '')
+    + use + '</div></section>';
 
   var reminderSection = p.reminder
     ? '<section class="sec tight"><div class="wrap"><h2 class="h3">注意事項</h2>'
-      + '<ul class="checklist dot mt16">' + p.reminder.split(/\n{2,}/).map(function (r) { return '<li>' + r + '</li>'; }).join('') + '</ul>'
-      + '</div></section>'
+    + '<ul class="checklist dot mt16">' + p.reminder.split(/\n{2,}/).map(function (r) { return '<li>' + r + '</li>'; }).join('') + '</ul>'
+    + '</div></section>'
     : '';
 
   var certSection = (p.certifications && p.certifications.length)
     ? '<p class="body mt16">品質認證：</p><ul class="checklist mt8">'
-      + p.certifications.map(function (c) { return '<li>' + c + '</li>'; }).join('') + '</ul>'
+    + p.certifications.map(function (c) { return '<li>' + c + '</li>'; }).join('') + '</ul>'
     : '<p class="body mt8">品質認證：' + p.specs.cert + '</p>';
 
   var inciSection = p.specs.inciList
     ? '<p class="body mt8">成分標示：</p>'
-      + '<p class="eyebrow mt16">' + p.specs.inciTitle + '</p>'
-      + '<p class="small mt8">' + p.specs.inciList + '</p>'
-      + (p.specs.inciNote ? '<p class="small mt8">' + p.specs.inciNote + '</p>' : '')
+    + '<p class="body mt16" style="font-weight:500">' + p.specs.inciTitle + '</p>'
+    + '<p class="small mt8">' + p.specs.inciList + '</p>'
+    + (p.specs.inciNote ? '<p class="small mt8">' + p.specs.inciNote + '</p>' : '')
     : '<p class="body mt8">成分標示：' + p.specs.inci + '</p>';
 
   var bottleSection = p.bottleInfo
     ? '<section class="sec tight" style="background:var(--bg)"><div class="wrap">'
-      + '<h2 class="h3">產品資訊</h2><table class="pspecs mt24">'
-      + '<tr><th>品牌</th><td>' + p.bottleInfo.brand + '</td></tr>'
-      + '<tr><th>品名</th><td>' + p.bottleInfo.name + '</td></tr>'
-      + '<tr><th>英文名稱</th><td>' + p.bottleInfo.enName + '</td></tr>'
-      + '<tr><th>容量</th><td>' + p.bottleInfo.volume + '</td></tr>'
-      + '</table>'
-      + '<div class="mt24">' + inciSection + '</div>'
-      + '</div></section>'
+    + '<h2 class="h3">產品資訊</h2><table class="pspecs mt24">'
+    + '<tr><th>品牌</th><td>' + p.bottleInfo.brand + '</td></tr>'
+    + '<tr><th>品名</th><td>' + p.bottleInfo.name + '</td></tr>'
+    + '<tr><th>英文名稱</th><td>' + p.bottleInfo.enName + '</td></tr>'
+    + '<tr><th>容量</th><td>' + p.bottleInfo.volume + '</td></tr>'
+    + '</table>'
+    + '<div class="mt24">' + inciSection + '</div>'
+    + '</div></section>'
     : '';
 
   /* 規格與認證：已有產品資訊表格時，容量／成分標示改列於該處，這裡只留品質認證 */
   var specsSection = p.bottleInfo
     ? '<section class="sec tight" style="background:var(--bg)"><div class="wrap"><h2 class="h3">規格與認證</h2>'
-      + certSection
-      + '</div></section>'
+    + certSection
+    + '</div></section>'
     : '<section class="sec tight" style="background:var(--bg)"><div class="wrap"><h2 class="h3">規格與認證</h2>'
-      + '<p class="body mt16">容量 / 規格：' + p.specs.size + '</p>'
-      + inciSection
-      + certSection
-      + '</div></section>';
+    + '<p class="body mt16">容量 / 規格：' + p.specs.size + '</p>'
+    + inciSection
+    + certSection
+    + '</div></section>';
 
   var pageTitle = p.en + ' ' + p.name + ' — ' + SITE_NAME;
   document.title = pageTitle;
@@ -306,7 +306,7 @@ function renderProductDetail(PRODUCTS) {
     + '<div><div class="eyebrow">' + p.en + '</div>'
     + '<h1 class="h2 mt12">' + p.name + '</h1>'
     + '<p class="lead mt16">' + p.tagline + '</p>'
-    + '<p class="body mt16">' + p.intro + '</p>'
+    + '<p class="body">' + p.intro + '</p>'
     + (p.highlights && p.highlights.length ? '<div class="chips mt24">' + p.highlights.map(function (h) { return '<span class="chip">' + h + '</span>'; }).join('') + '</div>' : '')
     + '</div>'
     + '</div></section>'
@@ -381,16 +381,14 @@ function renderArticle(ARTICLES) {
 function renderHome(data) {
   if (document.body.dataset.page !== 'home') return;
   var s = data.science;
-  setText('sci-eyebrow', s.eyebrow);
   setText('sci-title', s.title);
-  setHTML('sci-lead', nl2br(s.lead));
-  
+
   var mb = document.getElementById('sci-more-btn');
   if (mb) {
     if (s.btn_text) mb.textContent = s.btn_text;
     if (s.btn_link) mb.href = s.btn_link;
   }
-  
+
   var simg = document.getElementById('sci-image');
   if (simg && s.image) {
     simg.src = s.image;
@@ -533,51 +531,6 @@ function setTextOrHide(id, text) {
   if (!el) return;
   if (text) { el.textContent = text; el.style.display = ''; }
   else { el.style.display = 'none'; }
-}
-
-/* ---- 品牌故事 Tabs ---- */
-function initStoryTabs(story) {
-  var contentEl = document.getElementById('btabs-content');
-  var imgEl = document.getElementById('btabs-img');
-  var navEl = document.getElementById('btabs-nav');
-  if (!contentEl || !imgEl || !navEl) return;
-  var TABS = story.tabs;
-  var current = 0;
-  if (story.image) imgEl.style.backgroundImage = "url('" + story.image + "')";
-
-  contentEl.className = 'btabs-panels';
-  contentEl.innerHTML = TABS.map(function (t, i) {
-    return '<div class="btabs-panel' + (i === 0 ? ' active' : '') + '">'
-      + '<div class="eyebrow">' + t.en + '</div>'
-      + '<h2 class="h2 mt16">' + t.title + '</h2>'
-      + paragraphs(t.body, 'mt24', 'mt16')
-      + '</div>';
-  }).join('');
-
-  var panels = contentEl.querySelectorAll('.btabs-panel');
-  imgEl.setAttribute('data-mono', '01');
-
-  navEl.innerHTML = TABS.map(function (t, i) {
-    var n = ('0' + (i + 1)).slice(-2);
-    return '<button type="button" class="btabs-item' + (i === 0 ? ' active' : '') + '" data-i="' + i + '">'
-      + '<span class="bi-num">' + n + '</span>'
-      + '<span class="bi-title">' + (t.label || '') + '</span>'
-      + '</button>';
-  }).join('');
-
-  navEl.querySelectorAll('.btabs-item').forEach(function (btn) {
-    function activate() {
-      var i = parseInt(btn.dataset.i);
-      if (i === current) return;
-      current = i;
-      panels.forEach(function (p, idx) { p.classList.toggle('active', idx === i); });
-      navEl.querySelectorAll('.btabs-item').forEach(function (b) { b.classList.remove('active'); });
-      btn.classList.add('active');
-      imgEl.setAttribute('data-mono', ('0' + (i + 1)).slice(-2));
-    }
-    btn.addEventListener('mouseenter', activate);
-    btn.addEventListener('click', activate);
-  });
 }
 
 /* ============ 關於頁 ============ */

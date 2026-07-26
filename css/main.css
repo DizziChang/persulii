@@ -759,8 +759,7 @@ h3.in-view {
   background: var(--paper)
 }
 
-.pcard,
-.jcard {
+.pcard {
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -1016,65 +1015,6 @@ h3.in-view {
   letter-spacing: .08em;
   color: var(--ink-soft);
   margin-top: 18px
-}
-
-/* journal card */
-.jcard {
-  cursor: pointer
-}
-
-.jcard .media {
-  height: clamp(200px, 22vw, 260px)
-}
-
-.jcard .media.jcard-title {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  text-align: center;
-  font-family: var(--sans);
-  font-weight: 300;
-  font-size: clamp(20px, 2.3vw, 27px);
-  letter-spacing: 1.5px;
-  color: var(--ink);
-  transition: .2s
-}
-
-.jcard .media.jcard-title::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border: 1px solid #c1c1c1;
-  opacity: 0;
-  transition: inset .4s ease, opacity .4s ease;
-  pointer-events: none
-}
-
-.jcard:hover .media.jcard-title::before {
-  inset: 20px;
-  opacity: 1
-}
-
-.jcard .jcard-cat {
-  font-family: var(--sans);
-  font-size: 12px;
-  letter-spacing: 3px;
-  color: var(--mid-text);
-  margin-bottom: 10px
-}
-
-.jcard:hover .media.jcard-title {
-  color: var(--taupe)
-}
-
-.jcard:hover .h3 {
-  color: var(--taupe)
-}
-
-.jcard .h3 {
-  transition: .2s
 }
 
 /* footer 社群 icon */

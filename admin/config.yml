@@ -11,27 +11,6 @@ media_folder: images
 public_folder: images
 
 collections:
-  - name: journal
-    label: 專欄文章
-    files:
-      - name: articles
-        label: 文章列表
-        file: content/journal.json
-        fields:
-          - name: items
-            label: 文章
-            widget: list
-            add_to_top: true
-            summary: "{{fields.cat}}｜{{fields.line1}}{{fields.line2}}"
-            fields:
-              - { name: slug, label: 網址代稱（英文、不可重複）, widget: string, hint: "例如 exosome-intro，發布後請勿更改" }
-              - { name: cat, label: 分類, widget: string }
-              - { name: line1, label: 標題（上行）, widget: string }
-              - { name: line2, label: 標題（下行）, widget: string }
-              - { name: date, label: 日期, widget: string, hint: "格式 YYYY-MM-DD" }
-              - { name: home, label: 顯示在首頁, widget: boolean, default: false }
-              - { name: body, label: 內文, widget: markdown }
-
   - name: products
     label: 產品
     files:

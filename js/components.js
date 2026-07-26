@@ -10,7 +10,7 @@
        <script src="js/components.js"></script>
      </body>
 
-   data-page 值：home | about | products | journal | contact
+   data-page 值：home | about | products | contact
    ============================================================ */
 
 (function () {

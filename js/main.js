@@ -324,58 +324,6 @@ function renderProductDetail(PRODUCTS) {
   initShareButtons();
 }
 
-/* ============ 專欄 ============ */
-function journalCardHTML(a) {
-  return '<a href="article.html?slug=' + encodeURIComponent(a.slug) + '" class="jcard">'
-    + '<div class="media jcard-title"><span class="jcard-cat">' + a.cat + '</span><span>' + a.line1 + '</span><span>' + a.line2 + '</span></div>'
-    + '</a>';
-}
-
-function renderJournal(ARTICLES, homeCount) {
-  var sorted = ARTICLES.slice().sort(function (a, b) { return (b.date || '').localeCompare(a.date || ''); });
-  var home = document.getElementById('home-journal');
-  if (home) {
-    var picks = sorted.filter(function (a) { return a.home; });
-    if (!picks.length) picks = sorted;
-    home.innerHTML = picks.slice(0, homeCount || 3).map(journalCardHTML).join('');
-  }
-  var list = document.getElementById('journal-list');
-  if (list) list.innerHTML = sorted.map(journalCardHTML).join('');
-}
-
-function renderArticle(ARTICLES) {
-  var el = document.getElementById('article-body');
-  if (!el) return;
-  var slug = new URLSearchParams(window.location.search).get('slug');
-  var a = ARTICLES.find(function (x) { return x.slug === slug; }) || ARTICLES[0];
-  var title = a.line1 + a.line2;
-  var pageTitle = title + ' — ' + SITE_NAME;
-  document.title = pageTitle;
-  setText('article-cat', a.cat);
-  setHTML('article-title', a.line1 + '<br>' + a.line2);
-  setText('article-date', a.date || '');
-  el.innerHTML = (window.marked ? marked.parse(a.body || '') : paragraphs(a.body, 'mt16', 'mt16'));
-
-  var plain = (a.body || '').replace(/[#*_`>\[\]()-]/g, '').replace(/\s+/g, ' ').trim();
-  var metaDesc = plain ? (plain.length > 120 ? plain.slice(0, 117) + '...' : plain) : (a.cat + '｜' + title);
-  var path = '/article.html?slug=' + encodeURIComponent(a.slug);
-  setPageMeta({ title: pageTitle, description: metaDesc, path: path, image: DEFAULT_OG_IMAGE });
-  injectJSONLD('ld-article', {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: title,
-    description: metaDesc,
-    datePublished: a.date,
-    author: { '@type': 'Organization', name: SITE_NAME },
-    publisher: {
-      '@type': 'Organization',
-      name: SITE_NAME,
-      logo: { '@type': 'ImageObject', url: SITE_URL + '/images/per-sulii-logo-grayscale.webp' }
-    },
-    mainEntityOfPage: SITE_URL + path
-  });
-}
-
 /* ============ 首頁內容 ============ */
 function renderHome(data) {
   if (document.body.dataset.page !== 'home') return;
@@ -664,10 +612,6 @@ document.addEventListener('DOMContentLoaded', function () {
     .then(function (r) { injectOrganizationLD(Object.assign({}, r[0], r[1])); })
     .catch(console.error);
   getJSON('content/products.json').then(function (d) { renderProducts(d.items); }).catch(console.error);
-  getJSON('content/journal.json').then(function (d) {
-    renderJournal(d.items, 3);
-    renderArticle(d.items);
-  }).catch(console.error);
 
   if (page === 'home') {
     getJSON('content/home.json').then(renderHome).catch(console.error);

@@ -1833,3 +1833,8 @@ h3.in-view {
 .pspecs tr:last-child td {
   border-bottom: 1px solid var(--line)
 }
+
+/* 產品頁：全成分表英文內文，電腦版限制寬度避免整行拉太長 */
+.inci-text {
+  max-width: 800px;
+}

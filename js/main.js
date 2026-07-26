@@ -245,7 +245,7 @@ function renderProductDetail(PRODUCTS) {
   var inciSection = p.specs.inciList
     ? '<p class="body mt8">成分標示：</p>'
     + '<p class="body mt16" style="font-weight:500">' + p.specs.inciTitle + '</p>'
-    + '<p class="small mt8">' + p.specs.inciList + '</p>'
+    + '<p class="small mt8 inci-text">' + p.specs.inciList + '</p>'
     + (p.specs.inciNote ? '<p class="small mt8">' + p.specs.inciNote + '</p>' : '')
     : '<p class="body mt8">成分標示：' + p.specs.inci + '</p>';
 

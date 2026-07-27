@@ -1,0 +1,12 @@
+# 網站暫時關閉，全站導向「敬請期待」頁面
+# 要重新開放：刪除本檔案（或註解掉下方 /* 規則）即可
+
+/coming-soon.html   /coming-soon.html   200
+/css/*              /css/:splat         200
+/js/*                /js/:splat          200
+/images/*            /images/:splat      200
+/content/*           /content/:splat     200
+/admin/*             /admin/:splat       200
+/robots.txt          /robots.txt         200
+/sitemap.xml         /sitemap.xml        200
+/*                    /coming-soon.html   200

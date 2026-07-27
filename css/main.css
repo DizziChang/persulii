@@ -1449,6 +1449,10 @@ h3.in-view {
     gap: 28px;
   }
 
+  .ftr-grid-item {
+    width: fit-content;
+    margin: auto;
+  }
   .ftr-logo {
     text-align: center;
   }
@@ -1479,7 +1483,7 @@ h3.in-view {
     display: none;
   }
    .benefit-item p {
-     max-width: 65%;
+     max-width: 77%;
      margin: auto;
   }
 }

@@ -205,7 +205,7 @@ function renderProductDetail(PRODUCTS) {
     + p.benefits.map(function (b) {
       return '<div class="benefit-item">'
         + '<div class="benefit-thumb"' + (b.img ? ' style="background-image:url(\'' + b.img + '\');background-size:cover;background-position:center"' : '') + '></div>'
-        + '<div><h3 class="h3" style="font-size:20px">' + b.title + '</h3>'
+        + '<div><h3 class="h3" style="font-size: clamp(18px, 2.5vw, 20px);">' + b.title + '</h3>'
         + '<p class="small mt8">' + nl2br(b.body) + '</p></div></div>';
     }).join('') + '</div>'
     : '<h2 class="h3">產品特色</h2><p class="body mt16">' + p.feature + '</p>';
@@ -313,7 +313,7 @@ function renderProductDetail(PRODUCTS) {
     + '<section class="sec tight"><div class="wrap"><h2 class="h3">關鍵成分</h2>' + ing + '</div></section>'
     + audienceUsageSection
     + reminderSection
-    + specsSection
+    + '' /* TODO: 暫時隱藏「規格與認證」區塊，之後要恢復請改回 + specsSection */
     + bottleSection
     + '<section class="sec tight"><div class="wrap">'
     + '<div class="pn mt56">'

@@ -1,5 +1,9 @@
 # 網站暫時關閉，全站導向「敬請期待」頁面
 # 要重新開放：刪除本檔案（或註解掉下方 /* 規則）即可
+# 注意：此平台的比對規則是「最後符合的規則生效」，
+# 所以全站規則要放最前面，例外規則要放後面，例外才會生效。
+
+/*                    /coming-soon.html   200
 
 /coming-soon.html   /coming-soon.html   200
 /css/*              /css/:splat         200
@@ -9,4 +13,3 @@
 /admin/*             /admin/:splat       200
 /robots.txt          /robots.txt         200
 /sitemap.xml         /sitemap.xml        200
-/*                    /coming-soon.html   200

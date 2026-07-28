@@ -1,0 +1,24 @@
+# ============================================================
+# Cloudflare Workers 靜態資源的快取策略
+#
+# 未列出的路徑會沿用 Cloudflare 預設值
+# （public, max-age=0, must-revalidate — 每次都回來驗證），
+# 這正是 HTML 想要的行為，所以刻意不寫 /* 萬用規則，
+# 避免與下方規則合併時產生不確定的覆寫順序。
+# ============================================================
+
+# CMS 內容：後台存檔後要立刻反映，絕不可長快取
+/content/*
+  Cache-Control: no-cache
+
+# 圖片：CMS 換圖常沿用同檔名，長快取會導致換了圖卻看到舊的
+/images/*
+  Cache-Control: no-cache
+
+# CSS / JS：網址帶 ?v=<內容雜湊>（由 scripts/stamp-assets.mjs 於建置時寫入），
+# 檔案一改雜湊就變、網址就變，因此可以安心長期快取
+/css/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/js/*
+  Cache-Control: public, max-age=31536000, immutable

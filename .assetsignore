@@ -1,0 +1,14 @@
+# ============================================================
+# 不上傳到 Cloudflare 的檔案
+# assets.directory 設為 "."（見 wrangler.jsonc），整個 repo 根目錄
+# 預設都會被公開，這裡把不需要對外的檔案排除掉。
+# _headers 與 .assetsignore 本身由 Cloudflare 自動排除，不必列。
+# ============================================================
+
+.claude/
+scripts/
+wrangler.jsonc
+部署方案規劃.md
+
+# 舊版的頁首／頁尾片段，現由 js/components.js 直接產生，已無引用
+html/

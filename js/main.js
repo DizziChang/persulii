@@ -467,12 +467,12 @@ function initAboutImgPin() {
   var top = document.getElementById('sci-image-top');
   if (!wrap || !bg || !top) return;
 
-  var ENTER_PX = 100;      // 圖片進入畫面多少 px 後開始觸發
-  var SLOW_PX = 260;       // 觸發後，正常等效捲動這麼多 px 才算走完效果
+  var ENTER_PX = 300;      // 圖片進入畫面多少 px 後開始觸發
+  var SLOW_PX = 300;       // 觸發後，正常等效捲動這麼多 px 才算走完效果
   var SLOW_FACTOR = 0.35;  // 效果進行中，滑鼠滾輪的實際捲動速度縮小到這個比例
   var LAYER_SCALE = 1;     // 不放大，兩層在終點（完全對齊）時零裁切
-  var BG_START = -10;      // 背景層一開始的位移（px），隨捲動歸位到 0
-  var TOP_START = 20;      // 前景層一開始的位移（px），隨捲動歸位到 0
+  var BG_START = -20;      // 背景層一開始的位移（px），隨捲動歸位到 0
+  var TOP_START = 80;      // 前景層一開始的位移（px），隨捲動歸位到 0
 
   var progressPx = 0;      // 0..SLOW_PX，效果已經「消耗」掉多少捲動量
   var lastScrollY = window.scrollY;

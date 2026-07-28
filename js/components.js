@@ -7,7 +7,7 @@
        <div id="site-header"></div>
        <!-- 頁面內容 -->
        <div id="site-footer"></div>
-       <script src="js/components.js"></script>
+       <script src="/js/components.js"></script>
      </body>
 
    data-page 值：home | about | products | contact
@@ -15,31 +15,31 @@
 
 (function () {
 
-  /* ---- 圖片路徑（相對於各 html 頁） ---- */
-  var IMG_LOGO_GREY = 'images/per-sulii-logo-grayscale.webp';
-  var IMG_LOGO_WHITE = 'images/per-sulii Logo-logo-whitepng.webp';
+  /* ---- 圖片路徑（根絕對路徑，子目錄頁面如 /products/<slug> 才不會解析錯） ---- */
+  var IMG_LOGO_GREY = '/images/per-sulii-logo-grayscale.webp';
+  var IMG_LOGO_WHITE = '/images/per-sulii Logo-logo-whitepng.webp';
 
   /* ---- Header HTML ---- */
   var HEADER = `
 <header class="hdr">
   <div class="hdr-in" style="position:relative">
-    <a href="index.html">
+    <a href="/">
       <img class="logo" src="${IMG_LOGO_GREY}" alt="沛素 per-sulii">
     </a>
     <nav class="nav desk" aria-label="主要導覽">
-      <a href="index.html"    data-page="home">首頁</a>
-      <a href="about.html"    data-page="about">關於</a>
-      <a href="products.html" data-page="products">產品</a>
-      <a href="contact.html"  data-page="contact">經銷</a>
+      <a href="/"    data-page="home">首頁</a>
+      <a href="/about"    data-page="about">關於</a>
+      <a href="/products" data-page="products">產品</a>
+      <a href="/contact"  data-page="contact">經銷</a>
     </nav>
     <button class="burger mob" id="burger" type="button"
       aria-label="開啟選單" aria-expanded="false" aria-controls="mmenu">≡</button>
   </div>
   <nav class="mmenu" id="mmenu" aria-label="行動版導覽">
-    <a href="index.html">首頁</a>
-    <a href="about.html">關於</a>
-    <a href="products.html">產品</a>
-    <a href="contact.html">經銷</a>
+    <a href="/">首頁</a>
+    <a href="/about">關於</a>
+    <a href="/products">產品</a>
+    <a href="/contact">經銷</a>
   </nav>
 </header>`;
 
@@ -50,10 +50,10 @@
 <footer class="ftr">
   <div class=" wrap">
    <div class="ftr-flex-item">
-      <a href="index.html">首頁</a>
-      <a href="about.html">關於</a>
-      <a href="products.html">產品</a>
-      <a href="contact.html">經銷</a>
+      <a href="/">首頁</a>
+      <a href="/about">關於</a>
+      <a href="/products">產品</a>
+      <a href="/contact">經銷</a>
     </div>
     <div class="ftr-grid">
       <div class="ftr-logo">
@@ -99,7 +99,7 @@
     var fp = document.getElementById('site-footer');
     if (hp) hp.innerHTML = HEADER;
     if (fp) {
-      fetch('content/settings-footer.json').then(function (r) { return r.json(); }).then(function (s) {
+      fetch('/content/settings-footer.json').then(function (r) { return r.json(); }).then(function (s) {
         fp.innerHTML = footerHTML(s);
       }).catch(console.error);
     }

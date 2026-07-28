@@ -15,39 +15,20 @@ function getJSON(url) {
   return __cache[url];
 }
 
-/* ---- SEO：meta description / canonical / OG / JSON-LD ---- */
+/* ---- SEO：JSON-LD ---- */
 var SITE_URL = 'https://persulii.com.tw';
 var SITE_NAME = '沛素 per-sulii';
-var DEFAULT_OG_IMAGE = SITE_URL + '/images/hbanner-homebeauty.webp';
 
-function setMetaContent(selector, content) {
-  var el = document.querySelector(selector);
-  if (el && content != null) el.setAttribute('content', content);
+/* CMS 存出來的圖片路徑有 "images/x.webp" 也有 "/images/x.webp"，
+   在 /products/<slug> 這種子目錄頁面上相對路徑會解析錯，統一補成根絕對路徑 */
+function asset(p) {
+  if (!p) return p;
+  return /^(https?:)?\/\//.test(p) ? p : '/' + String(p).replace(/^\/+/, '');
 }
-function setCanonical(path) {
-  var el = document.querySelector('link[rel="canonical"]');
-  if (el) el.setAttribute('href', SITE_URL + path);
-}
-/* 產品／文章詳情頁依實際內容覆寫 title/description/canonical/OG（首次渲染時的靜態值僅供無 JS 環境的後備） */
-function setPageMeta(opts) {
-  if (opts.description) {
-    setMetaContent('meta[name="description"]', opts.description);
-    setMetaContent('meta[property="og:description"]', opts.description);
-    setMetaContent('meta[name="twitter:description"]', opts.description);
-  }
-  if (opts.title) {
-    setMetaContent('meta[property="og:title"]', opts.title);
-    setMetaContent('meta[name="twitter:title"]', opts.title);
-  }
-  if (opts.path) {
-    setCanonical(opts.path);
-    setMetaContent('meta[property="og:url"]', SITE_URL + opts.path);
-  }
-  if (opts.image) {
-    setMetaContent('meta[property="og:image"]', opts.image);
-    setMetaContent('meta[name="twitter:image"]', opts.image);
-  }
-}
+
+/* 產品詳細頁的網址（實體頁由 scripts/build-pages.mjs 於建置時產生） */
+function productPath(p) { return '/products/' + String(p.id).toLowerCase(); }
+
 function injectJSONLD(id, data) {
   var existing = document.getElementById(id);
   if (existing) existing.remove();
@@ -120,10 +101,10 @@ function setHTML(id, v) { var el = document.getElementById(id); if (el && v != n
 function productCardHTML(p, mediaH) {
   var h = mediaH ? (' style="height:' + mediaH + '"') : '';
   var alt = p.en + ' ' + p.name;
-  return '<a href="product.html?id=' + p.id + '" class="pcard">'
+  return '<a href="' + productPath(p) + '" class="pcard">'
     + '<div class="media product"' + (p.img ? '' : ' data-mono="' + p.code + '"') + h + '>'
-    + (p.img ? '<img class="media-img" src="' + p.img + '" alt="' + alt + '" loading="lazy">' : '')
-    + (p.hoverImg ? '<div class="media-hover"><img src="' + p.hoverImg + '" alt="' + alt + ' 特寫" loading="lazy"></div>' : '')
+    + (p.img ? '<img class="media-img" src="' + asset(p.img) + '" alt="' + alt + '" loading="lazy">' : '')
+    + (p.hoverImg ? '<div class="media-hover"><img src="' + asset(p.hoverImg) + '" alt="' + alt + ' 特寫" loading="lazy"></div>' : '')
     + (p.hoverTitle ? '<div class="media-cap"><span class="media-cap-t">' + p.hoverTitle + '</span><span class="media-cap-d">' + p.hoverDesc + '</span></div>' : '')
     + '</div>'
     + '<h3 class="h3 mt24">' + p.en + ' ' + p.name + '</h3>'
@@ -135,7 +116,7 @@ function productCardHTML(p, mediaH) {
 /* 首頁圖文並排：V-essence 文左圖右，S-essence 圖左文右 */
 function homeProductRowHTML(p, imageFirst) {
   var img = p.homeImg || p.img;
-  var media = '<div class="media product">' + (img ? '<img class="media-img" src="' + img + '" alt="' + p.en + ' ' + p.name + '" loading="lazy">' : '') + '</div>';
+  var media = '<div class="media product">' + (img ? '<img class="media-img" src="' + asset(img) + '" alt="' + p.en + ' ' + p.name + '" loading="lazy">' : '') + '</div>';
   var text = '<div class="pfeature-text">'
     + '<div class="eyebrow">' + p.en + '</div>'
     + '<div class="pfeature-head">'
@@ -144,7 +125,7 @@ function homeProductRowHTML(p, imageFirst) {
     + '<div class="mt24 pfeature-more"><span class="tlink">了解更多 →</span></div>'
     + '</div>'
     + '</div>';
-  return '<a href="product.html?id=' + p.id + '" class="pfeature">'
+  return '<a href="' + productPath(p) + '" class="pfeature">'
     + (imageFirst ? media + text : text + media)
     + '</a>';
 }
@@ -161,167 +142,6 @@ function renderProducts(PRODUCTS) {
   }
   var list = document.getElementById('product-list');
   if (list) list.innerHTML = PRODUCTS.map(function (p) { return productCardHTML(p); }).join('');
-  renderProductDetail(PRODUCTS);
-}
-
-function renderProductDetail(PRODUCTS) {
-  var container = document.getElementById('product-detail');
-  if (!container) return;
-
-  var params = new URLSearchParams(window.location.search);
-  var id = params.get('id') || PRODUCTS[0].id;
-  var idx = PRODUCTS.findIndex(function (p) { return p.id.toLowerCase() === id.toLowerCase(); });
-  if (idx < 0) idx = 0;
-  var p = PRODUCTS[idx];
-  var next = PRODUCTS[(idx + 1) % PRODUCTS.length];
-
-  /* 關鍵成分：多項成分以「甲 + 乙 ⇨ 丙」流程呈現，說明文字取最後一項成分的描述 */
-  var ing = (p.ingredients && p.ingredients.length > 1)
-    ? (function () {
-      var last = p.ingredients[p.ingredients.length - 1];
-      var head = p.ingredients.slice(0, -1).map(function (c) { return c.zh; }).join(' <span class="ingredient-flow-plus">+</span> ');
-      return '<div class="ingredient-flow mt24">'
-        + '<div class="ingredient-flow-terms">' + head + ' <span class="ingredient-flow-arrow">⇨</span> ' + last.zh + '</div>'
-        + '<p class="ingredient-flow-caption mt8">' + last.desc + '</p>'
-        + '</div>';
-    })()
-    : p.ingredients.map(function (c, i) {
-      return (i > 0 ? '<hr class="divider mt24">' : '')
-        + '<div class="mt24"><div class="eyebrow">' + c.en + '</div>'
-        + '<h3 class="h3 mt8" style="font-size:20px">' + c.zh + '</h3>'
-        + '<p class="body mt8">' + c.desc + '</p></div>';
-    }).join('');
-
-  var use = p.usage.map(function (s, i) {
-    var n = ('0' + (i + 1)).slice(-2);
-    return '<p class="body ' + (i === 0 ? 'mt16' : 'mt8') + '">'
-      + '<span class="num">' + n + '</span>　' + s + '</p>';
-  }).join('');
-
-  /* 產品特色：有功效資料時以功效卡呈現（左側預留縮圖），否則沿用單段文字；有影片時功效文字置左、影片置右 */
-  var ZH_NUM = { 1: '一', 2: '二', 3: '三', 4: '四', 5: '五', 6: '六' };
-  var benefitsHTML = (p.benefits && p.benefits.length)
-    ? '<h2 class="h3">' + (ZH_NUM[p.benefits.length] || p.benefits.length) + '大保養功效</h2><div class="benefits-row' + (p.benefits.length === 3 ? ' cols-3' : '') + ' mt32">'
-    + p.benefits.map(function (b) {
-      return '<div class="benefit-item">'
-        + '<div class="benefit-thumb"' + (b.img ? ' style="background-image:url(\'' + b.img + '\');background-size:cover;background-position:center"' : '') + '></div>'
-        + '<div><h3 class="h3" style="font-size: clamp(18px, 2.5vw, 20px);">' + b.title + '</h3>'
-        + '<p class="small mt8">' + nl2br(b.body) + '</p></div></div>';
-    }).join('') + '</div>'
-    : '<h2 class="h3">產品特色</h2><p class="body mt16">' + p.feature + '</p>';
-
-  var featureSection = p.videoId
-    ? '<div class="benefits-layout"><div>' + benefitsHTML + '</div>'
-    + '<div class="benefit-video"><div class="video-frame"><iframe src="https://www.youtube.com/embed/' + p.videoId + '" title="' + p.en + ' 介紹影片" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>'
-    + shareButtonHTML(SITE_URL + '/product.html?id=' + p.id, p.en + ' ' + p.name) + '</div>'
-    + '</div>'
-    : benefitsHTML;
-
-  /* 適用族群／使用方式 左右並排 */
-  var audienceUsageSection = (p.audience && p.audience.length)
-    ? '<section class="sec tight" style="background:var(--bg)"><div class="wrap grid g2">'
-    + '<div><h2 class="h3">適用族群</h2>'
-    + '<ul class="checklist mt24">' + p.audience.map(function (a) { return '<li>' + a + '</li>'; }).join('') + '</ul>'
-    + '</div>'
-    + '<div><h2 class="h3">使用方式</h2>'
-    + (p.usageTitle ? '<p class="body mt16">' + p.usageTitle + '</p>' : '')
-    + use + '</div>'
-    + '</div></section>'
-    : '<section class="sec tight"><div class="wrap"><h2 class="h3">使用方式</h2>'
-    + (p.usageTitle ? '<p class="body mt16">' + p.usageTitle + '</p>' : '')
-    + use + '</div></section>';
-
-  var reminderSection = p.reminder
-    ? '<section class="sec tight"><div class="wrap"><h2 class="h3">注意事項</h2>'
-    + '<ul class="checklist dot mt16">' + p.reminder.split(/\n{2,}/).map(function (r) { return '<li>' + r + '</li>'; }).join('') + '</ul>'
-    + '</div></section>'
-    : '';
-
-  var certSection = (p.certifications && p.certifications.length)
-    ? '<p class="body mt16">品質認證：</p><ul class="checklist mt8">'
-    + p.certifications.map(function (c) { return '<li>' + c + '</li>'; }).join('') + '</ul>'
-    : '<p class="body mt8">品質認證：' + p.specs.cert + '</p>';
-
-  var inciSection = p.specs.inciList
-    ? '<p class="body mt8">成分標示：</p>'
-    + '<p class="body mt16" style="font-weight:500">' + p.specs.inciTitle + '</p>'
-    + '<p class="small mt8 inci-text">' + p.specs.inciList + '</p>'
-    + (p.specs.inciNote ? '<p class="small mt8">' + p.specs.inciNote + '</p>' : '')
-    : '<p class="body mt8">成分標示：' + p.specs.inci + '</p>';
-
-  var bottleSection = p.bottleInfo
-    ? '<section class="sec tight" style="background:var(--bg)"><div class="wrap">'
-    + '<h2 class="h3">產品資訊</h2><table class="pspecs mt24">'
-    + '<tr><th>品牌</th><td>' + p.bottleInfo.brand + '</td></tr>'
-    + '<tr><th>品名</th><td>' + p.bottleInfo.name + '</td></tr>'
-    + '<tr><th>英文名稱</th><td>' + p.bottleInfo.enName + '</td></tr>'
-    + '<tr><th>容量</th><td>' + p.bottleInfo.volume + '</td></tr>'
-    + '</table>'
-    + '<div class="mt24">' + inciSection + '</div>'
-    + '</div></section>'
-    : '';
-
-  /* 規格與認證：已有產品資訊表格時，容量／成分標示改列於該處，這裡只留品質認證 */
-  var specsSection = p.bottleInfo
-    ? '<section class="sec tight" style="background:var(--bg)"><div class="wrap"><h2 class="h3">規格與認證</h2>'
-    + certSection
-    + '</div></section>'
-    : '<section class="sec tight" style="background:var(--bg)"><div class="wrap"><h2 class="h3">規格與認證</h2>'
-    + '<p class="body mt16">容量 / 規格：' + p.specs.size + '</p>'
-    + inciSection
-    + certSection
-    + '</div></section>';
-
-  var pageTitle = p.en + ' ' + p.name + ' — ' + SITE_NAME;
-  document.title = pageTitle;
-
-  var ogImage = p.banner ? (SITE_URL + '/' + p.banner) : DEFAULT_OG_IMAGE;
-  var taglineText = (p.tagline || '').replace(/<br\s*\/?>/gi, ' ');
-  var metaDesc = taglineText + (p.intro ? ' ' + p.intro : '');
-  if (metaDesc.length > 120) metaDesc = metaDesc.slice(0, 117) + '...';
-  setPageMeta({
-    title: pageTitle,
-    description: metaDesc,
-    path: '/product.html?id=' + p.id,
-    image: ogImage
-  });
-  injectJSONLD('ld-product', {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    name: p.en + ' ' + p.name,
-    description: metaDesc,
-    image: ogImage,
-    brand: { '@type': 'Brand', name: 'per-sulii 沛素' },
-    url: SITE_URL + '/product.html?id=' + p.id
-  });
-
-  container.innerHTML =
-    '<div class="wrap"><div class="crumb"><a href="index.html">首頁</a> / <a href="products.html">產品</a> / ' + p.en + ' ' + p.name + '</div></div>'
-    + (p.banner ? '<div class="pbanner-wrap"><img class="pbanner" src="' + p.banner + '" alt="' + p.en + ' ' + p.name + '"></div>' : '')
-    + '<section class="sec tight"><div class="wrap split" style="align-items:flex-start">'
-    + '<div class="media product" id="product-hero-media"' + (p.heroImg ? '' : ' data-mono="' + p.code + '"') + '>'
-    + (p.heroImg ? '<img class="media-img" src="' + p.heroImg + '" alt="' + p.en + ' ' + p.name + '">' : '')
-    + '</div>'
-    + '<div><div class="eyebrow">' + p.en + '</div>'
-    + '<h1 class="h2 mt12">' + p.name + '</h1>'
-    + '<p class="lead mt16">' + p.tagline + '</p>'
-    + '<p class="body">' + p.intro + '</p>'
-    + (p.highlights && p.highlights.length ? '<div class="chips mt24">' + p.highlights.map(function (h) { return '<span class="chip">' + h + '</span>'; }).join('') + '</div>' : '')
-    + '</div>'
-    + '</div></section>'
-    + '<section class="sec tight" id="product-feature-sec" style="background:var(--bg)"><div class="wrap">' + featureSection + '</div></section>'
-    + '<section class="sec tight"><div class="wrap"><h2 class="h3">關鍵成分</h2>' + ing + '</div></section>'
-    + audienceUsageSection
-    + reminderSection
-    + '' /* TODO: 暫時隱藏「規格與認證」區塊，之後要恢復請改回 + specsSection */
-    + bottleSection
-    + '<section class="sec tight"><div class="wrap">'
-    + '<div class="pn mt56">'
-    + '<a href="products.html" class="pn-i"><div class="eyebrow">← 回到產品頁</div></a>'
-    + '<a href="product.html?id=' + next.id + '" class="pn-i" style="text-align:right"><div class="eyebrow">下一個商品 →</div><div class="nm">' + next.en + ' ' + next.name + '</div></a>'
-    + '</div></div></section>';
-
-  initShareButtons();
 }
 
 /* ============ 首頁內容 ============ */
@@ -338,7 +158,7 @@ function renderHome(data) {
 
   var simg = document.getElementById('sci-image');
   if (simg && s.image) {
-    simg.src = s.image;
+    simg.src = asset(s.image);
   }
 
   setText('prods-eyebrow', data.products_section.eyebrow);
@@ -366,7 +186,7 @@ function initHeroCarousel(h) {
     d.className = 'hero-slide' + (i === 0 ? ' active' : '');
     var img = document.createElement('img');
     img.className = 'hero-slide-img';
-    img.src = (s.img || s);
+    img.src = asset(s.img || s);
     img.alt = s.eyebrow || (s.title ? s.title.replace(/\n/g, ' ') : '') || '沛素 per-sulii';
     img.loading = i === 0 ? 'eager' : 'lazy';
     d.appendChild(img);
@@ -406,7 +226,7 @@ function initHeroCarousel(h) {
   prevBtn.type = 'button';
   prevBtn.className = 'hero-arrow prev';
   prevBtn.setAttribute('aria-label', '上一張');
-  prevBtn.innerHTML = '<img src="images/icon/left-chevron.svg" alt="">';
+  prevBtn.innerHTML = '<img src="/images/icon/left-chevron.svg" alt="">';
   prevBtn.addEventListener('click', function () { goTo(cur - 1); startAuto(); });
   hero.appendChild(prevBtn);
 
@@ -414,7 +234,7 @@ function initHeroCarousel(h) {
   nextBtn.type = 'button';
   nextBtn.className = 'hero-arrow next';
   nextBtn.setAttribute('aria-label', '下一張');
-  nextBtn.innerHTML = '<img src="images/icon/right-arrow.svg" alt="">';
+  nextBtn.innerHTML = '<img src="/images/icon/right-arrow.svg" alt="">';
   nextBtn.addEventListener('click', function () { goTo(cur + 1); startAuto(); });
   hero.appendChild(nextBtn);
 
@@ -572,7 +392,7 @@ function renderAbout(data) {
     setHTML('about-body-' + n, paragraphs(s.body, 'mt16', 'mt16').replace(/class="body /g, 'class="body '));
     if (s.image) {
       var img = document.getElementById('about-img-' + n);
-      if (img) img.style.backgroundImage = "url('" + s.image + "')";
+      if (img) img.style.backgroundImage = "url('" + asset(s.image) + "')";
     }
   });
 }
@@ -690,15 +510,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var page = document.body.dataset.page;
 
-  Promise.all([getJSON('content/settings-footer.json'), getJSON('content/settings-contact.json')])
+  Promise.all([getJSON('/content/settings-footer.json'), getJSON('/content/settings-contact.json')])
     .then(function (r) { injectOrganizationLD(Object.assign({}, r[0], r[1])); })
     .catch(console.error);
-  getJSON('content/products.json').then(function (d) { renderProducts(d.items); }).catch(console.error);
+  /* 產品詳細頁的內容已在建置時寫進 HTML，不需要再抓 products.json；
+     只有首頁與產品列表頁要動態產生卡片 */
+  if (document.getElementById('home-products') || document.getElementById('product-list')) {
+    getJSON('/content/products.json').then(function (d) { renderProducts(d.items); }).catch(console.error);
+  }
 
   if (page === 'home') {
-    getJSON('content/home.json').then(renderHome).catch(console.error);
-    getJSON('content/home-hero.json').then(initHeroCarousel).catch(console.error);
+    getJSON('/content/home.json').then(renderHome).catch(console.error);
+    getJSON('/content/home-hero.json').then(initHeroCarousel).catch(console.error);
   }
-  if (page === 'about') getJSON('content/about-sections.json').then(renderAbout).catch(console.error);
-  if (page === 'contact') getJSON('content/settings-contact.json').then(renderContact).catch(console.error);
+  if (page === 'about') getJSON('/content/about-sections.json').then(renderAbout).catch(console.error);
+  if (page === 'contact') getJSON('/content/settings-contact.json').then(renderContact).catch(console.error);
 });

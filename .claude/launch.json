@@ -6,6 +6,12 @@
       "runtimeExecutable": "node",
       "runtimeArgs": [".claude/static-server.js"],
       "port": 8420
+    },
+    {
+      "name": "persulii",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["wrangler", "dev", "--port", "8788"],
+      "port": 8788
     }
   ]
 }

@@ -664,11 +664,16 @@ h3.in-view {
   right: 24px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 22px;
   color: var(--ink);
   cursor: pointer;
   user-select: none;
   line-height: 1
+}
+
+.burger img {
+  width: 30px;
+  height: 24px;
+  display: block
 }
 
 .mmenu {
@@ -1375,11 +1380,18 @@ h3.in-view {
   .hdr-in {
     padding: 16px 24px;
     position: relative;
-    z-index: 210
+    z-index: 210;
+    justify-content: center
   }
 
   .hdr .logo {
     height: 38px
+  }
+
+  /* 漢堡選單移到左側，logo 置中（見上面 .hdr-in 的 justify-content） */
+  .burger {
+    left: 24px;
+    right: auto
   }
 
   .desk {

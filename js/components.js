@@ -18,6 +18,8 @@
   /* ---- 圖片路徑（根絕對路徑，子目錄頁面如 /products/<slug> 才不會解析錯） ---- */
   var IMG_LOGO_GREY = '/images/per-sulii-logo-grayscale.webp';
   var IMG_LOGO_WHITE = '/images/per-sulii Logo-logo-whitepng.webp';
+  var IMG_ICON_HAMBURGER = '/images/icon/hamburger.webp';
+  var IMG_ICON_CLOSE = '/images/icon/close.webp';
 
   /* ---- Header HTML ---- */
   var HEADER = `
@@ -33,7 +35,9 @@
       <a href="/contact"  data-page="contact">經銷</a>
     </nav>
     <button class="burger mob" id="burger" type="button"
-      aria-label="開啟選單" aria-expanded="false" aria-controls="mmenu">≡</button>
+      aria-label="開啟選單" aria-expanded="false" aria-controls="mmenu">
+      <img id="burger-icon" src="${IMG_ICON_HAMBURGER}" alt="">
+    </button>
   </div>
   <nav class="mmenu" id="mmenu" aria-label="行動版導覽">
     <a href="/">首頁</a>
@@ -116,11 +120,12 @@
 
     /* mobile menu */
     var burger = document.getElementById('burger');
+    var burgerIcon = document.getElementById('burger-icon');
     var mmenu = document.getElementById('mmenu');
     if (burger && mmenu) {
       burger.addEventListener('click', function () {
         var open = mmenu.classList.toggle('open');
-        burger.textContent = open ? '✕' : '≡';
+        burgerIcon.src = open ? IMG_ICON_CLOSE : IMG_ICON_HAMBURGER;
         burger.setAttribute('aria-expanded', open ? 'true' : 'false');
         burger.setAttribute('aria-label', open ? '關閉選單' : '開啟選單');
       });
@@ -128,7 +133,7 @@
       mmenu.querySelectorAll('a').forEach(function (a) {
         a.addEventListener('click', function () {
           mmenu.classList.remove('open');
-          burger.textContent = '≡';
+          burgerIcon.src = IMG_ICON_HAMBURGER;
           burger.setAttribute('aria-expanded', 'false');
           burger.setAttribute('aria-label', '開啟選單');
         });

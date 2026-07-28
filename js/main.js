@@ -426,27 +426,109 @@ function initHeroCarousel(h) {
   }
   startAuto();
 
-  /* 左右滑動切換（滑鼠拖曳／觸控滑動皆適用） */
-  var startX = 0, startY = 0, dragging = false;
+  /* 左右滑動切換（滑鼠拖曳／觸控滑動皆適用）
+     圖片會跟著手指移動，拖曳超過門檻才換下一張，否則彈回原位 
+     
+     要調手感的話，在 main.js:429 附近：
+    DRAG_RATIO = 0.22 — 調大變得更難換頁，調小更靈敏
+    DRAG_MIN = 60 — 最少拖曳距離（小螢幕才會生效）
+    SETTLE_MS = 450 — 放開後的動畫時間，要跟 main.css 的 .hero.settling .hero-slide 一起改
+  */
+  var DRAG_RATIO = 0.33;   // 需拖曳超過輪播寬度的比例
+  var DRAG_MIN = 80;       // 最少要拖曳的距離（px）
+  var SETTLE_MS = 600;     // 放開後回位／換頁的動畫時間，需與 CSS 一致
+
+  var startX = 0, startY = 0, width = 1;
+  var dragging = false, settling = false, axis = null;
+  var offset = 0, peekIdx = -1;
+
+  function wrapIdx(i) { return (i + slideEls.length) % slideEls.length; }
+
+  function setPeek(i) {
+    if (i === peekIdx) return;
+    if (peekIdx > -1) slideEls[peekIdx].classList.remove('peek');
+    peekIdx = i;
+    slideEls[peekIdx].classList.add('peek');
+  }
+
+  function clearPeek() {
+    if (peekIdx > -1) slideEls[peekIdx].classList.remove('peek');
+    peekIdx = -1;
+  }
+
+  function moveTo(el, x) { el.style.transform = 'translateX(' + x + 'px)'; }
+
+  function render(dx) {
+    var dir = dx < 0 ? 1 : -1;                 // 往左拖＝下一張
+    setPeek(wrapIdx(cur + dir));
+    moveTo(slideEls[cur], dx);
+    moveTo(slideEls[peekIdx], dx + dir * width);
+  }
+
+  function reset() {
+    slideEls.forEach(function (el) { el.style.transform = ''; });
+    clearPeek();
+  }
+
+  function endDrag() {
+    if (!dragging) return;
+    dragging = false;
+    hero.classList.remove('dragging');
+
+    if (!offset || peekIdx < 0) { reset(); startAuto(); return; }
+
+    var dir = offset < 0 ? 1 : -1;
+    var commit = Math.abs(offset) >= Math.max(DRAG_MIN, width * DRAG_RATIO);
+    var target = peekIdx;
+
+    settling = true;
+    hero.classList.add('settling');
+    moveTo(slideEls[cur], commit ? -dir * width : 0);
+    moveTo(slideEls[target], commit ? 0 : dir * width);
+
+    setTimeout(function () {
+      // 拖曳換頁是「滑動」而非淡入淡出，先關掉轉場再交還給 goTo
+      hero.classList.add('no-anim');
+      if (commit) goTo(target);
+      reset();
+      hero.offsetHeight;                        // 強制 reflow，避免殘留動畫
+      hero.classList.remove('no-anim', 'settling');
+      settling = false;
+      startAuto();
+    }, SETTLE_MS);
+  }
+
+  hero.addEventListener('dragstart', function (e) { e.preventDefault(); });
+
   hero.addEventListener('pointerdown', function (e) {
+    if (settling || e.button > 0) return;
+    if (e.target.closest && e.target.closest('a, button')) return;   // 不干擾按鈕與連結
     dragging = true;
+    axis = null;
+    offset = 0;
+    width = hero.getBoundingClientRect().width || 1;
     startX = e.clientX;
     startY = e.clientY;
+    clearInterval(timer);                       // 拖曳期間暫停自動輪播
+    hero.classList.add('dragging');
+    if (hero.setPointerCapture) hero.setPointerCapture(e.pointerId);
   });
+
   hero.addEventListener('pointermove', function (e) {
     if (!dragging) return;
-    if (Math.abs(e.clientX - startX) > Math.abs(e.clientY - startY)) e.preventDefault();
+    var dx = e.clientX - startX, dy = e.clientY - startY;
+    if (axis === null) {
+      if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+      axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+      if (axis === 'y') { endDrag(); return; }  // 直向捲動交還給頁面
+    }
+    e.preventDefault();
+    offset = dx;
+    render(dx);
   });
-  ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (evt) {
-    hero.addEventListener(evt, function (e) {
-      if (!dragging) return;
-      dragging = false;
-      var dx = e.clientX - startX, dy = e.clientY - startY;
-      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
-        goTo(cur + (dx < 0 ? 1 : -1));
-        startAuto();
-      }
-    });
+
+  ['pointerup', 'pointercancel'].forEach(function (evt) {
+    hero.addEventListener(evt, endDrag);
   });
 }
 

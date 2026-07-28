@@ -1527,6 +1527,26 @@ h3.in-view {
   opacity: 1
 }
 
+/* 拖曳中：圖片跟著手指走，關掉淡入淡出 */
+.hero.dragging {
+  cursor: grabbing;
+}
+
+.hero.dragging .hero-slide,
+.hero.no-anim .hero-slide {
+  transition: none;
+}
+
+/* 放開後回位／換頁的滑動動畫（時間需與 main.js 的 SETTLE_MS 一致） */
+.hero.settling .hero-slide {
+  transition: transform .6s cubic-bezier(.22, .61, .36, 1);
+}
+
+/* 拖曳時從旁邊帶進來的下一張 */
+.hero-slide.peek {
+  opacity: 1;
+}
+
 .hero-arrow {
   position: absolute;
   top: 50%;

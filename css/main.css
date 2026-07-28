@@ -1615,16 +1615,37 @@ h3.in-view {
   }
 }
 
-/* Homepage About Us section styles */
+/* Homepage About Us section styles
+   .h-about-img-wrap 維持正常文件流（不再用 sticky／fixed），
+   進場後由 initAboutImgPin()（js/main.js）驅動背景／前景兩層做小幅度反向位移，
+   捲動時產生「錯位」的視差感。位移幅度刻意留小（見該函式的 BG_OFFSET / TOP_OFFSET），
+   搭配 LAYER_SCALE 的些微放大當作位移邊界，避免露出圖片邊緣、也避免裁掉太多內容。
+   aspect-ratio 只是 JS 尚未接手前（或無 JS）的後備，比例需與 initAboutImgPin 的 ASPECT 一致 */
 .h-about-img-wrap {
   width: 100%;
+  aspect-ratio: 2982 / 1485;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.03);
 }
 
+/* 背景／前景兩層疊在一起，各自用不同幅度位移 */
 .h-about-img {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.03);
+  will-change: transform;
+}
+
+.h-about-img-bg {
+  z-index: 1;
+}
+
+.h-about-img-top {
+  z-index: 2;
 }
 
 /* Custom text link styling */

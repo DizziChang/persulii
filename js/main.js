@@ -456,6 +456,66 @@ function initHeroScroll() {
   update();
 }
 
+/* ---- 首頁「關於我們」圖片：圖片進入畫面 ENTER_PX 後開始，
+   用滑鼠滾輪捲動這段期間刻意調慢速度（其他捲動方式如觸控／鍵盤不受影響，
+   照實際捲動距離同步視覺），背景／前景兩層一開始是錯開的，
+   隨捲動逐漸「歸位」到完全對齊；捲完 SLOW_PX 這段等效距離後恢復正常速度，
+   兩層剛好完全對齊、不再變化（LAYER_SCALE=1，終點對齊時零裁切） ---- */
+function initAboutImgPin() {
+  var wrap = document.getElementById('sci-image-wrap');
+  var bg = document.getElementById('sci-image-bg');
+  var top = document.getElementById('sci-image-top');
+  if (!wrap || !bg || !top) return;
+
+  var ENTER_PX = 100;      // 圖片進入畫面多少 px 後開始觸發
+  var SLOW_PX = 260;       // 觸發後，正常等效捲動這麼多 px 才算走完效果
+  var SLOW_FACTOR = 0.35;  // 效果進行中，滑鼠滾輪的實際捲動速度縮小到這個比例
+  var LAYER_SCALE = 1;     // 不放大，兩層在終點（完全對齊）時零裁切
+  var BG_START = -10;      // 背景層一開始的位移（px），隨捲動歸位到 0
+  var TOP_START = 20;      // 前景層一開始的位移（px），隨捲動歸位到 0
+
+  var progressPx = 0;      // 0..SLOW_PX，效果已經「消耗」掉多少捲動量
+  var lastScrollY = window.scrollY;
+
+  function isEntered() {
+    return wrap.getBoundingClientRect().top <= window.innerHeight - ENTER_PX;
+  }
+
+  function applyVisual() {
+    var p = Math.min(Math.max(progressPx / SLOW_PX, 0), 1);
+    bg.style.transform = 'scale(' + LAYER_SCALE + ') translateY(' + (BG_START * (1 - p)) + 'px)';
+    top.style.transform = 'scale(' + LAYER_SCALE + ') translateY(' + (TOP_START * (1 - p)) + 'px)';
+  }
+
+  function onScroll() {
+    var entered = isEntered();
+    var dy = window.scrollY - lastScrollY;
+    lastScrollY = window.scrollY;
+    /* 用實際捲動距離推進效果，滑鼠滾輪被下面的 wheel 監聽器調慢後，
+       這裡量到的距離自然也跟著變小，兩邊天生同步，不用另外對帳 */
+    progressPx = entered ? Math.min(Math.max(progressPx + dy, 0), SLOW_PX) : 0;
+    applyVisual();
+  }
+
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(function () { onScroll(); ticking = false; }); }
+  }, { passive: true });
+
+  /* 只攔截滑鼠滾輪：進場後、效果還沒走完前，把每次滾動量縮小成 SLOW_FACTOR，
+     製造「變慢」的手感；效果走完（或還沒進場）就不攔截，滾輪恢復正常速度 */
+  window.addEventListener('wheel', function (e) {
+    if (isEntered() && progressPx < SLOW_PX) {
+      e.preventDefault();
+      /* 明確指定 instant：全站 scroll-behavior:smooth 若套用在這裡，
+         連續滾輪事件會疊加多個平滑捲動動畫，手感會卡頓、不跟手 */
+      window.scrollBy({ top: e.deltaY * SLOW_FACTOR, left: 0, behavior: 'instant' });
+    }
+  }, { passive: false });
+
+  applyVisual();
+}
+
 /* ---- 標題捲動載入動畫（含日後動態插入的標題） ---- */
 function initScrollReveal() {
   var SELECTOR = 'h1, h2, h3';
@@ -500,6 +560,7 @@ function initScrollReveal() {
 document.addEventListener('DOMContentLoaded', function () {
   initScrollReveal();
   initHeroScroll();
+  initAboutImgPin();
   initShareButtons();
   initContactForm();
 

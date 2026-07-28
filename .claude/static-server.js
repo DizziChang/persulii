@@ -19,10 +19,21 @@ const types = {
   '.txt': 'text/plain'
 };
 
+/* 站內連結一律用無 .html 的網址（如 /about），正式環境由 Cloudflare
+   Workers Assets 自動對應到 about.html。這裡讀檔前先補上 .html，
+   讓本機測試的行為跟正式環境一致。 */
+function resolveFile(urlPath) {
+  if (urlPath === '/') return path.join(root, 'index.html');
+  const direct = path.join(root, urlPath);
+  if (fs.existsSync(direct) && fs.statSync(direct).isFile()) return direct;
+  const withHtml = direct + '.html';
+  if (fs.existsSync(withHtml)) return withHtml;
+  return direct;
+}
+
 http.createServer((req, res) => {
-  let urlPath = decodeURIComponent(req.url.split('?')[0]);
-  if (urlPath === '/') urlPath = '/index.html';
-  const filePath = path.join(root, urlPath);
+  const urlPath = decodeURIComponent(req.url.split('?')[0]);
+  const filePath = resolveFile(urlPath);
   if (!filePath.startsWith(root)) { res.writeHead(403); res.end(); return; }
   fs.readFile(filePath, (err, data) => {
     if (err) { res.writeHead(404); res.end('Not found'); return; }

@@ -356,11 +356,6 @@ function initHeroCarousel(h) {
 function setHeroText(s) {
   s = s || {};
   setTextOrHide('hero-eyebrow', s.eyebrow);
-  var titleEl = document.getElementById('hero-title');
-  if (titleEl) {
-    if (s.title) { titleEl.innerHTML = nl2br(s.title); titleEl.style.display = ''; }
-    else { titleEl.style.display = 'none'; }
-  }
   setTextOrHide('hero-lead', s.lead);
   var b1 = document.getElementById('hero-btn1'), b2 = document.getElementById('hero-btn2');
   if (b1) {

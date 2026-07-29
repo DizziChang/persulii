@@ -238,7 +238,7 @@ function initHeroCarousel(h) {
   nextBtn.addEventListener('click', function () { goTo(cur + 1); startAuto(); });
   hero.appendChild(nextBtn);
 
-  var sec = Math.max(2, parseFloat(h.interval) || 3.5);
+  var sec = Math.max(2, parseFloat(h.interval) || 2.5);
   var timer = null;
   function startAuto() {
     clearInterval(timer);

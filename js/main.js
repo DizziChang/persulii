@@ -238,7 +238,7 @@ function initHeroCarousel(h) {
   nextBtn.addEventListener('click', function () { goTo(cur + 1); startAuto(); });
   hero.appendChild(nextBtn);
 
-  var sec = Math.max(2, parseFloat(h.interval) || 5);
+  var sec = Math.max(2, parseFloat(h.interval) || 3.5);
   var timer = null;
   function startAuto() {
     clearInterval(timer);
@@ -254,7 +254,7 @@ function initHeroCarousel(h) {
     DRAG_MIN = 60 — 最少拖曳距離（小螢幕才會生效）
     SETTLE_MS = 450 — 放開後的動畫時間，要跟 main.css 的 .hero.settling .hero-slide 一起改
   */
-  var DRAG_RATIO = 0.33;   // 需拖曳超過輪播寬度的比例
+  var DRAG_RATIO = 0.25;   // 需拖曳超過輪播寬度的比例
   var DRAG_MIN = 80;       // 最少要拖曳的距離（px）
   var SETTLE_MS = 600;     // 放開後回位／換頁的動畫時間，需與 CSS 一致
 

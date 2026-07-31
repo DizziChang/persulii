@@ -87,20 +87,62 @@ function initShareButtons() {
 }
 
 /* 影片靜音/開聲音切換：透過 YouTube postMessage API 控制，事件委派以涵蓋動態產生的影片 */
+function setVideoMuted(btn, muted) {
+  var wrap = btn.closest('.video-frame, .pfeature-video');
+  var iframe = wrap && wrap.querySelector('iframe');
+  if (!iframe || !iframe.contentWindow) return;
+  btn.classList.toggle('is-on', !muted);
+  iframe.contentWindow.postMessage(
+    JSON.stringify({ event: 'command', func: muted ? 'mute' : 'unMute', args: [] }),
+    'https://www.youtube.com'
+  );
+  btn.setAttribute('aria-pressed', muted ? 'false' : 'true');
+  btn.setAttribute('aria-label', muted ? '開啟聲音' : '關閉聲音');
+}
+
+/* 同一時間只讓一支影片有聲音，開啟這支之前先關掉其他正在發聲的影片 */
+function muteOtherVideos(exceptBtn) {
+  document.querySelectorAll('.sound-toggle.is-on').forEach(function (other) {
+    if (other !== exceptBtn) setVideoMuted(other, true);
+  });
+}
+
 function initSoundToggles() {
   document.addEventListener('click', function (e) {
     var btn = e.target.closest('.sound-toggle');
     if (!btn) return;
-    var wrap = btn.closest('.video-frame, .pfeature-video');
+    var isOn = btn.classList.contains('is-on');
+    if (!isOn) muteOtherVideos(btn);
+    setVideoMuted(btn, isOn);
+  });
+}
+
+/* 影片播放/暫停切換：透過 YouTube postMessage API 控制（影片預設自動播放中）
+   .play-hit-area 是蓋在畫面正中央的大範圍點擊區，跟小按鈕共用同一組狀態 */
+function initPlayToggles() {
+  document.addEventListener('click', function (e) {
+    var target = e.target.closest('.play-toggle, .play-hit-area');
+    if (!target) return;
+    var wrap = target.closest('.video-frame, .pfeature-video');
+    var btn = wrap && wrap.querySelector('.play-toggle');
     var iframe = wrap && wrap.querySelector('iframe');
-    if (!iframe || !iframe.contentWindow) return;
-    var isOn = btn.classList.toggle('is-on');
+    if (!btn || !iframe || !iframe.contentWindow) return;
+    var isPaused = btn.classList.toggle('is-paused');
     iframe.contentWindow.postMessage(
-      JSON.stringify({ event: 'command', func: isOn ? 'unMute' : 'mute', args: [] }),
+      JSON.stringify({ event: 'command', func: isPaused ? 'pauseVideo' : 'playVideo', args: [] }),
       'https://www.youtube.com'
     );
-    btn.setAttribute('aria-pressed', isOn ? 'true' : 'false');
-    btn.setAttribute('aria-label', isOn ? '關閉聲音' : '開啟聲音');
+    btn.setAttribute('aria-pressed', isPaused ? 'true' : 'false');
+    btn.setAttribute('aria-label', isPaused ? '播放' : '暫停');
+
+    /* 按下播放時，自動開啟這支影片的聲音（並靜音其他影片） */
+    if (!isPaused) {
+      var soundBtn = wrap.querySelector('.sound-toggle');
+      if (soundBtn) {
+        muteOtherVideos(soundBtn);
+        setVideoMuted(soundBtn, false);
+      }
+    }
   });
 }
 
@@ -141,6 +183,15 @@ var SOUND_TOGGLE_HTML = '<button type="button" class="sound-toggle" aria-label="
   + '<svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 5V4L8 9H4z"/><path d="M16 8.5a5 5 0 0 1 0 7"/><path d="M18.5 6a8.5 8.5 0 0 1 0 12"/></svg>'
   + '</button>';
 
+/* 自訂播放/暫停按鈕（取代被 controls=0 關掉的原生控制列） */
+var PLAY_TOGGLE_HTML = '<button type="button" class="play-toggle" aria-label="暫停" aria-pressed="false">'
+  + '<svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg>'
+  + '<svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>'
+  + '</button>';
+
+/* 播放/暫停的大範圍點擊區，涵蓋畫面正中央 70% */
+var PLAY_HIT_AREA_HTML = '<div class="play-hit-area" aria-hidden="true"></div>';
+
 /* 首頁產品短影片：自動播放、靜音、循環 */
 function productVideoHTML(p) {
   if (!p.videoId) return '';
@@ -152,6 +203,8 @@ function productVideoHTML(p) {
     + '<iframe src="' + src + '" title="' + p.en + ' 短影片"'
     + ' allow="autoplay; encrypted-media; picture-in-picture" loading="lazy"'
     + ' onload="this.previousElementSibling.classList.add(\'is-loaded\')"></iframe>'
+    + PLAY_HIT_AREA_HTML
+    + PLAY_TOGGLE_HTML
     + SOUND_TOGGLE_HTML
     + '</div>';
 }
@@ -611,6 +664,7 @@ document.addEventListener('DOMContentLoaded', function () {
   initShareButtons();
   initContactForm();
   initSoundToggles();
+  initPlayToggles();
 
   var page = document.body.dataset.page;
 

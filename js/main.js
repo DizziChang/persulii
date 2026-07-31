@@ -98,36 +98,58 @@ function setText(id, v) { var el = document.getElementById(id); if (el && v != n
 function setHTML(id, v) { var el = document.getElementById(id); if (el && v != null) el.innerHTML = v; }
 
 /* ============ 產品 ============ */
-function productCardHTML(p, mediaH) {
+function productCardHTML(p, mediaH, imgOverride, ctaText) {
   var h = mediaH ? (' style="height:' + mediaH + '"') : '';
+  var img = imgOverride || p.img;
   var alt = p.en + ' ' + p.name;
+  var cta = ctaText
+    ? '<span class="btn ghost">' + ctaText + '</span>'
+    : '<span class="tlink">了解更多 →</span>';
   return '<a href="' + productPath(p) + '" class="pcard">'
-    + '<div class="media product"' + (p.img ? '' : ' data-mono="' + p.code + '"') + h + '>'
-    + (p.img ? '<img class="media-img" src="' + asset(p.img) + '" alt="' + alt + '" loading="lazy">' : '')
+    + '<div class="media product"' + (img ? '' : ' data-mono="' + p.code + '"') + h + '>'
+    + (img ? '<img class="media-img" src="' + asset(img) + '" alt="' + alt + '" loading="lazy">' : '')
     + (p.hoverImg ? '<div class="media-hover"><img src="' + asset(p.hoverImg) + '" alt="' + alt + ' 特寫" loading="lazy"></div>' : '')
     + (p.hoverTitle ? '<div class="media-cap"><span class="media-cap-t">' + p.hoverTitle + '</span><span class="media-cap-d">' + p.hoverDesc + '</span></div>' : '')
     + '</div>'
     + '<h3 class="h3 mt24">' + p.en + ' ' + p.name + '</h3>'
     + '<p class="body mt8">' + p.tagline + '</p>'
-    + '<div class="mt16"><span class="tlink">了解更多 →</span></div>'
+    + '<div class="mt16">' + cta + '</div>'
     + '</a>';
 }
 
-/* 首頁圖文並排：V-essence 文左圖右，S-essence 圖左文右 */
-function homeProductRowHTML(p, imageFirst) {
-  var img = p.homeImg || p.img;
-  var media = '<div class="media product">' + (img ? '<img class="media-img" src="' + asset(img) + '" alt="' + p.en + ' ' + p.name + '" loading="lazy">' : '') + '</div>';
-  var text = '<div class="pfeature-text">'
-    + '<div class="eyebrow">' + p.en + '</div>'
-    + '<div class="pfeature-head">'
-    + '<div class="pfeature-copy"><h3 class="h2 mt12">' + p.name + '</h3>'
-    + '<p class="body mt16">' + p.tagline + '</p></div>'
-    + '<div class="mt24 pfeature-more"><span class="tlink">了解更多 →</span></div>'
-    + '</div>'
+/* 首頁產品短影片：自動播放、靜音、循環 */
+function productVideoHTML(p) {
+  if (!p.videoId) return '';
+  var src = 'https://www.youtube.com/embed/' + p.videoId
+    + '?autoplay=1&mute=1&loop=1&playlist=' + p.videoId
+    + '&controls=0&modestbranding=1&playsinline=1&rel=0';
+  return '<div class="media pfeature-video">'
+    + '<img class="video-poster" src="https://i.ytimg.com/vi/' + p.videoId + '/hqdefault.jpg" alt="" aria-hidden="true">'
+    + '<iframe src="' + src + '" title="' + p.en + ' 短影片"'
+    + ' allow="autoplay; encrypted-media; picture-in-picture" loading="lazy"'
+    + ' onload="this.previousElementSibling.classList.add(\'is-loaded\')"></iframe>'
     + '</div>';
-  return '<a href="' + productPath(p) + '" class="pfeature">'
-    + (imageFirst ? media + text : text + media)
-    + '</a>';
+}
+
+/* 首頁產品卡按鈕文案（取代通用的「了解更多」） */
+var HOME_PRODUCT_CTA = {
+  'V-essence': '立即淡化細紋 →',
+  'S-essence': '立即細緻肌膚 →'
+};
+
+/* 首頁圖文並排：短影片一律在左、產品卡在右 */
+var HOME_PRODUCT_ROW_CLASS = {
+  'V-essence': 'pfeature-row-v',
+  'S-essence': 'pfeature-row-s'
+};
+
+function homeProductRowHTML(p, videoFirst) {
+  var card = productCardHTML(p, null, p.homeImg || p.img, HOME_PRODUCT_CTA[p.id]);
+  var video = productVideoHTML(p);
+  var rowClass = 'pfeature-row' + (HOME_PRODUCT_ROW_CLASS[p.id] ? ' ' + HOME_PRODUCT_ROW_CLASS[p.id] : '');
+  return '<div class="' + rowClass + '">'
+    + (videoFirst ? video + card : card + video)
+    + '</div>';
 }
 
 function renderProducts(PRODUCTS) {
@@ -136,7 +158,7 @@ function renderProducts(PRODUCTS) {
     var v = PRODUCTS.find(function (p) { return p.id === 'V-essence'; });
     var s = PRODUCTS.find(function (p) { return p.id === 'S-essence'; });
     var rows = [];
-    if (v) rows.push(homeProductRowHTML(v, false));
+    if (v) rows.push(homeProductRowHTML(v, true));
     if (s) rows.push(homeProductRowHTML(s, true));
     home.innerHTML = rows.join('');
   }

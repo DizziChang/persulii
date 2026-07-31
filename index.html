@@ -33,6 +33,8 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap"
     rel="stylesheet">
+  <link rel="preconnect" href="https://www.youtube.com">
+  <link rel="preconnect" href="https://i.ytimg.com">
   <link rel="stylesheet" href="/css/main.css?v=ecf22b8e1f">
 </head>
 
@@ -57,32 +59,21 @@
       </div>
     </section>
     <div class="hero-dots" id="hero-dots"></div>
-    <div class="sec tight center">
-      <a href="/products" class="btn ghost">More</a>
-    </div>
+
     <section class="sec">
       <div class="wrap center">
         <h1 class="h2" id="sci-title">沛素｜追求素顏美的科研實力</h1>
-      </div>
-      <div class="mt8 h-about-img-wrap" id="sci-image-wrap">
-        <img id="sci-image-bg" src="/images/h_aboutV2_bg.webp" alt="" class="h-about-img h-about-img-bg">
-        <img id="sci-image-top" src="/images/h_aboutV2_top.webp" alt="關於我們" class="h-about-img h-about-img-top">
-      </div>
-    </section>
-
-    <!-- 沛素雙合效 -->
-    <section class="sec">
-      <div class="wrap center">
-        <div class="title-line">
-          <h2 class="h2">沛素雙合效</h2>
-          <span class="eyebrow">在家養出好肌膚</span>
-        </div>
         <div class="mt16" style="display:flex;justify-content:center">
           <div class="video-frame">
-            <iframe src="https://www.youtube.com/embed/pj08OAM7EJw" title="沛素雙合效 介紹影片"
+            <img class="video-poster" src="https://i.ytimg.com/vi/yYRWQei5Lek/hqdefault.jpg" alt="" aria-hidden="true">
+            <iframe src="https://www.youtube.com/embed/yYRWQei5Lek?autoplay=1&mute=1&loop=1&playlist=yYRWQei5Lek&playsinline=1&rel=0"
+              title="沛素 介紹影片"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen loading="lazy"></iframe>
+              allowfullscreen onload="this.previousElementSibling.classList.add('is-loaded')"></iframe>
           </div>
+        </div>
+        <div class="mt32">
+          <a href="/about" class="btn ghost">我們的理念</a>
         </div>
       </div>
     </section>
@@ -100,25 +91,10 @@
       </div>
     </section>
 
-    <!-- 成為夥伴 -->
-    <section class="sec hight">
-      <div class="wrap">
-        <div class="split" style="align-items:center;gap:0">
-          <div class="center">
-            <div class="title-line">
-              <h2 class="h2" id="partner-title">成為夥伴</h2>
-              <span class="eyebrow" id="partner-eyebrow">Become a Partner</span>
-            </div>
-            <p class="lead mt16 center" id="partner-lead">與沛素一同推廣更理性的保養理念。</p>
-            <p class="lead mt16 center">美麗提醒｜近期發售</p>
-            <div class="mt32">
-              <a href="/contact" class="btn solid" id="partner-btn">了解更多</a>
-            </div>
-          </div>
-          <div class="media">
-            <img src="/images/recruit.webp" alt="成為沛素夥伴" style="width:100%;height:auto;display:block">
-          </div>
-        </div>
+    <section class="sec" style="padding-bottom: 0;">
+      <div class="mt8 h-about-img-wrap" id="sci-image-wrap">
+        <img id="sci-image-bg" src="/images/h_aboutV2_bg.webp" alt="" class="h-about-img h-about-img-bg">
+        <img id="sci-image-top" src="/images/h_aboutV2_top.webp" alt="關於我們" class="h-about-img h-about-img-top">
       </div>
     </section>
 

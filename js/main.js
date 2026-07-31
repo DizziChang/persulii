@@ -86,6 +86,24 @@ function initShareButtons() {
   });
 }
 
+/* 影片靜音/開聲音切換：透過 YouTube postMessage API 控制，事件委派以涵蓋動態產生的影片 */
+function initSoundToggles() {
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.sound-toggle');
+    if (!btn) return;
+    var wrap = btn.closest('.video-frame, .pfeature-video');
+    var iframe = wrap && wrap.querySelector('iframe');
+    if (!iframe || !iframe.contentWindow) return;
+    var isOn = btn.classList.toggle('is-on');
+    iframe.contentWindow.postMessage(
+      JSON.stringify({ event: 'command', func: isOn ? 'unMute' : 'mute', args: [] }),
+      'https://www.youtube.com'
+    );
+    btn.setAttribute('aria-pressed', isOn ? 'true' : 'false');
+    btn.setAttribute('aria-label', isOn ? '關閉聲音' : '開啟聲音');
+  });
+}
+
 /* 換行字串 → 以 <br> 連接（不允許 HTML 注入以外的內容） */
 function nl2br(s) { return (s || '').split('\n').join('<br>'); }
 /* 雙換行 → 段落 */
@@ -117,17 +135,24 @@ function productCardHTML(p, mediaH, imgOverride, ctaText) {
     + '</a>';
 }
 
+/* 影片靜音/開聲音切換按鈕 */
+var SOUND_TOGGLE_HTML = '<button type="button" class="sound-toggle" aria-label="開啟聲音" aria-pressed="false">'
+  + '<svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 5V4L8 9H4z"/><path d="M16.5 8.5l5 7M21.5 8.5l-5 7"/></svg>'
+  + '<svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 5V4L8 9H4z"/><path d="M16 8.5a5 5 0 0 1 0 7"/><path d="M18.5 6a8.5 8.5 0 0 1 0 12"/></svg>'
+  + '</button>';
+
 /* 首頁產品短影片：自動播放、靜音、循環 */
 function productVideoHTML(p) {
   if (!p.videoId) return '';
   var src = 'https://www.youtube.com/embed/' + p.videoId
     + '?autoplay=1&mute=1&loop=1&playlist=' + p.videoId
-    + '&controls=0&modestbranding=1&playsinline=1&rel=0';
+    + '&controls=0&modestbranding=1&playsinline=1&rel=0&enablejsapi=1';
   return '<div class="media pfeature-video">'
     + '<img class="video-poster" src="https://i.ytimg.com/vi/' + p.videoId + '/hqdefault.jpg" alt="" aria-hidden="true">'
     + '<iframe src="' + src + '" title="' + p.en + ' 短影片"'
     + ' allow="autoplay; encrypted-media; picture-in-picture" loading="lazy"'
     + ' onload="this.previousElementSibling.classList.add(\'is-loaded\')"></iframe>'
+    + SOUND_TOGGLE_HTML
     + '</div>';
 }
 
@@ -585,6 +610,7 @@ document.addEventListener('DOMContentLoaded', function () {
   initAboutImgPin();
   initShareButtons();
   initContactForm();
+  initSoundToggles();
 
   var page = document.body.dataset.page;
 

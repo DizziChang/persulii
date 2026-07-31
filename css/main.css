@@ -881,6 +881,46 @@ h3.in-view {
   pointer-events: none
 }
 
+/* 影片靜音/開聲音切換按鈕 */
+.sound-toggle {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, .55);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  cursor: pointer;
+  transition: background .2s
+}
+
+.sound-toggle:hover {
+  background: rgba(0, 0, 0, .75)
+}
+
+.sound-toggle svg {
+  width: 18px;
+  height: 18px
+}
+
+.sound-toggle .icon-unmuted {
+  display: none
+}
+
+.sound-toggle.is-on .icon-muted {
+  display: none
+}
+
+.sound-toggle.is-on .icon-unmuted {
+  display: block
+}
+
 .acard-group {
   max-width: 900px;
   margin-left: auto;

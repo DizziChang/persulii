@@ -158,8 +158,8 @@ function productVideoHTML(p) {
 
 /* 首頁產品卡按鈕文案（取代通用的「了解更多」） */
 var HOME_PRODUCT_CTA = {
-  'V-essence': '立即淡化細紋 →',
-  'S-essence': '立即細緻肌膚 →'
+  'V-essence': '我要淡化細紋 →',
+  'S-essence': '我要細緻肌膚 →'
 };
 
 /* 首頁圖文並排：短影片一律在左、產品卡在右 */

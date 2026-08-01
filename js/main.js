@@ -86,16 +86,13 @@ function initShareButtons() {
   });
 }
 
-/* 影片靜音/開聲音切換：透過 YouTube postMessage API 控制，事件委派以涵蓋動態產生的影片 */
+/* 影片靜音/開聲音切換：直接控制 <video> 元素，事件委派以涵蓋動態產生的影片 */
 function setVideoMuted(btn, muted) {
   var wrap = btn.closest('.video-frame, .pfeature-video');
-  var iframe = wrap && wrap.querySelector('iframe');
-  if (!iframe || !iframe.contentWindow) return;
+  var video = wrap && wrap.querySelector('video');
+  if (!video) return;
+  video.muted = muted;
   btn.classList.toggle('is-on', !muted);
-  iframe.contentWindow.postMessage(
-    JSON.stringify({ event: 'command', func: muted ? 'mute' : 'unMute', args: [] }),
-    'https://www.youtube.com'
-  );
   btn.setAttribute('aria-pressed', muted ? 'false' : 'true');
   btn.setAttribute('aria-label', muted ? '開啟聲音' : '關閉聲音');
 }
@@ -117,7 +114,7 @@ function initSoundToggles() {
   });
 }
 
-/* 影片播放/暫停切換：透過 YouTube postMessage API 控制（影片預設自動播放中）
+/* 影片播放/暫停切換：直接控制 <video> 元素（影片預設自動播放中）
    .play-hit-area 是蓋在畫面正中央的大範圍點擊區，跟小按鈕共用同一組狀態 */
 function initPlayToggles() {
   document.addEventListener('click', function (e) {
@@ -125,13 +122,10 @@ function initPlayToggles() {
     if (!target) return;
     var wrap = target.closest('.video-frame, .pfeature-video');
     var btn = wrap && wrap.querySelector('.play-toggle');
-    var iframe = wrap && wrap.querySelector('iframe');
-    if (!btn || !iframe || !iframe.contentWindow) return;
+    var video = wrap && wrap.querySelector('video');
+    if (!btn || !video) return;
     var isPaused = btn.classList.toggle('is-paused');
-    iframe.contentWindow.postMessage(
-      JSON.stringify({ event: 'command', func: isPaused ? 'pauseVideo' : 'playVideo', args: [] }),
-      'https://www.youtube.com'
-    );
+    if (isPaused) video.pause(); else video.play();
     btn.setAttribute('aria-pressed', isPaused ? 'true' : 'false');
     btn.setAttribute('aria-label', isPaused ? '播放' : '暫停');
 
@@ -192,21 +186,17 @@ var PLAY_TOGGLE_HTML = '<button type="button" class="play-toggle" aria-label="�
 /* 播放/暫停的大範圍點擊區，涵蓋畫面正中央 70% */
 var PLAY_HIT_AREA_HTML = '<div class="play-hit-area" aria-hidden="true"></div>';
 
-/* 首頁產品短影片：自動播放、靜音、循環 */
+/* 首頁產品短影片：本機影片檔，自動播放、靜音、循環；影片下方加分享按鈕連到 YouTube */
 function productVideoHTML(p) {
   if (!p.videoId) return '';
-  var src = 'https://www.youtube.com/embed/' + p.videoId
-    + '?autoplay=1&mute=1&loop=1&playlist=' + p.videoId
-    + '&controls=0&modestbranding=1&playsinline=1&rel=0&enablejsapi=1';
+  var src = '/video/persulii-' + String(p.code).toLowerCase() + '-intro.mp4';
   return '<div class="media pfeature-video">'
-    + '<img class="video-poster" src="https://i.ytimg.com/vi/' + p.videoId + '/hqdefault.jpg" alt="" aria-hidden="true">'
-    + '<iframe src="' + src + '" title="' + p.en + ' 短影片"'
-    + ' allow="autoplay; encrypted-media; picture-in-picture" loading="lazy"'
-    + ' onload="this.previousElementSibling.classList.add(\'is-loaded\')"></iframe>'
+    + '<video class="video-el" src="' + src + '" autoplay muted loop playsinline preload="auto"></video>'
     + PLAY_HIT_AREA_HTML
     + PLAY_TOGGLE_HTML
     + SOUND_TOGGLE_HTML
-    + '</div>';
+    + '</div>'
+    + shareButtonHTML('https://youtu.be/' + p.videoId, p.en + ' ' + p.name + ' 短影片');
 }
 
 /* 首頁產品卡按鈕文案（取代通用的「了解更多」） */
@@ -223,7 +213,7 @@ var HOME_PRODUCT_ROW_CLASS = {
 
 function homeProductRowHTML(p, videoFirst) {
   var card = productCardHTML(p, null, p.homeImg || p.img, HOME_PRODUCT_CTA[p.id]);
-  var video = productVideoHTML(p);
+  var video = '<div class="pfeature-video-col">' + productVideoHTML(p) + '</div>';
   var rowClass = 'pfeature-row' + (HOME_PRODUCT_ROW_CLASS[p.id] ? ' ' + HOME_PRODUCT_ROW_CLASS[p.id] : '');
   return '<div class="' + rowClass + '">'
     + (videoFirst ? video + card : card + video)

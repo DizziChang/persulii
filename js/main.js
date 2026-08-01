@@ -612,7 +612,7 @@ function initAboutImgPin() {
 
 /* ---- 標題捲動載入動畫（含日後動態插入的標題） ---- */
 function initScrollReveal() {
-  var SELECTOR = 'h1, h2, h3';
+  var SELECTOR = 'h1, h2, h3, .pfeature-row, .pcard';
 
   function reveal(el) { el.classList.add('in-view'); }
 

@@ -118,11 +118,27 @@ h3.in-view {
   transform: translateX(0)
 }
 
+/* 產品卡片捲動載入動畫：進入視窗前隱藏並下移，進入時由下往上浮升淡入 */
+.pfeature-row,
+.pcard {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .8s cubic-bezier(.16, .84, .44, 1), transform .8s cubic-bezier(.16, .84, .44, 1)
+}
+
+.pfeature-row.in-view,
+.pcard.in-view {
+  opacity: 1;
+  transform: translateY(0)
+}
+
 @media (prefers-reduced-motion: reduce) {
 
   h1,
   h2,
-  h3 {
+  h3,
+  .pfeature-row,
+  .pcard {
     opacity: 1;
     transform: none;
     transition: none

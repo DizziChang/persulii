@@ -850,11 +850,6 @@ h3.in-view {
   background: linear-gradient(122deg, black 50%, #001e51)
 }
 
-.pfeature-video-col {
-  display: flex;
-  flex-direction: column
-}
-
 .pfeature-video {
   width: 100%;
   aspect-ratio: 9 / 12;
@@ -958,6 +953,51 @@ h3.in-view {
 
 .play-toggle.is-paused .icon-play {
   display: block
+}
+
+/* 影片分享按鈕（整合進控制列，右上角） */
+.share-toggle {
+  position: absolute;
+  right: 68px;
+  bottom: 12px;
+  z-index: 2;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, .55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  cursor: pointer;
+  transition: background .2s
+}
+
+.share-toggle:hover {
+  background: rgba(0, 0, 0, .75)
+}
+
+.share-toggle img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain
+}
+
+/* 播放中時隱藏控制按鈕，滑鼠移入或暫停時才顯示 */
+.play-toggle,
+.sound-toggle,
+.share-toggle {
+  transition: opacity .25s ease
+}
+
+.video-frame.is-playing:not(:hover) .play-toggle,
+.pfeature-video.is-playing:not(:hover) .play-toggle,
+.video-frame.is-playing:not(:hover) .sound-toggle,
+.pfeature-video.is-playing:not(:hover) .sound-toggle,
+.video-frame.is-playing:not(:hover) .share-toggle,
+.pfeature-video.is-playing:not(:hover) .share-toggle {
+  opacity: 0;
+  pointer-events: none
 }
 
 .acard-group {
@@ -1506,8 +1546,30 @@ h3.in-view {
     text-align: center;
   }
 
-  .pfeature-row .pfeature-video-col {
+  .pfeature-row .pfeature-video {
     order: 2;
+  }
+
+  .play-toggle,
+  .sound-toggle,
+  .share-toggle {
+    width: 32px;
+    height: 32px
+  }
+
+  .play-toggle svg,
+  .sound-toggle svg {
+    width: 14px;
+    height: 14px
+  }
+
+  .share-toggle img {
+    width: 16px;
+    height: 16px
+  }
+
+  .share-toggle {
+    right: 48px
   }
 
   #product-feature-sec h2.h3 {

@@ -235,7 +235,7 @@ function renderProducts(PRODUCTS) {
     home.innerHTML = rows.join('');
   }
   var list = document.getElementById('product-list');
-  if (list) list.innerHTML = PRODUCTS.map(function (p) { return productCardHTML(p); }).join('');
+  if (list) list.innerHTML = PRODUCTS.map(function (p) { return productCardHTML(p, null, null, HOME_PRODUCT_CTA[p.id]); }).join('');
 }
 
 /* ============ 首頁內容 ============ */

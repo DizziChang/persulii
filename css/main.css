@@ -397,18 +397,6 @@ h3.in-view {
   color: #fff
 }
 
-.btn.youtube-share-btn {
-  background: #e00000;
-  border-color: #e00000;
-  color: #fff
-}
-
-.btn.youtube-share-btn:hover {
-  background: #be0000;
-  border-color: #be0000;
-  color: #fff
-}
-
 .btn.light {
   border-color: rgba(255, 255, 255, .6);
   color: #fff;
@@ -904,7 +892,7 @@ h3.in-view {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: rgba(0, 0, 0, .55);
+  background: #e00000;
   color: #fff;
   display: flex;
   align-items: center;
@@ -915,7 +903,7 @@ h3.in-view {
 }
 
 .play-toggle:hover {
-  background: rgba(0, 0, 0, .75)
+  background: #be0000
 }
 
 .play-toggle svg {

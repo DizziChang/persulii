@@ -1494,6 +1494,13 @@ h3.in-view {
 
 /* ---- responsive ---- */
 @media (max-width:768px) {
+  /* 產品頁（V/S）介紹影片手機版改直式 9:16 */
+  .benefit-video .video-frame {
+    aspect-ratio: 9 / 16;
+    max-width: 400px;
+    margin: 0 auto
+  }
+
   .display {
     font-size: 36px
   }

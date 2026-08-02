@@ -55,7 +55,7 @@ function nl2br(s) { return (s || '').split('\n').join('<br>'); }
 const SHARE_ICON_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.4"/><circle cx="6" cy="12" r="2.4"/><circle cx="18" cy="19" r="2.4"/><path d="M8.1 10.7l7.6-4.3M8.1 13.3l7.6 4.3"/></svg>';
 function shareButtonHTML(url, title) {
   return '<div class="video-share-wrap">'
-    + '<button type="button" class="btn ghost share-btn" data-share-url="' + attr(url) + '" data-share-title="' + attr(title || '') + '">'
+    + '<button type="button" class="btn ghost share-btn youtube-share-btn" data-share-url="' + attr(url) + '" data-share-title="' + attr(title || '') + '">'
     + SHARE_ICON_SVG + '<span class="share-btn-label">分享</span>'
     + '</button></div>';
 }

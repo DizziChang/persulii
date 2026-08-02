@@ -89,58 +89,120 @@ function initShareButtons() {
   });
 }
 
-/* 影片靜音/開聲音切換：直接控制 <video> 元素，事件委派以涵蓋動態產生的影片 */
-function setVideoMuted(btn, muted) {
-  var wrap = btn.closest('.video-frame, .pfeature-video');
-  var video = wrap && wrap.querySelector('video');
+/* ---- 首頁全域音量控制：載入時詢問一次，之後固定在右下角控制全站影片聲音 ---- */
+var GLOBAL_SOUND_ON = false;
+
+function applyGlobalSound() {
+  document.querySelectorAll('.video-frame video, .pfeature-video video').forEach(function (v) {
+    v.muted = !GLOBAL_SOUND_ON;
+  });
+}
+
+function updateGlobalSoundButton() {
+  var btn = document.getElementById('global-sound-toggle');
+  if (!btn) return;
+  btn.classList.toggle('is-on', GLOBAL_SOUND_ON);
+  btn.setAttribute('aria-pressed', GLOBAL_SOUND_ON ? 'true' : 'false');
+  btn.setAttribute('aria-label', GLOBAL_SOUND_ON ? '關閉聲音' : '開啟聲音');
+}
+
+function setGlobalSound(on) {
+  GLOBAL_SOUND_ON = on;
+  applyGlobalSound();
+  updateGlobalSoundButton();
+}
+
+function initGlobalSoundControl() {
+  if (document.body.dataset.page !== 'home') return;
+
+  var wrap = document.createElement('div');
+  wrap.innerHTML =
+    '<div class="sound-prompt-overlay" id="sound-prompt">'
+    + '<div class="sound-prompt-box">'
+    + '<p class="sound-prompt-text">要開啟影片聲音嗎？</p>'
+    + '<div class="sound-prompt-actions">'
+    + '<button type="button" class="btn solid" data-choice="on">開啟聲音</button>'
+    + '<button type="button" class="btn ghost" data-choice="off">靜音瀏覽</button>'
+    + '</div></div></div>'
+    + '<button type="button" class="global-sound-toggle" id="global-sound-toggle" aria-label="開啟聲音" aria-pressed="false">'
+    + '<svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 5V4L8 9H4z"/><path d="M16.5 8.5l5 7M21.5 8.5l-5 7"/></svg>'
+    + '<svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 5V4L8 9H4z"/><path d="M16 8.5a5 5 0 0 1 0 7"/><path d="M18.5 6a8.5 8.5 0 0 1 0 12"/></svg>'
+    + '</button>';
+  while (wrap.firstChild) document.body.appendChild(wrap.firstChild);
+
+  var prompt = document.getElementById('sound-prompt');
+  prompt.querySelectorAll('button[data-choice]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      setGlobalSound(btn.dataset.choice === 'on');
+      prompt.remove();
+    });
+  });
+
+  document.getElementById('global-sound-toggle').addEventListener('click', function () {
+    setGlobalSound(!GLOBAL_SOUND_ON);
+  });
+}
+
+/* 統一設定一支影片的播放/暫停狀態（手動按鈕與捲動自動播放共用） */
+function setVideoPlaying(wrap, playing) {
+  var video = wrap.querySelector('video');
+  var btn = wrap.querySelector('.play-toggle');
   if (!video) return;
-  video.muted = muted;
-  btn.classList.toggle('is-on', !muted);
-  btn.setAttribute('aria-pressed', muted ? 'false' : 'true');
-  btn.setAttribute('aria-label', muted ? '開啟聲音' : '關閉聲音');
+  if (playing) {
+    video.muted = !GLOBAL_SOUND_ON;
+    video.play().catch(function () { });
+  } else {
+    video.pause();
+  }
+  if (btn) {
+    btn.classList.toggle('is-paused', !playing);
+    btn.setAttribute('aria-pressed', playing ? 'false' : 'true');
+    btn.setAttribute('aria-label', playing ? '暫停' : '播放');
+  }
+  wrap.classList.toggle('is-playing', playing);
 }
 
-/* 同一時間只讓一支影片有聲音，開啟這支之前先關掉其他正在發聲的影片 */
-function muteOtherVideos(exceptBtn) {
-  document.querySelectorAll('.sound-toggle.is-on').forEach(function (other) {
-    if (other !== exceptBtn) setVideoMuted(other, true);
-  });
-}
-
-function initSoundToggles() {
-  document.addEventListener('click', function (e) {
-    var btn = e.target.closest('.sound-toggle');
-    if (!btn) return;
-    var isOn = btn.classList.contains('is-on');
-    if (!isOn) muteOtherVideos(btn);
-    setVideoMuted(btn, isOn);
-  });
-}
-
-/* 影片播放/暫停切換：直接控制 <video> 元素（影片預設自動播放中）
+/* 影片播放/暫停切換：手動點擊
    .play-hit-area 是蓋在畫面正中央的大範圍點擊區，跟小按鈕共用同一組狀態 */
 function initPlayToggles() {
   document.addEventListener('click', function (e) {
     var target = e.target.closest('.play-toggle, .play-hit-area');
     if (!target) return;
     var wrap = target.closest('.video-frame, .pfeature-video');
-    var btn = wrap && wrap.querySelector('.play-toggle');
-    var video = wrap && wrap.querySelector('video');
-    if (!btn || !video) return;
-    var isPaused = btn.classList.toggle('is-paused');
-    if (isPaused) video.pause(); else video.play();
-    btn.setAttribute('aria-pressed', isPaused ? 'true' : 'false');
-    btn.setAttribute('aria-label', isPaused ? '播放' : '暫停');
-    wrap.classList.toggle('is-playing', !isPaused);
+    if (!wrap) return;
+    setVideoPlaying(wrap, !wrap.classList.contains('is-playing'));
+  });
+}
 
-    /* 按下播放時，自動開啟這支影片的聲音（並靜音其他影片） */
-    if (!isPaused) {
-      var soundBtn = wrap.querySelector('.sound-toggle');
-      if (soundBtn) {
-        muteOtherVideos(soundBtn);
-        setVideoMuted(soundBtn, false);
-      }
-    }
+/* 捲動到哪支影片、該影片就自動播放，同一時間只播放一支 */
+var scrollAutoplayIO = null;
+var scrollAutoplayActive = null;
+function initScrollAutoplay() {
+  var containers = document.querySelectorAll('.video-frame, .pfeature-video');
+  if (!('IntersectionObserver' in window)) {
+    containers.forEach(function (c) { setVideoPlaying(c, true); });
+    return;
+  }
+  if (!scrollAutoplayIO) {
+    scrollAutoplayIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var wrap = entry.target;
+        var visible = entry.isIntersecting && entry.intersectionRatio >= 0.5;
+        if (visible) {
+          if (scrollAutoplayActive && scrollAutoplayActive !== wrap) setVideoPlaying(scrollAutoplayActive, false);
+          scrollAutoplayActive = wrap;
+          setVideoPlaying(wrap, true);
+        } else if (wrap === scrollAutoplayActive) {
+          setVideoPlaying(wrap, false);
+          scrollAutoplayActive = null;
+        }
+      });
+    }, { threshold: [0, 0.5, 1] });
+  }
+  containers.forEach(function (c) {
+    if (c.dataset.autoplayBound) return;
+    c.dataset.autoplayBound = '1';
+    scrollAutoplayIO.observe(c);
   });
 }
 
@@ -175,12 +237,6 @@ function productCardHTML(p, mediaH, imgOverride, ctaText) {
     + '</a>';
 }
 
-/* 影片靜音/開聲音切換按鈕 */
-var SOUND_TOGGLE_HTML = '<button type="button" class="sound-toggle" aria-label="開啟聲音" aria-pressed="false">'
-  + '<svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 5V4L8 9H4z"/><path d="M16.5 8.5l5 7M21.5 8.5l-5 7"/></svg>'
-  + '<svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 5V4L8 9H4z"/><path d="M16 8.5a5 5 0 0 1 0 7"/><path d="M18.5 6a8.5 8.5 0 0 1 0 12"/></svg>'
-  + '</button>';
-
 /* 自訂播放/暫停按鈕（取代被 controls=0 關掉的原生控制列） */
 var PLAY_TOGGLE_HTML = '<button type="button" class="play-toggle" aria-label="暫停" aria-pressed="false">'
   + '<svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg>'
@@ -194,11 +250,10 @@ var PLAY_HIT_AREA_HTML = '<div class="play-hit-area" aria-hidden="true"></div>';
 function productVideoHTML(p) {
   if (!p.videoId) return '';
   var src = '/video/persulii-' + String(p.code).toLowerCase() + '-intro.mp4';
-  return '<div class="media pfeature-video is-playing">'
-    + '<video class="video-el" src="' + src + '" autoplay muted loop playsinline preload="auto"></video>'
+  return '<div class="media pfeature-video">'
+    + '<video class="video-el" src="' + src + '" muted loop playsinline preload="auto"></video>'
     + PLAY_HIT_AREA_HTML
     + PLAY_TOGGLE_HTML
-    + SOUND_TOGGLE_HTML
     + shareToggleHTML('https://youtu.be/' + p.videoId, p.en + ' ' + p.name + ' 短影片')
     + '</div>';
 }
@@ -657,8 +712,9 @@ document.addEventListener('DOMContentLoaded', function () {
   initAboutImgPin();
   initShareButtons();
   initContactForm();
-  initSoundToggles();
+  initGlobalSoundControl();
   initPlayToggles();
+  initScrollAutoplay();
 
   var page = document.body.dataset.page;
 
@@ -668,7 +724,7 @@ document.addEventListener('DOMContentLoaded', function () {
   /* 產品詳細頁的內容已在建置時寫進 HTML，不需要再抓 products.json；
      只有首頁與產品列表頁要動態產生卡片 */
   if (document.getElementById('home-products') || document.getElementById('product-list')) {
-    getJSON('/content/products.json').then(function (d) { renderProducts(d.items); }).catch(console.error);
+    getJSON('/content/products.json').then(function (d) { renderProducts(d.items); applyGlobalSound(); initScrollAutoplay(); }).catch(console.error);
   }
 
   if (page === 'home') {

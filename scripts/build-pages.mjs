@@ -245,6 +245,7 @@ const STATIC_PAGES = [
   { path: '/', changefreq: 'weekly', priority: '1.0' },
   { path: '/about', changefreq: 'monthly', priority: '0.8' },
   { path: '/products', changefreq: 'weekly', priority: '0.9' },
+  { path: '/faq', changefreq: 'monthly', priority: '0.6' },
   { path: '/contact', changefreq: 'yearly', priority: '0.5' }
 ];
 

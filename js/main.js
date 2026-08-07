@@ -541,6 +541,36 @@ function renderAbout(data) {
   });
 }
 
+/* ============ 常見問答頁 ============ */
+/* 問答直接呈現、不做收合，並輸出 FAQPage 結構化資料給搜尋引擎 */
+function renderFAQ(data) {
+  var list = document.getElementById('faq-list');
+  if (!list) return;
+  var items = data.faq || [];
+
+  list.innerHTML = items.map(function (it) {
+    return '<div class="faq-entry">'
+      + '<h2 class="h3">' + it.q + '</h2>'
+      + paragraphs(it.a, 'mt16', 'mt16')
+      + '</div>';
+  }).join('');
+
+  injectJSONLD('ld-faq', {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map(function (it) {
+      return {
+        '@type': 'Question',
+        name: it.q,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: String(it.a || '').replace(/<[^>]+>/g, '')
+        }
+      };
+    })
+  });
+}
+
 /* ============ 聯絡頁 ============ */
 function renderContact(settings) {
   if (document.body.dataset.page !== 'contact') return;
@@ -732,5 +762,6 @@ document.addEventListener('DOMContentLoaded', function () {
     getJSON('/content/home-hero.json').then(initHeroCarousel).catch(console.error);
   }
   if (page === 'about') getJSON('/content/about-sections.json').then(renderAbout).catch(console.error);
+  if (page === 'faq') getJSON('/content/faq.json').then(renderFAQ).catch(console.error);
   if (page === 'contact') getJSON('/content/settings-contact.json').then(renderContact).catch(console.error);
 });

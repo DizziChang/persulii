@@ -128,9 +128,9 @@ collections:
               - { name: lead, label: 說明, widget: string }
               - { name: image, label: 圖片, widget: image }
               - { name: image_alt, label: 圖片說明, widget: string }
-      - name: about_faq
-        label: 關於頁－常見問答
-        file: content/about-faq.json
+      - name: faq
+        label: 常見問答頁
+        file: content/faq.json
         fields:
           - name: faq
             label: 常見問答

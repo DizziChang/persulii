@@ -1223,6 +1223,22 @@ h3.in-view {
   max-height: 340px
 }
 
+/* FAQ 頁：問答直接展開，不收合 */
+.faq-plain {
+  max-width: calc(860px + 56px * 2)
+}
+
+.faq-plain .faq-entry+.faq-entry {
+  margin-top: clamp(28px, 3vw, 40px);
+  padding-top: clamp(28px, 3vw, 40px);
+  border-top: 1px solid var(--line)
+}
+
+.faq-plain .faq-entry h2 {
+  font-size: clamp(17px, 1.8vw, 20px);
+  line-height: 1.6
+}
+
 /* signature / director */
 .sign {
   font-family: var(--sans);

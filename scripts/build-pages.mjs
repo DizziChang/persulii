@@ -64,17 +64,23 @@ function nl2br(s) { return (s || '').split('\n').join('<br>'); }
    換上新影片時要一併更新，否則 Google 拿到的是過期的發佈時間。 */
 const VIDEO_PUBLISHED = '2026-08-01T00:00:00+08:00';
 
-/* 縮圖是 VideoObject 的必填欄位，沒有就不會被收錄。這裡取 YouTube 為同一支
-   影片產生的影格縮圖——self-hosted 的 mp4 在 YouTube 上也有一份，抽出來的
-   就是影片本身的畫面。日後 /images 有自製 poster 圖時可換成站內網址。 */
-const ytThumb = (id) => 'https://i.ytimg.com/vi/' + id + '/maxresdefault.jpg';
+/* 縮圖是 VideoObject 的必填欄位，沒有就不會被收錄。用站內自製的 poster 圖，
+   也就是影片本身的第一影格（同一張圖同時餵給 <video poster>）。
+
+   不用 YouTube 的 maxresdefault：V／S 是直式 1080x1920，YouTube 一律輸出
+   16:9，直式影片會被塞進信箱框，兩側補放大模糊的填充，真正的畫面只剩中間
+   一條，當搜尋結果縮圖很吃虧。
+
+   換影片時要重新抽圖（本機有 ffmpeg 的話）：
+     ffmpeg -i video/persulii-vs-intro.mp4 -vframes 1 -q:v 2 images/video-vs-poster.jpg */
+const poster = (code) => SITE_URL + '/images/video-' + code + '-poster.jpg';
 
 /* /products 那支綜合介紹影片：檔案自架、沒有對應的 CMS 欄位，只能寫死。
    products.html 的 VideoObject 是手寫的，改這裡要記得同步過去。 */
 const PRODUCTS_PAGE_VIDEO = {
   title: '沛素 per-sulii 產品介紹影片',
   description: '沛素 per-sulii 產品系列介紹：V-essence 精萃蜂胜肽 PLUS 精華與 S-essence 外泌體多胜肽養護精華，每天30秒在家養出好肌膚。',
-  thumbnail: ytThumb('8udI4ZpSvi8'),
+  thumbnail: poster('vs'),
   contentUrl: SITE_URL + '/video/persulii-vs-intro.mp4'
 };
 
@@ -85,7 +91,7 @@ function productVideo(p) {
   return {
     title: p.en + ' ' + p.name + ' 介紹影片',
     description: p.en + ' ' + p.name + '介紹影片。' + descOf(p),
-    thumbnail: ytThumb(p.videoId),
+    thumbnail: poster(String(p.code).toLowerCase()),
     playerUrl: 'https://www.youtube.com/embed/' + p.videoId
   };
 }

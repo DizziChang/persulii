@@ -32,7 +32,7 @@
   <!-- 綜合介紹影片。內容與 scripts/build-pages.mjs 的 PRODUCTS_PAGE_VIDEO 是同一份
        （那邊產生 sitemap 的 video 擴充），改一邊要記得同步另一邊。
        同一支 mp4 也出現在首頁，但一支影片只能掛一個網址，首頁刻意不宣告。 -->
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoObject","name":"沛素 per-sulii 產品介紹影片","description":"沛素 per-sulii 產品系列介紹：V-essence 精萃蜂胜肽 PLUS 精華與 S-essence 外泌體多胜肽養護精華，每天30秒在家養出好肌膚。","thumbnailUrl":"https://i.ytimg.com/vi/8udI4ZpSvi8/maxresdefault.jpg","uploadDate":"2026-08-01T00:00:00+08:00","contentUrl":"https://persulii.com.tw/video/persulii-vs-intro.mp4"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoObject","name":"沛素 per-sulii 產品介紹影片","description":"沛素 per-sulii 產品系列介紹：V-essence 精萃蜂胜肽 PLUS 精華與 S-essence 外泌體多胜肽養護精華，每天30秒在家養出好肌膚。","thumbnailUrl":"https://persulii.com.tw/images/video-vs-poster.jpg","uploadDate":"2026-08-01T00:00:00+08:00","contentUrl":"https://persulii.com.tw/video/persulii-vs-intro.mp4"}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -66,7 +66,8 @@
     <section class="sec tight">
       <div class="wrap">
         <div class="video-frame" style="max-width:900px;margin:0 auto">
-          <video src="/video/persulii-vs-intro.mp4" controls playsinline preload="metadata"></video>
+          <video src="/video/persulii-vs-intro.mp4" poster="/images/video-vs-poster.jpg" controls playsinline
+            preload="metadata"></video>
         </div>
         <div class="video-share-wrap">
           <button type="button" class="btn ghost share-btn" data-share-url="https://persulii.com.tw/products"
@@ -99,7 +100,7 @@
   <div id="site-footer"></div>
 
   <script src="/js/components.js?v=e64d9c72ee"></script>
-  <script src="/js/main.js?v=30c1ce995c"></script>
+  <script src="/js/main.js?v=907eefe903"></script>
 </body>
 
 </html>

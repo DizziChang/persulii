@@ -249,9 +249,13 @@ var PLAY_HIT_AREA_HTML = '<div class="play-hit-area" aria-hidden="true"></div>';
 /* 首頁產品短影片：本機影片檔，自動播放、靜音、循環；分享鍵整合在影片控制列裡，連到 YouTube */
 function productVideoHTML(p) {
   if (!p.videoId) return '';
-  var src = '/video/persulii-' + String(p.code).toLowerCase() + '-intro.mp4';
+  var code = String(p.code).toLowerCase();
+  var src = '/video/persulii-' + code + '-intro.mp4';
+  /* poster 是影片的第一影格，靜態畫面直接銜接到動態，不影響自動播放；
+     沒有它時影片 buffer 完成前那塊是空白框。換影片要一併換這張圖。 */
+  var poster = '/images/video-' + code + '-poster.jpg';
   return '<div class="media pfeature-video">'
-    + '<video class="video-el" src="' + src + '" muted loop playsinline preload="auto"></video>'
+    + '<video class="video-el" src="' + src + '" poster="' + poster + '" muted loop playsinline preload="auto"></video>'
     + PLAY_HIT_AREA_HTML
     + PLAY_TOGGLE_HTML
     + shareToggleHTML('https://youtu.be/' + p.videoId, p.en + ' ' + p.name + ' 短影片')

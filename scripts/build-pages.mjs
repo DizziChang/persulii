@@ -52,6 +52,50 @@ function attr(s) {
 
 function nl2br(s) { return (s || '').split('\n').join('<br>'); }
 
+/* ---- 影片 ----
+   Google 要收錄影片需要兩件事：頁面上的 VideoObject 結構化資料，
+   以及 sitemap 的 video 擴充。兩者的內容必須一致，所以共用下面這份定義。
+
+   一支影片只掛一個頁面。首頁那三支（含 js/main.js 依 videoId 注入的 V／S
+   短影片）與這裡宣告的是同一份內容，Google 一支影片只會挑一個網址收錄，
+   兩邊都宣告等於自己跟自己搶，因此首頁刻意不宣告。 */
+
+/* 影片沒有進 CMS，發佈時間統一用影片首次進版控的日期。
+   換上新影片時要一併更新，否則 Google 拿到的是過期的發佈時間。 */
+const VIDEO_PUBLISHED = '2026-08-01T00:00:00+08:00';
+
+/* 縮圖是 VideoObject 的必填欄位，沒有就不會被收錄。這裡取 YouTube 為同一支
+   影片產生的影格縮圖——self-hosted 的 mp4 在 YouTube 上也有一份，抽出來的
+   就是影片本身的畫面。日後 /images 有自製 poster 圖時可換成站內網址。 */
+const ytThumb = (id) => 'https://i.ytimg.com/vi/' + id + '/maxresdefault.jpg';
+
+/* /products 那支綜合介紹影片：檔案自架、沒有對應的 CMS 欄位，只能寫死。
+   products.html 的 VideoObject 是手寫的，改這裡要記得同步過去。 */
+const PRODUCTS_PAGE_VIDEO = {
+  title: '沛素 per-sulii 產品介紹影片',
+  description: '沛素 per-sulii 產品系列介紹：V-essence 精萃蜂胜肽 PLUS 精華與 S-essence 外泌體多胜肽養護精華，每天30秒在家養出好肌膚。',
+  thumbnail: ytThumb('8udI4ZpSvi8'),
+  contentUrl: SITE_URL + '/video/persulii-vs-intro.mp4'
+};
+
+/* 產品頁嵌的是 YouTube，所以給 player_loc／embedUrl 而非 content_loc；
+   指向站內沒有的檔案會讓 Google 抓不到而整筆略過。 */
+function productVideo(p) {
+  if (!p.videoId) return null;
+  return {
+    title: p.en + ' ' + p.name + ' 介紹影片',
+    description: p.en + ' ' + p.name + '介紹影片。' + descOf(p),
+    thumbnail: ytThumb(p.videoId),
+    playerUrl: 'https://www.youtube.com/embed/' + p.videoId
+  };
+}
+
+/* 摘要取自賣點＋簡介，過長則截斷，維持在搜尋結果不被切掉的長度 */
+function descOf(p) {
+  const d = (p.tagline || '').replace(/<br\s*\/?>/gi, ' ') + (p.intro ? ' ' + p.intro : '');
+  return d.length > 120 ? d.slice(0, 117) + '...' : d;
+}
+
 const SHARE_ICON_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.4"/><circle cx="6" cy="12" r="2.4"/><circle cx="18" cy="19" r="2.4"/><path d="M8.1 10.7l7.6-4.3M8.1 13.3l7.6 4.3"/></svg>';
 function shareButtonHTML(url, title) {
   return '<div class="video-share-wrap">'
@@ -172,9 +216,7 @@ function pageHTML(p, next) {
   const url = SITE_URL + pathOf(p);
   const ogImage = p.banner ? (SITE_URL + asset(p.banner)) : DEFAULT_OG_IMAGE;
 
-  /* 摘要取自賣點＋簡介，過長則截斷，維持在搜尋結果不被切掉的長度 */
-  let desc = (p.tagline || '').replace(/<br\s*\/?>/gi, ' ') + (p.intro ? ' ' + p.intro : '');
-  if (desc.length > 120) desc = desc.slice(0, 117) + '...';
+  const desc = descOf(p);
 
   const ld = {
     '@context': 'https://schema.org',
@@ -185,6 +227,20 @@ function pageHTML(p, next) {
     brand: { '@type': 'Brand', name: 'per-sulii 沛素' },
     url: url
   };
+
+  const video = productVideo(p);
+  const videoLd = video && {
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    name: video.title,
+    description: video.description,
+    thumbnailUrl: video.thumbnail,
+    uploadDate: VIDEO_PUBLISHED,
+    embedUrl: video.playerUrl
+  };
+  const videoLdTag = videoLd
+    ? '\n  <script type="application/ld+json">' + JSON.stringify(videoLd) + '</script>'
+    : '';
 
   return `<!DOCTYPE html>
 <html lang="zh-Hant">
@@ -214,7 +270,7 @@ function pageHTML(p, next) {
   <meta name="twitter:title" content="${attr(title)}">
   <meta name="twitter:description" content="${attr(desc)}">
   <meta name="twitter:image" content="${attr(ogImage)}">
-  <script type="application/ld+json">${JSON.stringify(ld)}</script>
+  <script type="application/ld+json">${JSON.stringify(ld)}</script>${videoLdTag}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -249,16 +305,34 @@ const STATIC_PAGES = [
   { path: '/contact', changefreq: 'yearly', priority: '0.5' }
 ];
 
+/* video 擴充的子標籤有固定順序，對調會驗證失敗。attr() 逸出的字元
+   （& < > "）對 XML 文字節點也夠用，不另外寫一份逸出函式。 */
+function videoXML(v) {
+  if (!v) return '';
+  return '    <video:video>\n'
+    + '      <video:thumbnail_loc>' + attr(v.thumbnail) + '</video:thumbnail_loc>\n'
+    + '      <video:title>' + attr(v.title) + '</video:title>\n'
+    + '      <video:description>' + attr(v.description) + '</video:description>\n'
+    + (v.contentUrl ? '      <video:content_loc>' + attr(v.contentUrl) + '</video:content_loc>\n' : '')
+    + (v.playerUrl ? '      <video:player_loc>' + attr(v.playerUrl) + '</video:player_loc>\n' : '')
+    + '      <video:publication_date>' + VIDEO_PUBLISHED + '</video:publication_date>\n'
+    + '    </video:video>\n';
+}
+
 function sitemapXML(products) {
-  const entries = STATIC_PAGES.concat(
-    products.map((p) => ({ path: pathOf(p), changefreq: 'monthly', priority: '0.8' }))
+  const entries = STATIC_PAGES.map((e) => (
+    e.path === '/products' ? { ...e, video: PRODUCTS_PAGE_VIDEO } : e
+  )).concat(
+    products.map((p) => ({ path: pathOf(p), changefreq: 'monthly', priority: '0.8', video: productVideo(p) }))
   );
   return '<?xml version="1.0" encoding="UTF-8"?>\n'
-    + '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    + '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n'
+    + '        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">\n'
     + entries.map((e) => '  <url>\n'
       + '    <loc>' + SITE_URL + e.path + '</loc>\n'
       + '    <changefreq>' + e.changefreq + '</changefreq>\n'
       + '    <priority>' + e.priority + '</priority>\n'
+      + videoXML(e.video)
       + '  </url>\n').join('')
     + '</urlset>\n';
 }

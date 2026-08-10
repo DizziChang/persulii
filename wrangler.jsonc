@@ -5,8 +5,14 @@
   "observability": {
     "enabled": true
   },
+  // 每個請求都先進 worker/index.js（維護模式閘門），再由它交還給靜態資源。
+  // run_worker_first 不開的話，實際存在的檔案會被 Cloudflare 直接送出，
+  // Worker 根本不會被呼叫，維護頁也就擋不到 index.html 這類請求。
+  "main": "worker/index.js",
   "assets": {
-    "directory": "."
+    "directory": ".",
+    "binding": "ASSETS",
+    "run_worker_first": true
   },
   "compatibility_flags": [
     "nodejs_compat"

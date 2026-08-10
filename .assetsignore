@@ -9,6 +9,7 @@
 .git/
 .wrangler/
 scripts/
+worker/
 wrangler.jsonc
 部署方案規劃.md
 

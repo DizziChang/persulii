@@ -112,24 +112,14 @@ const MAINTENANCE_HTML = `<!DOCTYPE html>
     font-weight: 500;
     font-size: clamp(28px, 5vw, 44px);
     letter-spacing: .08em;
-    margin: 0 0 16px;
+    margin: 0;
   }
-  p {
-    font-size: clamp(14px, 1.6vw, 17px);
-    color: #555;
-    margin: 0 0 8px;
-    letter-spacing: .04em;
-    line-height: 1.8;
-  }
-  a { color: #1f1f1f; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <img class="logo" src="${LOGO_DATA_URI}" width="${LOGO_W}" height="${LOGO_H}" alt="沛素 per-sulii">
   <h1>網站維護中</h1>
-  <p>我們正在進行系統維護與內容更新，<br>造成不便敬請見諒。</p>
-  <p>如有需要請來信 <a href="mailto:info@persulii.com.tw">info@persulii.com.tw</a></p>
 </div>
 </body>
 </html>

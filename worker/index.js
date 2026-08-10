@@ -16,6 +16,8 @@
    才輪得到判斷網域要不要擋。
    ============================================================ */
 
+import { LOGO_DATA_URI, LOGO_H, LOGO_W } from './logo-data.js';
+
 /* 維護模式總開關 */
 const MAINTENANCE = true;
 
@@ -67,7 +69,8 @@ function maintenanceResponse() {
 /* 直接寫在 Worker 裡而不放成 maintenance.html：
    放成靜態檔的話它自己也會有一個公開網址（/maintenance.html，回 200），
    可能被搜尋引擎收錄；寫在這裡則只會伴隨 503 出現。
-   樣式沿用 coming-soon.html，字型走 Google Fonts CDN，載不到時退回系統字型。 */
+   樣式沿用 coming-soon.html，字型走 Google Fonts CDN，載不到時退回系統字型。
+   Logo 用灰階版並內嵌成 data URI（見 worker/logo-data.js）。 */
 const MAINTENANCE_HTML = `<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -98,12 +101,11 @@ const MAINTENANCE_HTML = `<!DOCTYPE html>
     padding: 24px;
   }
   .logo {
-    font-family: 'Funnel Display', sans-serif;
-    font-weight: 500;
-    font-size: clamp(20px, 3vw, 26px);
-    letter-spacing: .2em;
-    text-transform: uppercase;
-    margin-bottom: 40px;
+    display: block;
+    width: 140px;
+    max-width: 70vw;   /* 極窄螢幕也不會頂到邊 */
+    height: auto;
+    margin: 0 auto 40px;
   }
   h1 {
     font-family: 'Funnel Display', sans-serif;
@@ -124,7 +126,7 @@ const MAINTENANCE_HTML = `<!DOCTYPE html>
 </head>
 <body>
 <div class="wrap">
-  <div class="logo">沛素 per-sulii</div>
+  <img class="logo" src="${LOGO_DATA_URI}" width="${LOGO_W}" height="${LOGO_H}" alt="沛素 per-sulii">
   <h1>網站維護中</h1>
   <p>我們正在進行系統維護與內容更新，<br>造成不便敬請見諒。</p>
   <p>如有需要請來信 <a href="mailto:info@persulii.com.tw">info@persulii.com.tw</a></p>

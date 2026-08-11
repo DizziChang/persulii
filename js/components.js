@@ -59,7 +59,7 @@
       <a href="/">首頁</a>
       <a href="/about">關於</a>
       <a href="/products">產品</a>
-      <a href="/faq">常見問答</a>
+      <a href="/faq">問答</a>
       <a href="/contact">經銷</a>
     </div>
     <div class="ftr-grid">

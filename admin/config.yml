@@ -32,9 +32,30 @@ collections:
               - { name: hoverImg, label: 滑過顯示圖, widget: image, required: false }
               - { name: hoverTitle, label: 滑過標題, widget: string, required: false }
               - { name: hoverDesc, label: 滑過說明, widget: string, required: false }
+              - { name: banner, label: 產品頁橫幅（也會當成分享預覽圖）, widget: image, required: false }
+              - { name: heroImg, label: 產品頁主圖, widget: image, required: false }
               - { name: tagline, label: 一句話賣點, widget: string }
               - { name: intro, label: 產品簡介, widget: text }
-              - { name: feature, label: 產品特色, widget: text }
+              - { name: highlights, label: 重點標籤（產品頁簡介下方的小圓標）, widget: list, required: false, field: { name: item, label: 標籤, widget: string } }
+              - name: videoId
+                label: YouTube 影片 ID
+                widget: string
+                required: false
+                hint: 只填 ID，例如網址 https://youtu.be/U29afyMK6r4 就填 U29afyMK6r4。留空則產品頁不顯示影片。
+              - name: benefits
+                label: 保養功效
+                widget: list
+                required: false
+                summary: "{{fields.title}}"
+                fields:
+                  - { name: title, label: 功效名稱, widget: string }
+                  - { name: body, label: 說明（可換行）, widget: text }
+                  - { name: img, label: 圖片, widget: image }
+              - name: feature
+                label: 產品特色
+                widget: text
+                required: false
+                hint: 只有在「保養功效」完全沒填時才會顯示，當作備援文案。
               - name: ingredients
                 label: 關鍵成分
                 widget: list
@@ -42,14 +63,39 @@ collections:
                   - { name: en, label: 英文名, widget: string }
                   - { name: zh, label: 中文名, widget: string }
                   - { name: desc, label: 說明, widget: string }
+              - { name: audience, label: 適用族群, widget: list, required: false, field: { name: item, label: 族群, widget: string } }
+              - { name: usageTitle, label: 使用方式標題, widget: string, required: false }
               - { name: usage, label: 使用方式（逐步驟）, widget: list, field: { name: step, label: 步驟, widget: string } }
+              - { name: reminder, label: 注意事項（空一行分成一條）, widget: text, required: false }
               - name: specs
-                label: 規格與認證
+                label: 成分與規格
                 widget: object
                 fields:
-                  - { name: size, label: 容量 / 規格, widget: string }
-                  - { name: inci, label: 成分標示, widget: string }
-                  - { name: cert, label: 品質認證, widget: string }
+                  - { name: inciTitle, label: 全成分表標題, widget: string, required: false }
+                  - { name: inciList, label: 全成分表內容, widget: text, required: false }
+                  - { name: inciNote, label: 全成分表附註, widget: string, required: false }
+                  - name: inci
+                    label: 成分標示（備援）
+                    widget: text
+                    required: false
+                    hint: 只有在「全成分表內容」沒填時才會顯示。
+                  - name: size
+                    label: 容量 / 規格（目前頁面暫時隱藏）
+                    widget: string
+                    required: false
+                  - name: cert
+                    label: 品質認證（目前頁面暫時隱藏）
+                    widget: string
+                    required: false
+              - name: bottleInfo
+                label: 產品資訊表
+                widget: object
+                required: false
+                fields:
+                  - { name: brand, label: 品牌, widget: string }
+                  - { name: name, label: 品名, widget: string }
+                  - { name: enName, label: 英文名稱, widget: string }
+                  - { name: volume, label: 容量, widget: string }
 
   - name: pages
     label: 頁面內容
@@ -65,7 +111,11 @@ collections:
             fields:
               - { name: img, label: 圖片, widget: image }
               - { name: eyebrow, label: 小標, widget: string, required: false }
-              - { name: title, label: 主標題（可換行）, widget: text, required: false }
+              - name: title
+                label: 圖片替代文字
+                widget: text
+                required: false
+                hint: 不會顯示在畫面上，只當圖片的 alt（給搜尋引擎與讀屏軟體）。留空時改用「小標」。
               - { name: lead, label: 副標語, widget: string, required: false }
               - { name: btn1_text, label: 按鈕1文字, widget: string, required: false }
               - { name: btn1_link, label: 按鈕1連結, widget: string, required: false }
@@ -76,31 +126,21 @@ collections:
         label: 首頁（其他區塊）
         file: content/home.json
         fields:
+          # 目前首頁只吃這兩塊。science 的小標／說明／按鈕／圖片，以及整個
+          # partner（合作夥伴）區塊，頁面上已經沒有對應的位置，放在後台只會
+          # 讓人以為改得動，所以拿掉；content/home.json 裡的資料原樣保留，
+          # 哪天版面加回來再把欄位補回來即可。
           - name: science
             label: 關於我們區塊
             widget: object
             fields:
-              - { name: eyebrow, label: 英文小標, widget: string }
               - { name: title, label: 標題, widget: string }
-              - { name: lead, label: 說明（可換行）, widget: text }
-              - { name: btn_text, label: 按鈕文字, widget: string, required: false }
-              - { name: btn_link, label: 按鈕連結, widget: string, required: false }
-              - { name: image, label: 區塊圖片, widget: image, required: false }
           - name: products_section
             label: 產品區標題
             widget: object
             fields:
               - { name: eyebrow, label: 英文小標, widget: string }
               - { name: title, label: 標題, widget: string }
-          - name: partner
-            label: 合作夥伴區
-            widget: object
-            fields:
-              - { name: eyebrow, label: 英文小標, widget: string }
-              - { name: title, label: 標題, widget: string }
-              - { name: lead, label: 說明, widget: string }
-              - { name: btn_text, label: 按鈕文字, widget: string }
-              - { name: btn_link, label: 按鈕連結, widget: string }
       - name: about_sections
         label: 關於頁－內容區塊
         file: content/about-sections.json
@@ -111,23 +151,17 @@ collections:
             allow_add: false
             summary: "{{fields.title}}"
             fields:
-              - { name: eyebrow, label: 英文小標, widget: string }
+              - name: eyebrow
+                label: 英文小標
+                widget: string
+                required: false
+                hint: 只有第 1 段的小標會顯示，其餘段落頁面上沒有小標的位置。
               - { name: title, label: 標題（可換行）, widget: text }
               - { name: body, label: 內文（空一行分段）, widget: text }
-              - { name: image, label: 圖片, widget: image, required: false }
-      - name: about_team
-        label: 關於頁－研發團隊
-        file: content/about-team.json
-        fields:
-          - name: team
-            label: 研發團隊
-            widget: object
-            fields:
-              - { name: eyebrow, label: 英文小標, widget: string }
-              - { name: title, label: 標題, widget: string }
-              - { name: lead, label: 說明, widget: string }
-              - { name: image, label: 圖片, widget: image }
-              - { name: image_alt, label: 圖片說明, widget: string }
+              # 關於頁沒有任何段落圖片的版位（about.html 只有 title／body），
+              # 所以不開放「圖片」欄位。
+      # 「關於頁－研發團隊」已移除：content/about-team.json 沒有任何程式讀取，
+      # about.html 上也沒有研發團隊區塊，改了不會有任何效果。
       - name: faq
         label: 常見問答頁
         file: content/faq.json

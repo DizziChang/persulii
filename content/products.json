@@ -5,33 +5,14 @@
       "code": "S",
       "en": "S-essence",
       "name": "外泌體多胜肽養護精華",
-      "banner": "images/pbanner-S.webp",
       "img": "images/pcard_S.webp",
-      "heroImg": "images/S06.webp",
       "homeImg": "images/hproduct_S.webp",
       "hoverImg": "images/S04.webp",
       "hoverTitle": "沛素-S",
       "hoverDesc": "外泌體細緻膚質",
       "tagline": "柔潤、透亮肌膚、細緻毛孔",
-      "intro": "使用優質人體外泌體結合多胜肽，穩定肌膚、增強防護力，讓肌膚健康細緻",
-      "videoId": "U29afyMK6r4",
-      "benefits": [
-        {
-          "title": "細緻毛孔",
-          "body": "細緻柔滑肌膚",
-          "img": "images/VS功能_S001.webp"
-        },
-        {
-          "title": "穩定養護",
-          "body": "提升肌膚穩定力",
-          "img": "images/VS功能_S002.webp"
-        },
-        {
-          "title": "賦活光采",
-          "body": "展現自然透亮光澤",
-          "img": "images/VS功能_S003.webp"
-        }
-      ],
+      "intro": "使用合法優質外泌體結合多胜肽，穩定肌膚、增強防護力，讓肌膚健康細緻",
+      "feature": "柔潤、透亮肌膚、細緻毛孔",
       "ingredients": [
         {
           "en": "Exosome",
@@ -49,7 +30,6 @@
           "desc": "精密萃取技術，兼顧穩定性與吸收效率"
         }
       ],
-      "usageTitle": "每天30秒 日常護理",
       "usage": [
         "臉部清潔完畢",
         "取適量輕抹全臉",
@@ -57,66 +37,58 @@
       ],
       "specs": {
         "size": "35ml",
-        "inciTitle": "Ingredients / 全成分表",
-        "inciList": "Aqua water, Glycerine, Glycosyl Trehalose & Hydrogenated Starch Hydrolysate, Oat Beta-Glucan, Niacinamide, Phenoxyethanol, Exosome Liquid, Carbopol 980, PEG-40 Hydrogenated Castor Oil, Hyaluronic Acid, L-Arginine",
+        "inci": "Aqua water, Glycerine, Glycosyl Trehalose & Hydrogenated Starch Hydrolysate, Oat Beta-Glucan, Niacinamide, Phenoxyethanol, Exosome Liquid, Carbopol 980, PEG-40 Hydrogenated Castor Oil, Hyaluronic Acid, L-Arginine",
+        "cert": "TFDA ｜ INCI ｜ GMP",
         "inciNote": "Fragrance free",
-        "cert": "TFDA ｜ INCI ｜ GMP"
+        "inciList": "Aqua water, Glycerine, Glycosyl Trehalose & Hydrogenated Starch Hydrolysate, Oat Beta-Glucan, Niacinamide, Phenoxyethanol, Exosome Liquid, Carbopol 980, PEG-40 Hydrogenated Castor Oil, Hyaluronic Acid, L-Arginine",
+        "inciTitle": "Ingredients / 全成分表"
+      },
+      "bottleInfo": {
+        "volume": "35ml / 1.18 fl oz",
+        "enName": "S-essence",
+        "name": "沛素-S 外泌體多胜肽養護精華",
+        "brand": "per-sulii"
       },
       "certifications": [
         "台灣 TFDA 認證",
         "國際 INCI 認證",
         "GMP 品質製程"
       ],
-      "bottleInfo": {
-        "brand": "per-sulii",
-        "name": "沛素-S 外泌體多胜肽養護精華",
-        "enName": "S-essence",
-        "volume": "35ml / 1.18 fl oz"
-      }
+      "usageTitle": "每天30秒 日常護理",
+      "benefits": [
+        {
+          "img": "images/VS功能_S001.webp",
+          "body": "細緻柔滑肌膚",
+          "title": "細緻毛孔"
+        },
+        {
+          "img": "images/VS功能_S002.webp",
+          "body": "提升肌膚穩定力",
+          "title": "穩定養護"
+        },
+        {
+          "img": "images/VS功能_S003.webp",
+          "body": "展現自然透亮光澤",
+          "title": "賦活光采"
+        }
+      ],
+      "videoId": "U29afyMK6r4",
+      "heroImg": "images/S06.webp",
+      "banner": "images/pbanner-S.webp"
     },
     {
       "id": "V-essence",
       "code": "V",
       "en": "V-essence",
       "name": "精萃蜂胜肽 PLUS 精華",
-      "banner": "images/pbanner-V.webp",
       "img": "images/pcard_V.webp",
-      "heroImg": "images/V02.webp",
       "homeImg": "images/hproduct_V.webp",
       "hoverImg": "images/V01.webp",
       "hoverTitle": "沛素-V",
       "hoverDesc": "蜂胜肽緊緻撫紋",
-      "tagline": "專為紋路肌膚打造的撫紋精華。",
+      "tagline": "專為紋路肌膚打造的撫紋精華",
       "intro": "蜂胜肽是珍貴的活性多肽成分，有助於促進肌膚彈性與緊緻，改善細紋與乾燥粗糙，讓肌膚展現澎潤光澤與年輕活力。",
-      "highlights": [
-        "改善細紋",
-        "緊緻肌膚",
-        "彈潤光澤",
-        "淡化紋路"
-      ],
-      "videoId": "5AQHqlaNYpI",
-      "benefits": [
-        {
-          "title": "淡化紋路",
-          "body": "改善動態與靜態紋路，\n肌膚更平滑細緻",
-          "img": "images/VS功能_V001.webp"
-        },
-        {
-          "title": "緊緻澎潤",
-          "body": "提升肌膚彈性與支撐力，\n使肌膚緊緻飽滿",
-          "img": "images/VS功能_V002.webp"
-        },
-        {
-          "title": "彈潤光澤",
-          "body": "提升水潤度，\n使肌膚透亮光采",
-          "img": "images/VS功能_V003.webp"
-        },
-        {
-          "title": "健康肌膚",
-          "body": "強化肌膚防護力，\n養護肌膚健康",
-          "img": "images/VS功能_V004.webp"
-        }
-      ],
+      "feature": "專為紋路肌膚打造的撫紋精華",
       "ingredients": [
         {
           "en": "Bee Peptide",
@@ -134,37 +106,69 @@
           "desc": "精密萃取技術，兼顧穩定性與吸收效率"
         }
       ],
-      "audience": [
-        "追求淡化細紋",
-        "追求肌膚彈性光澤",
-        "追求緊緻澎潤透亮",
-        "追求延遲肌膚老化"
-      ],
-      "usageTitle": "每天30秒 早晚淨臉後護理",
       "usage": [
         "臉部清潔洗淨",
         "取適量輕抹於臉部細紋處",
         "早晚常態使用"
       ],
-      "reminder": "對蜂產品過敏者慎用。\n\n建議先局部測試，1小時後確認無不良反應。\n\n建議12歲以上使用。",
       "specs": {
         "size": "35ml / 1.18 fl. oz.",
-        "inciTitle": "Ingredients / 全成分表",
-        "inciList": "Aqua Water, Glycerine, Glycosyl Trehalose/Hydrogenated Starch Hydrolysate, Oat Beta-Glucan, Niacinamide, Phenoxyethanol, Carbopol, PEG-40 Hydrogenated Castor Oil, Butylene Glycol/Honey Bee Venom, Dipeptide Diaminobutyroyl Benzylamide Diacetate, Hyaluronic Acid, L-Arginine",
+        "inci": "Aqua Water, Glycerine, Glycosyl Trehalose/Hydrogenated Starch Hydrolysate, Oat Beta-Glucan, Niacinamide, Phenoxyethanol, Carbopol, PEG-40 Hydrogenated Castor Oil, Butylene Glycol/Honey Bee Venom, Dipeptide Diaminobutyroyl Benzylamide Diacetate, Hyaluronic Acid, L-Arginine",
+        "cert": "TFDA ｜ INCI ｜ GMP",
         "inciNote": "Fragrance free",
-        "cert": "TFDA ｜ INCI ｜ GMP"
+        "inciList": "Aqua Water, Glycerine, Glycosyl Trehalose/Hydrogenated Starch Hydrolysate, Oat Beta-Glucan, Niacinamide, Phenoxyethanol, Carbopol, PEG-40 Hydrogenated Castor Oil, Butylene Glycol/Honey Bee Venom, Dipeptide Diaminobutyroyl Benzylamide Diacetate, Hyaluronic Acid, L-Arginine",
+        "inciTitle": "Ingredients / 全成分表"
+      },
+      "bottleInfo": {
+        "volume": "35ml / 1.18 fl. oz.",
+        "enName": "V-essence",
+        "name": "沛素-V 精萃蜂胜肽plus精華",
+        "brand": "per-sulii"
       },
       "certifications": [
         "台灣 TFDA 認證",
         "國際 INCI 認證",
         "GMP 品質製程"
       ],
-      "bottleInfo": {
-        "brand": "per-sulii",
-        "name": "沛素-V 精萃蜂胜肽plus精華",
-        "enName": "V-essence",
-        "volume": "35ml / 1.18 fl. oz."
-      }
+      "reminder": "對蜂產品過敏者慎用。\n\n建議先局部測試，1小時後確認無不良反應。\n\n建議12歲以上使用。",
+      "usageTitle": "每天30秒 早晚淨臉後護理",
+      "audience": [
+        "追求淡化細紋",
+        "追求肌膚彈性光澤",
+        "追求緊緻澎潤透亮",
+        "追求延遲肌膚老化"
+      ],
+      "benefits": [
+        {
+          "img": "images/VS功能_V001.webp",
+          "body": "改善動態與靜態紋路，\n肌膚更平滑細緻",
+          "title": "淡化紋路"
+        },
+        {
+          "img": "images/VS功能_V002.webp",
+          "body": "提升肌膚彈性與支撐力，\n使肌膚緊緻飽滿",
+          "title": "緊緻澎潤"
+        },
+        {
+          "img": "images/VS功能_V003.webp",
+          "body": "提升水潤度，\n使肌膚透亮光采",
+          "title": "彈潤光澤"
+        },
+        {
+          "img": "images/VS功能_V004.webp",
+          "body": "強化肌膚防護力，\n養護肌膚健康",
+          "title": "健康肌膚"
+        }
+      ],
+      "videoId": "5AQHqlaNYpI",
+      "highlights": [
+        "改善細紋",
+        "緊緻肌膚",
+        "彈潤光澤",
+        "淡化紋路"
+      ],
+      "heroImg": "images/V02.webp",
+      "banner": "images/pbanner-V.webp"
     }
   ]
 }

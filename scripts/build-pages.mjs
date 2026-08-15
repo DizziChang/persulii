@@ -112,20 +112,18 @@ function shareButtonHTML(url, title) {
 
 /* ---- 產品內文（自 js/main.js 的 renderProductDetail 移植，版型未變） ---- */
 function detailHTML(p, next) {
-  /* 關鍵成分：多項成分以「甲 + 乙 ⇨ 丙」流程呈現，說明文字取最後一項成分的描述 */
+  /* 關鍵成分：多項成分以「甲 + 乙 ⇨ 丙」流程呈現 */
   const ing = (p.ingredients && p.ingredients.length > 1)
     ? (() => {
       const last = p.ingredients[p.ingredients.length - 1];
       const head = p.ingredients.slice(0, -1).map((c) => c.zh).join(' <span class="ingredient-flow-plus">+</span> ');
       return '<div class="ingredient-flow mt24">'
         + '<div class="ingredient-flow-terms">' + head + ' <span class="ingredient-flow-arrow">⇨</span> ' + last.zh + '</div>'
-        + '<p class="ingredient-flow-caption mt8">' + last.desc + '</p>'
         + '</div>';
     })()
     : (p.ingredients || []).map((c, i) => (i > 0 ? '<hr class="divider mt24">' : '')
       + '<div class="mt24"><div class="eyebrow">' + c.en + '</div>'
-      + '<h3 class="h3 mt8" style="font-size:20px">' + c.zh + '</h3>'
-      + '<p class="body mt8">' + c.desc + '</p></div>').join('');
+      + '<h3 class="h3 mt8" style="font-size:20px">' + c.zh + '</h3></div>').join('');
 
   const use = (p.usage || []).map((s, i) => {
     const n = ('0' + (i + 1)).slice(-2);

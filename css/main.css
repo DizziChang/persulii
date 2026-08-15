@@ -359,11 +359,6 @@ h3.in-view {
   padding: 0 4px
 }
 
-.ingredient-flow-caption {
-  font-size: clamp(14px, 1.6vw, 17px);
-  color: var(--ink-soft)
-}
-
 /* buttons / links */
 .btn {
   display: inline-block;
@@ -868,7 +863,7 @@ h3.in-view {
 
 .pfeature-video {
   width: 100%;
-  aspect-ratio: 9 / 12;
+  aspect-ratio: 9 / 14;
   height: auto
 }
 

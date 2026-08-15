@@ -62,7 +62,6 @@ collections:
                 fields:
                   - { name: en, label: 英文名, widget: string }
                   - { name: zh, label: 中文名, widget: string }
-                  - { name: desc, label: 說明, widget: string }
               - { name: audience, label: 適用族群, widget: list, required: false, field: { name: item, label: 族群, widget: string } }
               - { name: usageTitle, label: 使用方式標題, widget: string, required: false }
               - { name: usage, label: 使用方式（逐步驟）, widget: list, field: { name: step, label: 步驟, widget: string } }

@@ -10,10 +10,36 @@
        <script src="/js/components.js"></script>
      </body>
 
-   data-page 值：home | about | products | contact
+   data-page 值：home | about | products | faq | contact
+
+   雙語：網址開頭是 /en 就視為英文頁（見 window.PERSULII_LANG，
+   main.js 也讀這個值來決定要抓哪份 content JSON）。
    ============================================================ */
 
 (function () {
+
+  /* ---- 語言判斷：/en 或 /en/... 視為英文頁 ---- */
+  var LANG = /^\/en(\/|$)/.test(window.location.pathname) ? 'en' : 'zh';
+  window.PERSULII_LANG = LANG;
+
+  /* 目前網址對應的另一個語言版本網址（給語言切換鈕用） */
+  function otherLangUrl() {
+    var path = window.location.pathname;
+    if (LANG === 'en') {
+      return path.replace(/^\/en/, '') || '/';
+    }
+    return '/en' + path;
+  }
+
+  var NAV_LABELS = {
+    zh: { home: '首頁', about: '關於', products: '產品', faq: '問答', contact: '經銷' },
+    en: { home: 'Home', about: 'About', products: 'Products', faq: 'FAQ', contact: 'Contact' }
+  };
+  var UI = {
+    zh: { menuOpen: '開啟選單', menuClose: '關閉選單', langSwitch: 'EN', langLabel: '切換為英文', mainNav: '主要導覽', mobileNav: '行動版導覽' },
+    en: { menuOpen: 'Open menu', menuClose: 'Close menu', langSwitch: '中文', langLabel: 'Switch to Chinese', mainNav: 'Main navigation', mobileNav: 'Mobile navigation' }
+  }[LANG];
+  var L = NAV_LABELS[LANG];
 
   /* ---- 圖片路徑（根絕對路徑，子目錄頁面如 /products/<slug> 才不會解析錯） ---- */
   var IMG_LOGO_GREY = '/images/per-sulii-logo-grayscale.webp';
@@ -21,46 +47,54 @@
   var IMG_ICON_HAMBURGER = '/images/icon/hamburger.webp';
   var IMG_ICON_CLOSE = '/images/icon/close.webp';
 
+  var HOME_HREF = LANG === 'en' ? '/en/' : '/';
+  var PAGE_HREF = LANG === 'en' ? '/en/' : '/';
+
   /* ---- Header HTML ---- */
   var HEADER = `
 <header class="hdr">
   <div class="hdr-in" style="position:relative">
-    <a href="/">
+    <a href="${HOME_HREF}">
       <img class="logo" src="${IMG_LOGO_GREY}" alt="沛素 per-sulii">
     </a>
-    <nav class="nav desk" aria-label="主要導覽">
-      <a href="/"    data-page="home">首頁</a>
-      <a href="/about"    data-page="about">關於</a>
-      <a href="/products" data-page="products">產品</a>
-      <a href="/faq"      data-page="faq">問答</a>
-      <a href="/contact"  data-page="contact">經銷</a>
+    <nav class="nav desk" aria-label="${UI.mainNav}">
+      <a href="${HOME_HREF}" data-page="home">${L.home}</a>
+      <a href="${PAGE_HREF}about" data-page="about">${L.about}</a>
+      <a href="${PAGE_HREF}products" data-page="products">${L.products}</a>
+      <a href="${PAGE_HREF}faq" data-page="faq">${L.faq}</a>
+      <a href="${PAGE_HREF}contact" data-page="contact">${L.contact}</a>
+      <a href="${otherLangUrl()}" class="lang-switch" aria-label="${UI.langLabel}">${UI.langSwitch}</a>
     </nav>
     <button class="burger mob" id="burger" type="button"
-      aria-label="開啟選單" aria-expanded="false" aria-controls="mmenu">
+      aria-label="${UI.menuOpen}" aria-expanded="false" aria-controls="mmenu">
       <img id="burger-icon" src="${IMG_ICON_HAMBURGER}" alt="">
     </button>
   </div>
-  <nav class="mmenu" id="mmenu" aria-label="行動版導覽">
-    <a href="/">首頁</a>
-    <a href="/about">關於</a>
-    <a href="/products">產品</a>
-    <a href="/faq">常見問答</a>
-    <a href="/contact">經銷</a>
+  <nav class="mmenu" id="mmenu" aria-label="${UI.mobileNav}">
+    <a href="${HOME_HREF}">${L.home}</a>
+    <a href="${PAGE_HREF}about">${L.about}</a>
+    <a href="${PAGE_HREF}products">${L.products}</a>
+    <a href="${PAGE_HREF}faq">${L.faq}</a>
+    <a href="${PAGE_HREF}contact">${L.contact}</a>
+    <a href="${otherLangUrl()}" class="lang-switch">${UI.langSwitch}</a>
   </nav>
 </header>`;
 
-  /* ---- Footer HTML（內容來自 content/settings-footer.json） ---- */
+  /* ---- Footer HTML（內容來自 content/settings-footer(.en).json） ---- */
   function footerHTML(s) {
     var f = s.footer;
+    var infoLabels = LANG === 'en'
+      ? { email: 'Email', phone: 'Phone' }
+      : { email: '聯絡信箱', phone: '聯絡電話' };
     return `
 <footer class="ftr">
   <div class=" wrap">
    <div class="ftr-flex-item">
-      <a href="/">首頁</a>
-      <a href="/about">關於</a>
-      <a href="/products">產品</a>
-      <a href="/faq">問答</a>
-      <a href="/contact">經銷</a>
+      <a href="${HOME_HREF}">${L.home}</a>
+      <a href="${PAGE_HREF}about">${L.about}</a>
+      <a href="${PAGE_HREF}products">${L.products}</a>
+      <a href="${PAGE_HREF}faq">${L.faq}</a>
+      <a href="${PAGE_HREF}contact">${L.contact}</a>
     </div>
     <div class="ftr-grid">
       <div class="ftr-logo">
@@ -73,8 +107,8 @@
       <div class="ftr-grid-item">
           <ul class="info">
             <li>${f.company}</li>
-            <li>聯絡信箱 ｜ ${f.email}</li>
-            <li>聯絡電話 ｜ ${f.phone}</li>
+            <li>${infoLabels.email} ｜ ${f.email}</li>
+            <li>${infoLabels.phone} ｜ ${f.phone}</li>
             <li class="ftr-social">
               <a href="${f.social.line}" target="_blank" rel="noopener" aria-label="Line" title="Line">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5C6.2 2.5 1.5 6.3 1.5 11c0 4.2 3.7 7.7 8.7 8.4.34.07.8.22.92.51.1.27.07.68.03.95l-.15.9c-.04.27-.21 1.05.92.57 1.13-.47 6.07-3.57 8.28-6.12 1.53-1.66 2.3-3.36 2.3-5.21 0-4.7-4.7-8.5-10.5-8.5zM7.3 13.6H5.2a.55.55 0 0 1-.55-.55V8.9a.55.55 0 0 1 1.1 0v3.6h1.55a.55.55 0 0 1 0 1.1zm1.9-.55a.55.55 0 0 1-1.1 0V8.9a.55.55 0 0 1 1.1 0v4.15zm5.1 0a.55.55 0 0 1-.99.33l-2.06-2.8v2.47a.55.55 0 0 1-1.1 0V8.9a.55.55 0 0 1 .99-.33l2.06 2.8V8.9a.55.55 0 0 1 1.1 0v4.15zm3.5-2.63a.55.55 0 0 1 0 1.1h-1.55v.98h1.55a.55.55 0 0 1 0 1.1h-2.1a.55.55 0 0 1-.55-.55V8.9c0-.3.25-.55.55-.55h2.1a.55.55 0 0 1 0 1.1h-1.55v.97h1.55z"/></svg>
@@ -103,7 +137,8 @@
     var fp = document.getElementById('site-footer');
     if (hp) hp.innerHTML = HEADER;
     if (fp) {
-      fetch('/content/settings-footer.json').then(function (r) { return r.json(); }).then(function (s) {
+      var footerUrl = LANG === 'en' ? '/content/settings-footer.en.json' : '/content/settings-footer.json';
+      fetch(footerUrl).then(function (r) { return r.json(); }).then(function (s) {
         fp.innerHTML = footerHTML(s);
       }).catch(console.error);
     }
@@ -127,7 +162,7 @@
         var open = mmenu.classList.toggle('open');
         burgerIcon.src = open ? IMG_ICON_CLOSE : IMG_ICON_HAMBURGER;
         burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-        burger.setAttribute('aria-label', open ? '關閉選單' : '開啟選單');
+        burger.setAttribute('aria-label', open ? UI.menuClose : UI.menuOpen);
       });
       /* 點選行動選單連結後收起 */
       mmenu.querySelectorAll('a').forEach(function (a) {
@@ -135,7 +170,7 @@
           mmenu.classList.remove('open');
           burgerIcon.src = IMG_ICON_HAMBURGER;
           burger.setAttribute('aria-expanded', 'false');
-          burger.setAttribute('aria-label', '開啟選單');
+          burger.setAttribute('aria-label', UI.menuOpen);
         });
       });
     }

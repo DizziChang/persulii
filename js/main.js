@@ -15,6 +15,34 @@ function getJSON(url) {
   return __cache[url];
 }
 
+/* ---- 雙語：/en 開頭視為英文頁（見 components.js 的 window.PERSULII_LANG）。
+   content/*.json 一律有一份 .en.json 手動維護的英文版本放在旁邊，
+   不進 admin/config.yml，CMS 後台看不到、也不會被改動。 ---- */
+var LANG = window.PERSULII_LANG || 'zh';
+function contentUrl(path) {
+  return LANG === 'en' ? path.replace(/\.json$/, '.en.json') : path;
+}
+var STR = {
+  zh: {
+    share: '分享', copied: '已複製連結', openSound: '開啟聲音', closeSound: '關閉聲音',
+    pause: '暫停', play: '播放', soundPromptText: '要開啟影片聲音嗎？',
+    soundOn: '開啟聲音', soundOff: '靜音瀏覽',
+    learnMore: '了解更多 →', closeup: ' 特寫', shortVideo: ' 短影片',
+    prevSlide: '上一張', nextSlide: '下一張',
+    submitting: '送出中...', submitOk: '已送出，我們會盡快與您聯繫。',
+    submitFail: '送出失敗，請稍後再試一次。', submitBtn: '送出洽詢'
+  },
+  en: {
+    share: 'Share', copied: 'Link copied', openSound: 'Unmute', closeSound: 'Mute',
+    pause: 'Pause', play: 'Play', soundPromptText: 'Turn on video sound?',
+    soundOn: 'Sound on', soundOff: 'Browse muted',
+    learnMore: 'Learn more →', closeup: ' close-up', shortVideo: ' short video',
+    prevSlide: 'Previous slide', nextSlide: 'Next slide',
+    submitting: 'Sending...', submitOk: 'Sent — we’ll be in touch soon.',
+    submitFail: 'Something went wrong, please try again.', submitBtn: 'Send Inquiry'
+  }
+}[LANG];
+
 /* ---- SEO：JSON-LD ---- */
 var SITE_URL = 'https://persulii.com.tw';
 var SITE_NAME = '沛素 per-sulii';
@@ -27,7 +55,7 @@ function asset(p) {
 }
 
 /* 產品詳細頁的網址（實體頁由 scripts/build-pages.mjs 於建置時產生） */
-function productPath(p) { return '/products/' + String(p.id).toLowerCase(); }
+function productPath(p) { return (LANG === 'en' ? '/en' : '') + '/products/' + String(p.id).toLowerCase(); }
 
 function injectJSONLD(id, data) {
   var existing = document.getElementById(id);
@@ -57,7 +85,7 @@ function injectOrganizationLD(settings) {
 
 /* ---- 影片分享按鈕：Web Share API，不支援則複製連結（事件委派，涵蓋動態產生的按鈕） ---- */
 function shareToggleHTML(url, title) {
-  return '<button type="button" class="share-toggle share-btn" aria-label="分享"'
+  return '<button type="button" class="share-toggle share-btn" aria-label="' + STR.share + '"'
     + ' data-share-url="' + url + '" data-share-title="' + (title || '') + '">'
     + '<img src="/images/icon/social-media-w.webp" alt="">'
     + '</button>';
@@ -82,7 +110,7 @@ function initShareButtons() {
         var label = btn.querySelector('.share-btn-label');
         if (!label) return;
         var original = label.textContent;
-        label.textContent = '已複製連結';
+        label.textContent = STR.copied;
         setTimeout(function () { label.textContent = original; }, 1800);
       }).catch(function () { });
     }
@@ -103,7 +131,7 @@ function updateGlobalSoundButton() {
   if (!btn) return;
   btn.classList.toggle('is-on', GLOBAL_SOUND_ON);
   btn.setAttribute('aria-pressed', GLOBAL_SOUND_ON ? 'true' : 'false');
-  btn.setAttribute('aria-label', GLOBAL_SOUND_ON ? '關閉聲音' : '開啟聲音');
+  btn.setAttribute('aria-label', GLOBAL_SOUND_ON ? STR.closeSound : STR.openSound);
 }
 
 function setGlobalSound(on) {
@@ -119,12 +147,12 @@ function initGlobalSoundControl() {
   wrap.innerHTML =
     '<div class="sound-prompt-overlay" id="sound-prompt">'
     + '<div class="sound-prompt-box">'
-    + '<p class="sound-prompt-text">要開啟影片聲音嗎？</p>'
+    + '<p class="sound-prompt-text">' + STR.soundPromptText + '</p>'
     + '<div class="sound-prompt-actions">'
-    + '<button type="button" class="btn solid" data-choice="on">開啟聲音</button>'
-    + '<button type="button" class="btn ghost" data-choice="off">靜音瀏覽</button>'
+    + '<button type="button" class="btn solid" data-choice="on">' + STR.soundOn + '</button>'
+    + '<button type="button" class="btn ghost" data-choice="off">' + STR.soundOff + '</button>'
     + '</div></div></div>'
-    + '<button type="button" class="global-sound-toggle" id="global-sound-toggle" aria-label="開啟聲音" aria-pressed="false">'
+    + '<button type="button" class="global-sound-toggle" id="global-sound-toggle" aria-label="' + STR.openSound + '" aria-pressed="false">'
     + '<svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 5V4L8 9H4z"/><path d="M16.5 8.5l5 7M21.5 8.5l-5 7"/></svg>'
     + '<svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 5V4L8 9H4z"/><path d="M16 8.5a5 5 0 0 1 0 7"/><path d="M18.5 6a8.5 8.5 0 0 1 0 12"/></svg>'
     + '</button>';
@@ -157,7 +185,7 @@ function setVideoPlaying(wrap, playing) {
   if (btn) {
     btn.classList.toggle('is-paused', !playing);
     btn.setAttribute('aria-pressed', playing ? 'false' : 'true');
-    btn.setAttribute('aria-label', playing ? '暫停' : '播放');
+    btn.setAttribute('aria-label', playing ? STR.pause : STR.play);
   }
   wrap.classList.toggle('is-playing', playing);
 }
@@ -224,11 +252,11 @@ function productCardHTML(p, mediaH, imgOverride, ctaText) {
   var alt = p.en + ' ' + p.name;
   var cta = ctaText
     ? '<span class="btn ghost">' + ctaText + '</span>'
-    : '<span class="tlink">了解更多 →</span>';
+    : '<span class="tlink">' + STR.learnMore + '</span>';
   return '<a href="' + productPath(p) + '" class="pcard">'
     + '<div class="media product"' + (img ? '' : ' data-mono="' + p.code + '"') + h + '>'
     + (img ? '<img class="media-img" src="' + asset(img) + '" alt="' + alt + '" loading="lazy">' : '')
-    + (p.hoverImg ? '<div class="media-hover"><img src="' + asset(p.hoverImg) + '" alt="' + alt + ' 特寫" loading="lazy"></div>' : '')
+    + (p.hoverImg ? '<div class="media-hover"><img src="' + asset(p.hoverImg) + '" alt="' + alt + STR.closeup + '" loading="lazy"></div>' : '')
     + (p.hoverTitle ? '<div class="media-cap"><span class="media-cap-t">' + p.hoverTitle + '</span><span class="media-cap-d">' + p.hoverDesc + '</span></div>' : '')
     + '</div>'
     + '<h3 class="h3 mt24">' + p.en + ' ' + p.name + '</h3>'
@@ -238,7 +266,7 @@ function productCardHTML(p, mediaH, imgOverride, ctaText) {
 }
 
 /* 自訂播放/暫停按鈕（取代被 controls=0 關掉的原生控制列） */
-var PLAY_TOGGLE_HTML = '<button type="button" class="play-toggle" aria-label="暫停" aria-pressed="false">'
+var PLAY_TOGGLE_HTML = '<button type="button" class="play-toggle" aria-label="' + STR.pause + '" aria-pressed="false">'
   + '<svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg>'
   + '<svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>'
   + '</button>';
@@ -258,15 +286,21 @@ function productVideoHTML(p) {
     + '<video class="video-el" src="' + src + '" poster="' + poster + '" muted loop playsinline preload="auto"></video>'
     + PLAY_HIT_AREA_HTML
     + PLAY_TOGGLE_HTML
-    + shareToggleHTML('https://youtu.be/' + p.videoId, p.en + ' ' + p.name + ' 短影片')
+    + shareToggleHTML('https://youtu.be/' + p.videoId, p.en + ' ' + p.name + STR.shortVideo)
     + '</div>';
 }
 
 /* 首頁產品卡按鈕文案（取代通用的「了解更多」） */
 var HOME_PRODUCT_CTA = {
-  'V-essence': '我要淡化細紋 →',
-  'S-essence': '我要細緻肌膚 →'
-};
+  zh: {
+    'V-essence': '我要淡化細紋 →',
+    'S-essence': '我要細緻肌膚 →'
+  },
+  en: {
+    'V-essence': 'Fade Fine Lines →',
+    'S-essence': 'Refine My Skin →'
+  }
+}[LANG];
 
 /* 首頁圖文並排：短影片一律在左、產品卡在右 */
 var HOME_PRODUCT_ROW_CLASS = {
@@ -355,7 +389,10 @@ function initHeroCarousel(h) {
   var dotEls = [];
   if (dotsWrap) {
     dotsWrap.innerHTML = slidesData.map(function (s, i) {
-      return '<button type="button" class="hero-dot' + (i === 0 ? ' active' : '') + '" data-i="' + i + '" aria-label="第 ' + (i + 1) + ' / ' + slidesData.length + ' 張"></button>';
+      var dotLabel = LANG === 'en'
+        ? ('Slide ' + (i + 1) + ' of ' + slidesData.length)
+        : ('第 ' + (i + 1) + ' / ' + slidesData.length + ' 張');
+      return '<button type="button" class="hero-dot' + (i === 0 ? ' active' : '') + '" data-i="' + i + '" aria-label="' + dotLabel + '"></button>';
     }).join('');
     dotEls = Array.prototype.slice.call(dotsWrap.querySelectorAll('.hero-dot'));
     dotEls.forEach(function (d) {
@@ -378,7 +415,7 @@ function initHeroCarousel(h) {
   var prevBtn = document.createElement('button');
   prevBtn.type = 'button';
   prevBtn.className = 'hero-arrow prev';
-  prevBtn.setAttribute('aria-label', '上一張');
+  prevBtn.setAttribute('aria-label', STR.prevSlide);
   prevBtn.innerHTML = '<img src="/images/icon/left-chevron.svg" alt="">';
   prevBtn.addEventListener('click', function () { goTo(cur - 1); startAuto(); });
   hero.appendChild(prevBtn);
@@ -386,7 +423,7 @@ function initHeroCarousel(h) {
   var nextBtn = document.createElement('button');
   nextBtn.type = 'button';
   nextBtn.className = 'hero-arrow next';
-  nextBtn.setAttribute('aria-label', '下一張');
+  nextBtn.setAttribute('aria-label', STR.nextSlide);
   nextBtn.innerHTML = '<img src="/images/icon/right-arrow.svg" alt="">';
   nextBtn.addEventListener('click', function () { goTo(cur + 1); startAuto(); });
   hero.appendChild(nextBtn);
@@ -594,7 +631,7 @@ function initContactForm() {
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     btn.disabled = true;
-    btn.textContent = '送出中...';
+    btn.textContent = STR.submitting;
     status.style.display = 'none';
 
     fetch('https://api.web3forms.com/submit', {
@@ -606,19 +643,19 @@ function initContactForm() {
       .then(function (data) {
         if (data.success) {
           form.reset();
-          status.textContent = '已送出，我們會盡快與您聯繫。';
+          status.textContent = STR.submitOk;
         } else {
-          status.textContent = '送出失敗，請稍後再試一次。';
+          status.textContent = STR.submitFail;
         }
         status.style.display = '';
       })
       .catch(function () {
-        status.textContent = '送出失敗，請稍後再試一次。';
+        status.textContent = STR.submitFail;
         status.style.display = '';
       })
       .finally(function () {
         btn.disabled = false;
-        btn.textContent = '送出洽詢';
+        btn.textContent = STR.submitBtn;
       });
   });
 }
@@ -752,20 +789,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var page = document.body.dataset.page;
 
-  Promise.all([getJSON('/content/settings-footer.json'), getJSON('/content/settings-contact.json')])
+  Promise.all([getJSON(contentUrl('/content/settings-footer.json')), getJSON(contentUrl('/content/settings-contact.json'))])
     .then(function (r) { injectOrganizationLD(Object.assign({}, r[0], r[1])); })
     .catch(console.error);
   /* 產品詳細頁的內容已在建置時寫進 HTML，不需要再抓 products.json；
      只有首頁與產品列表頁要動態產生卡片 */
   if (document.getElementById('home-products') || document.getElementById('product-list')) {
-    getJSON('/content/products.json').then(function (d) { renderProducts(d.items); applyGlobalSound(); initScrollAutoplay(); }).catch(console.error);
+    getJSON(contentUrl('/content/products.json')).then(function (d) { renderProducts(d.items); applyGlobalSound(); initScrollAutoplay(); }).catch(console.error);
   }
 
   if (page === 'home') {
-    getJSON('/content/home.json').then(renderHome).catch(console.error);
-    getJSON('/content/home-hero.json').then(initHeroCarousel).catch(console.error);
+    getJSON(contentUrl('/content/home.json')).then(renderHome).catch(console.error);
+    getJSON(contentUrl('/content/home-hero.json')).then(initHeroCarousel).catch(console.error);
   }
-  if (page === 'about') getJSON('/content/about-sections.json').then(renderAbout).catch(console.error);
-  if (page === 'faq') getJSON('/content/faq.json').then(renderFAQ).catch(console.error);
-  if (page === 'contact') getJSON('/content/settings-contact.json').then(renderContact).catch(console.error);
+  if (page === 'about') getJSON(contentUrl('/content/about-sections.json')).then(renderAbout).catch(console.error);
+  if (page === 'faq') getJSON(contentUrl('/content/faq.json')).then(renderFAQ).catch(console.error);
+  if (page === 'contact') getJSON(contentUrl('/content/settings-contact.json')).then(renderContact).catch(console.error);
 });

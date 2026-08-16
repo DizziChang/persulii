@@ -1,0 +1,178 @@
+{
+  "items": [
+    {
+      "id": "S-essence",
+      "code": "S",
+      "en": "S-essence",
+      "name": "Exosome Multi-Peptide Serum",
+      "img": "images/pcard_S.webp",
+      "homeImg": "images/hproduct_S.webp",
+      "hoverImg": "images/S04.webp",
+      "hoverTitle": "per-sulii S",
+      "hoverDesc": "Exosome-Refined Skin",
+      "tagline": "Softer, brighter skin, refined pores",
+      "intro": "Formulated with premium, legally sourced exosomes and multi-peptides to condition skin and let beauty emerge, quietly.",
+      "feature": "Softer, brighter skin, refined pores",
+      "ingredients": [
+        {
+          "en": "Exosome",
+          "zh": "Exosome",
+          "desc": "Helps rebalance skin and maintain a stable state"
+        },
+        {
+          "en": "Peptides",
+          "zh": "Multi-Peptides",
+          "desc": "Small-molecule design for gentle penetration, supporting daily skin care"
+        },
+        {
+          "en": "Micro Extraction",
+          "zh": "Micro Extraction",
+          "desc": ""
+        }
+      ],
+      "usage": [
+        "After cleansing your face",
+        "Apply a small amount evenly across the face",
+        "Use morning and night"
+      ],
+      "specs": {
+        "size": "35ml",
+        "inci": "Aqua water, Glycerine, Glycosyl Trehalose & Hydrogenated Starch Hydrolysate, Oat Beta-Glucan, Niacinamide, Phenoxyethanol, Exosome Liquid, Carbopol 980, PEG-40 Hydrogenated Castor Oil, Hyaluronic Acid, L-Arginine",
+        "cert": "TFDA ｜ INCI ｜ GMP",
+        "inciNote": "Fragrance free",
+        "inciList": "Aqua water, Glycerine, Glycosyl Trehalose & Hydrogenated Starch Hydrolysate, Oat Beta-Glucan, Niacinamide, Phenoxyethanol, Exosome Liquid, Carbopol 980, PEG-40 Hydrogenated Castor Oil, Hyaluronic Acid, L-Arginine",
+        "inciTitle": "Ingredients / Full Ingredient List"
+      },
+      "bottleInfo": {
+        "volume": "35ml / 1.18 fl oz",
+        "enName": "S-essence",
+        "name": "per-sulii S-essence Exosome Multi-Peptide Serum",
+        "brand": "per-sulii"
+      },
+      "certifications": [
+        "Taiwan TFDA Certified",
+        "International INCI Certified",
+        "GMP Quality Process"
+      ],
+      "usageTitle": "30 Seconds a Day, Daily Care",
+      "audience": [
+        "Wants more refined pores",
+        "Wants more stable, balanced skin",
+        "Wants softer, more radiant skin"
+      ],
+      "benefits": [
+        {
+          "img": "images/VS功能_S001.webp",
+          "body": "Refined, smooth skin",
+          "title": "Refined Pores"
+        },
+        {
+          "img": "images/VS功能_S002.webp",
+          "body": "Conditions skin toward balance",
+          "title": "Stable Care"
+        },
+        {
+          "img": "images/VS功能_S003.webp",
+          "body": "Reveals a natural, radiant glow",
+          "title": "Revitalized Glow"
+        }
+      ],
+      "videoId": "j-kZjaKQVOc",
+      "heroImg": "images/S06.webp",
+      "banner": "images/pbanner-S.webp"
+    },
+    {
+      "id": "V-essence",
+      "code": "V",
+      "en": "V-essence",
+      "name": "Bee Peptide PLUS Serum",
+      "img": "images/pcard_V.webp",
+      "homeImg": "images/hproduct_V.webp",
+      "hoverImg": "images/V01.webp",
+      "hoverTitle": "per-sulii V",
+      "hoverDesc": "Bee Peptide, Firmer Skin",
+      "tagline": "Made to fade the look of fine lines",
+      "intro": "Bee peptide is a precious active peptide ingredient that helps maintain skin elasticity and firmness, improves the look of fine lines and dry, rough texture, and reveals a plumper, more youthful glow.",
+      "feature": "Made to fade the look of fine lines",
+      "ingredients": [
+        {
+          "en": "Bee Peptide",
+          "zh": "Bee Peptide",
+          "desc": "Supports skin firmness and elasticity, helping maintain a plump look"
+        },
+        {
+          "en": "Multi-Peptides",
+          "zh": "Multi-Peptides",
+          "desc": "A synergistic blend focused on daily care for fine lines and contour"
+        },
+        {
+          "en": "Micro Extraction",
+          "zh": "Micro Extraction",
+          "desc": ""
+        }
+      ],
+      "usage": [
+        "Cleanse your face thoroughly",
+        "Apply a small amount to areas of fine lines",
+        "Use morning and night as a regular routine"
+      ],
+      "specs": {
+        "size": "35ml / 1.18 fl. oz.",
+        "inci": "Aqua Water, Glycerine, Glycosyl Trehalose/Hydrogenated Starch Hydrolysate, Oat Beta-Glucan, Niacinamide, Phenoxyethanol, Carbopol, PEG-40 Hydrogenated Castor Oil, Butylene Glycol/Honey Bee Venom, Dipeptide Diaminobutyroyl Benzylamide Diacetate, Hyaluronic Acid, L-Arginine",
+        "cert": "TFDA ｜ INCI ｜ GMP",
+        "inciNote": "Fragrance free",
+        "inciList": "Aqua Water, Glycerine, Glycosyl Trehalose/Hydrogenated Starch Hydrolysate, Oat Beta-Glucan, Niacinamide, Phenoxyethanol, Carbopol, PEG-40 Hydrogenated Castor Oil, Butylene Glycol/Honey Bee Venom, Dipeptide Diaminobutyroyl Benzylamide Diacetate, Hyaluronic Acid, L-Arginine",
+        "inciTitle": "Ingredients / Full Ingredient List"
+      },
+      "bottleInfo": {
+        "volume": "35ml / 1.18 fl. oz.",
+        "enName": "V-essence",
+        "name": "per-sulii V-essence Bee Peptide PLUS Serum",
+        "brand": "per-sulii"
+      },
+      "certifications": [
+        "Taiwan TFDA Certified",
+        "International INCI Certified",
+        "GMP Quality Process"
+      ],
+      "reminder": "Use with caution if you're allergic to bee products.\n\nWe recommend a patch test first; confirm there's no adverse reaction after 1 hour.\n\nRecommended for ages 12 and up.",
+      "usageTitle": "30 Seconds a Day, Morning & Night After Cleansing",
+      "audience": [
+        "Wants to fade fine lines",
+        "Wants more elastic, radiant skin",
+        "Wants firmer, plumper skin"
+      ],
+      "benefits": [
+        {
+          "img": "images/VS功能_V001.webp",
+          "body": "Smooths fine lines\nConditions skin texture",
+          "title": "Fades Fine Lines"
+        },
+        {
+          "img": "images/VS功能_V002.webp",
+          "body": "Plumps skin\nFirms skin",
+          "title": "Firm & Plump"
+        },
+        {
+          "img": "images/VS功能_V003.webp",
+          "body": "Hydrates skin\nReveals a radiant glow",
+          "title": "Dewy Glow"
+        },
+        {
+          "img": "images/VS功能_V004.webp",
+          "body": "Conditions skin\nNurtures skin's natural beauty",
+          "title": "Beautiful Skin"
+        }
+      ],
+      "videoId": "QSIAuLwihXo",
+      "highlights": [
+        "Improves fine lines",
+        "Firms skin",
+        "Elastic, radiant glow",
+        "Fades fine lines"
+      ],
+      "heroImg": "images/V02.webp",
+      "banner": "images/pbanner-V.webp"
+    }
+  ]
+}

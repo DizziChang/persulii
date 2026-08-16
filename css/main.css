@@ -658,6 +658,28 @@ h3.in-view {
   width: 100%
 }
 
+.nav a.lang-switch {
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 3px 10px;
+  font-size: .95rem;
+  letter-spacing: .08em
+}
+
+.nav a.lang-switch::after {
+  display: none
+}
+
+.nav a.lang-switch:hover {
+  border-color: var(--ink)
+}
+
+.mmenu a.lang-switch {
+  border-top: 1px solid var(--line);
+  margin-top: 8px;
+  padding-top: 16px
+}
+
 .desk {
   display: flex
 }

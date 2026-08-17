@@ -35,7 +35,7 @@ var STR = {
   en: {
     share: 'Share', copied: 'Link copied', openSound: 'Unmute', closeSound: 'Mute',
     pause: 'Pause', play: 'Play', soundPromptText: 'Turn on video sound?',
-    soundOn: 'Sound on', soundOff: 'Browse muted',
+    soundOn: 'Sound on', soundOff: 'Sound off',
     learnMore: 'Learn more →', closeup: ' close-up', shortVideo: ' short video',
     prevSlide: 'Previous slide', nextSlide: 'Next slide',
     submitting: 'Sending...', submitOk: 'Sent — we’ll be in touch soon.',
@@ -297,7 +297,7 @@ var HOME_PRODUCT_CTA = {
     'S-essence': '我要細緻肌膚 →'
   },
   en: {
-    'V-essence': 'Fade Fine Lines →',
+    'V-essence': 'Help Reduce Fine Lines →',
     'S-essence': 'Refine My Skin →'
   }
 }[LANG];

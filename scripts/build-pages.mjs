@@ -79,7 +79,7 @@ const poster = (code) => SITE_URL + '/images/video-' + code + '-poster.jpg';
    products.html 的 VideoObject 是手寫的，改這裡要記得同步過去。 */
 const PRODUCTS_PAGE_VIDEO = {
   title: '沛素 per-sulii 產品介紹影片',
-  description: '沛素 per-sulii 產品系列介紹：V-essence 精萃蜂胜肽 PLUS 精華與 S-essence 外泌體多胜肽養護精華，每天30秒在家養出好肌膚。',
+  description: '沛素 per-sulii 產品系列介紹：V-essence 精萃蜂胜肽PLUS精華與 S-essence 外泌體多胜肽養護精華，每天30秒在家養出好肌膚。',
   thumbnail: poster('vs'),
   contentUrl: SITE_URL + '/video/persulii-vs-intro.mp4'
 };

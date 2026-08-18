@@ -584,7 +584,7 @@ function renderContact(settings) {
   setText('contact-address', c.address);
 }
 
-/* 經銷洽詢表單：送出至 Web3Forms，轉寄到信箱 */
+/*洽詢表單：送出至 Web3Forms，轉寄到信箱 */
 function initContactForm() {
   var form = document.getElementById('contact-form');
   if (!form) return;

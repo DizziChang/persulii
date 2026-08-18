@@ -14,8 +14,8 @@
   --deep: #1f1f1f;
   --deep2: #141414;
   --taupe: #6f6f6f;
-  --serif: 'Funnel Display', 'Noto Serif TC', serif;
-  --sans: 'Funnel Display', 'Noto Sans TC', -apple-system, 'Segoe UI', sans-serif;
+  --serif: 'Montserrat', 'Noto Serif TC', serif;
+  --sans: 'Montserrat', 'Noto Sans TC', -apple-system, 'Segoe UI', sans-serif;
   --img-radius: 8px;
   --link: #7791b0;
 }

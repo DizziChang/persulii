@@ -81,7 +81,7 @@ const MAINTENANCE_HTML = `<!DOCTYPE html>
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; }
   html, body {
@@ -108,7 +108,7 @@ const MAINTENANCE_HTML = `<!DOCTYPE html>
     margin: 0 auto 40px;
   }
   h1 {
-    font-family: 'Funnel Display', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 500;
     font-size: clamp(28px, 5vw, 44px);
     letter-spacing: .08em;

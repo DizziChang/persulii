@@ -19,7 +19,7 @@
 import { LOGO_DATA_URI, LOGO_H, LOGO_W } from './logo-data.js';
 
 /* 維護模式總開關 */
-const MAINTENANCE = true;
+const MAINTENANCE = false;
 
 /* 不受維護模式影響的網域：測試用的 workers.dev 與本機開發。
    採「白名單」而非列出正式網域，因為之後若再綁其他自訂網域

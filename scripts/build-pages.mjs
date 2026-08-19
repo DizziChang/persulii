@@ -246,6 +246,17 @@ function pageHTML(p, next) {
     ? '\n  <script type="application/ld+json">' + JSON.stringify(videoLd) + '</script>'
     : '';
 
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: '首頁', item: SITE_URL + '/' },
+      { '@type': 'ListItem', position: 2, name: '產品', item: SITE_URL + '/products' },
+      { '@type': 'ListItem', position: 3, name: p.en + ' ' + p.name, item: url }
+    ]
+  };
+  const breadcrumbLdTag = '\n  <script type="application/ld+json">' + JSON.stringify(breadcrumbLd) + '</script>';
+
   return `<!DOCTYPE html>
 <html lang="zh-Hant">
 
@@ -261,6 +272,12 @@ function pageHTML(p, next) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${attr(title)}</title>
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/svg+xml" href="/images/favicon/favicon.svg">
+  <link rel="shortcut icon" href="/images/favicon/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-title" content="${attr(SITE_NAME)}">
+  <link rel="manifest" href="/images/favicon/site.webmanifest">
   <meta name="description" content="${attr(desc)}">
   <link rel="canonical" href="${attr(url)}">
   <meta property="og:type" content="product">
@@ -274,7 +291,7 @@ function pageHTML(p, next) {
   <meta name="twitter:title" content="${attr(title)}">
   <meta name="twitter:description" content="${attr(desc)}">
   <meta name="twitter:image" content="${attr(ogImage)}">
-  <script type="application/ld+json">${JSON.stringify(ld)}</script>${videoLdTag}
+  <script type="application/ld+json">${JSON.stringify(ld)}</script>${videoLdTag}${breadcrumbLdTag}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link

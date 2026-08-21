@@ -72,7 +72,7 @@ const VIDEO_PUBLISHED = '2026-08-01T00:00:00+08:00';
    一條，當搜尋結果縮圖很吃虧。
 
    換影片時要重新抽圖（本機有 ffmpeg 的話）：
-     ffmpeg -i video/persulii-vs-intro.mp4 -vframes 1 -q:v 2 images/video-vs-poster.jpg */
+     ffmpeg -i video/persulii-vs-intro.mp4 -vframes 1 -q:v 2 images/video-vs-poster.webp */
 const poster = (code) => SITE_URL + '/images/video-' + code + '-poster.jpg';
 
 /* /products 那支綜合介紹影片：檔案自架、沒有對應的 CMS 欄位，只能寫死。

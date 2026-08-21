@@ -76,8 +76,8 @@ const MAINTENANCE_HTML = `<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>網站維護中 — 沛素 per-sulii</title>
-<meta name="description" content="沛素 per-sulii 網站維護中，稍後將恢復服務。">
+<title>網站維護中 — per-sulii 沛素</title>
+<meta name="description" content="per-sulii 沛素 網站維護中，稍後將恢復服務。">
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -118,7 +118,7 @@ const MAINTENANCE_HTML = `<!DOCTYPE html>
 </head>
 <body>
 <div class="wrap">
-  <img class="logo" src="${LOGO_DATA_URI}" width="${LOGO_W}" height="${LOGO_H}" alt="沛素 per-sulii">
+  <img class="logo" src="${LOGO_DATA_URI}" width="${LOGO_W}" height="${LOGO_H}" alt="per-sulii 沛素">
   <h1>網站維護中</h1>
 </div>
 </body>

@@ -26,7 +26,7 @@
 <header class="hdr">
   <div class="hdr-in" style="position:relative">
     <a href="/">
-      <img class="logo" src="${IMG_LOGO_GREY}" alt="沛素 per-sulii">
+      <img class="logo" src="${IMG_LOGO_GREY}" alt="per-sulii 沛素">
     </a>
     <nav class="nav desk" aria-label="主要導覽">
       <a href="/"    data-page="home">首頁</a>
@@ -64,7 +64,7 @@
     </div>
     <div class="ftr-grid">
       <div class="ftr-logo">
-        <img class="logo" src="${IMG_LOGO_GREY}" alt="沛素 per-sulii" style="margin:0 auto">
+        <img class="logo" src="${IMG_LOGO_GREY}" alt="per-sulii 沛素" style="margin:0 auto">
       </div>
       <div class="ftr-flex-cert">
         <p class="ftr-cert-sub">${f.tagline}</p>

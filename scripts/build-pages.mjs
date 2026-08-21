@@ -28,7 +28,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT_DIR = join(ROOT, 'products');
 
 const SITE_URL = 'https://persulii.com.tw';
-const SITE_NAME = '沛素 per-sulii';
+const SITE_NAME = 'per-sulii 沛素';
 const GA_ID = 'G-LZB61GG4PM';
 const DEFAULT_OG_IMAGE = SITE_URL + '/images/hbanner-homebeauty.webp';
 
@@ -78,8 +78,8 @@ const poster = (code) => SITE_URL + '/images/video-' + code + '-poster.jpg';
 /* /products 那支綜合介紹影片：檔案自架、沒有對應的 CMS 欄位，只能寫死。
    products.html 的 VideoObject 是手寫的，改這裡要記得同步過去。 */
 const PRODUCTS_PAGE_VIDEO = {
-  title: '沛素 per-sulii 產品介紹影片',
-  description: '沛素 per-sulii 產品系列介紹：V-essence 精萃蜂胜肽PLUS精華與 S-essence 外泌體多胜肽養護精華，每天30秒在家養出好肌膚。',
+  title: 'per-sulii 沛素 產品介紹影片',
+  description: 'per-sulii 沛素 產品系列介紹：V-essence 精萃蜂胜肽PLUS精華與 S-essence 外泌體多胜肽養護精華，每天30秒在家養出好肌膚。',
   thumbnail: poster('vs'),
   contentUrl: SITE_URL + '/video/persulii-vs-intro.mp4'
 };

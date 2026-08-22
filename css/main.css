@@ -38,6 +38,12 @@ body {
   font-weight: 400;
 }
 
+/* 避免內文最後一行只剩單一個字掉到下一行（孤字） */
+p,
+li {
+  text-wrap: pretty;
+}
+
 .hdr,
 main {
   max-width: 1920px;
@@ -188,14 +194,14 @@ h3.in-view {
 }
 
 .body {
-  font-size: clamp(15px, 1.3vw, 18px);
+  font-size: clamp(16px, 1.3vw, 18px);
   line-height: 1.75;
   color: var(--ink-soft);
   font-weight: 400;
 }
 
 .small {
-  font-size: clamp(14px, 1vw, 16px);
+  font-size: clamp(15px, 1vw, 16px);
   color: var(--mid-text);
   line-height: 1.7;
 }
@@ -1517,7 +1523,7 @@ h3.in-view {
   }
 
   .about-copy p {
-    font-size: 13.5px;
+    font-size: 15.5px;
     line-height: 1.75;
   }
 
@@ -1638,11 +1644,11 @@ h3.in-view {
   }
 
   #product-feature-sec .small {
-    font-size: 13.5px;
+    font-size: 15px;
   }
 
   #product-feature-sec p.body {
-    font-size: 13.5px;
+    font-size: 16px;
   }
 
   #product-list {
@@ -1707,7 +1713,7 @@ h3.in-view {
   }
 
   .hero .lead {
-    font-size: 13.5px
+    font-size: 16px
   }
 
   .tfda-chip {

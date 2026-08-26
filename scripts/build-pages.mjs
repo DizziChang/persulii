@@ -103,15 +103,15 @@ const VIDEO_PUBLISHED = '2026-08-01T00:00:00+08:00';
    一條，當搜尋結果縮圖很吃虧。
 
    換影片時要重新抽圖（本機有 ffmpeg 的話）：
-     ffmpeg -i video/persulii-vs-intro.mp4 -vframes 1 -q:v 2 images/video-vs-poster.jpg */
+     ffmpeg -i video/persulii-vs-intro.mp4 -vframes 1 -q:v 2 images/video-vs-poster.webp */
 const poster = (code) => SITE_URL + '/images/video-' + code + '-poster.jpg';
 
 /* /products 那支綜合介紹影片：檔案自架、沒有對應的 CMS 欄位，只能寫死。
    products.html／en/products.html 的 VideoObject 是手寫的，改這裡要記得同步過去。 */
 const PRODUCTS_PAGE_VIDEO = {
   zh: {
-    title: '沛素 per-sulii 產品介紹影片',
-    description: '沛素 per-sulii 產品系列介紹：V-essence 精萃蜂胜肽 PLUS 精華與 S-essence 外泌體多胜肽養護精華，每天30秒在家養出好肌膚。',
+    title: 'per-sulii 沛素 產品介紹影片',
+    description: 'per-sulii 沛素 產品系列介紹：V-essence 精萃蜂胜肽PLUS精華與 S-essence 外泌體多胜肽養護精華，每天30秒在家養出好肌膚。',
     thumbnail: poster('vs'),
     contentUrl: SITE_URL + '/video/persulii-vs-intro.mp4'
   },
@@ -290,6 +290,17 @@ function pageHTML(p, next, lang) {
     ? '\n  <script type="application/ld+json">' + JSON.stringify(videoLd) + '</script>'
     : '';
 
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: '首頁', item: SITE_URL + '/' },
+      { '@type': 'ListItem', position: 2, name: '產品', item: SITE_URL + '/products' },
+      { '@type': 'ListItem', position: 3, name: p.en + ' ' + p.name, item: url }
+    ]
+  };
+  const breadcrumbLdTag = '\n  <script type="application/ld+json">' + JSON.stringify(breadcrumbLd) + '</script>';
+
   return `<!DOCTYPE html>
 <html lang="${s.htmlLang}">
 
@@ -305,6 +316,12 @@ function pageHTML(p, next, lang) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${attr(title)}</title>
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/svg+xml" href="/images/favicon/favicon.svg">
+  <link rel="shortcut icon" href="/images/favicon/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-title" content="${attr(s.siteName)}">
+  <link rel="manifest" href="/images/favicon/site.webmanifest">
   <meta name="description" content="${attr(desc)}">
   <link rel="canonical" href="${attr(url)}">
   <link rel="alternate" hreflang="${lang === 'en' ? 'zh-Hant' : 'en'}" href="${attr(altUrl)}">
@@ -320,11 +337,11 @@ function pageHTML(p, next, lang) {
   <meta name="twitter:title" content="${attr(title)}">
   <meta name="twitter:description" content="${attr(desc)}">
   <meta name="twitter:image" content="${attr(ogImage)}">
-  <script type="application/ld+json">${JSON.stringify(ld)}</script>${videoLdTag}
+  <script type="application/ld+json">${JSON.stringify(ld)}</script>${videoLdTag}${breadcrumbLdTag}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="/css/main.css">
 </head>

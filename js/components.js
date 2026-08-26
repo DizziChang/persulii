@@ -98,7 +98,7 @@
     </div>
     <div class="ftr-grid">
       <div class="ftr-logo">
-        <img class="logo" src="${IMG_LOGO_GREY}" alt="沛素 per-sulii" style="margin:0 auto">
+        <img class="logo" src="${IMG_LOGO_GREY}" alt="per-sulii 沛素" style="margin:0 auto">
       </div>
       <div class="ftr-flex-cert">
         <p class="ftr-cert-sub">${f.tagline}</p>

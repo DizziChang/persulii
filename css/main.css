@@ -1,5 +1,5 @@
 /* ============================================================
-   沛素 per-sulii — main.css
+   per-sulii 沛素 — main.css
    ============================================================ */
 
 :root {
@@ -14,8 +14,8 @@
   --deep: #1f1f1f;
   --deep2: #141414;
   --taupe: #6f6f6f;
-  --serif: 'Funnel Display', 'Noto Serif TC', serif;
-  --sans: 'Funnel Display', 'Noto Sans TC', -apple-system, 'Segoe UI', sans-serif;
+  --serif: 'Montserrat', 'Noto Serif TC', serif;
+  --sans: 'Montserrat', 'Noto Sans TC', -apple-system, 'Segoe UI', sans-serif;
   --img-radius: 8px;
   --link: #7791b0;
 }
@@ -36,6 +36,12 @@ body {
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
   font-weight: 400;
+}
+
+/* 避免內文最後一行只剩單一個字掉到下一行（孤字） */
+p,
+li {
+  text-wrap: pretty;
 }
 
 .hdr,
@@ -188,14 +194,14 @@ h3.in-view {
 }
 
 .body {
-  font-size: clamp(15px, 1.3vw, 18px);
+  font-size: clamp(16px, 1.3vw, 18px);
   line-height: 1.75;
   color: var(--ink-soft);
   font-weight: 400;
 }
 
 .small {
-  font-size: clamp(14px, 1vw, 16px);
+  font-size: clamp(15px, 1vw, 16px);
   color: var(--mid-text);
   line-height: 1.7;
 }
@@ -1539,7 +1545,7 @@ h3.in-view {
   }
 
   .about-copy p {
-    font-size: 13.5px;
+    font-size: 15.5px;
     line-height: 1.75;
   }
 
@@ -1660,11 +1666,11 @@ h3.in-view {
   }
 
   #product-feature-sec .small {
-    font-size: 13.5px;
+    font-size: 15px;
   }
 
   #product-feature-sec p.body {
-    font-size: 13.5px;
+    font-size: 16px;
   }
 
   #product-list {
@@ -1729,7 +1735,7 @@ h3.in-view {
   }
 
   .hero .lead {
-    font-size: 13.5px
+    font-size: 16px
   }
 
   .tfda-chip {

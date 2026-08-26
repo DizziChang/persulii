@@ -45,7 +45,7 @@ var STR = {
 
 /* ---- SEO：JSON-LD ---- */
 var SITE_URL = 'https://persulii.com.tw';
-var SITE_NAME = '沛素 per-sulii';
+var SITE_NAME = 'per-sulii 沛素';
 
 /* CMS 存出來的圖片路徑有 "images/x.webp" 也有 "/images/x.webp"，
    在 /products/<slug> 這種子目錄頁面上相對路徑會解析錯，統一補成根絕對路徑 */
@@ -374,7 +374,7 @@ function initHeroCarousel(h) {
     var img = document.createElement('img');
     img.className = 'hero-slide-img';
     img.src = asset(s.img || s);
-    img.alt = s.eyebrow || (s.title ? s.title.replace(/\n/g, ' ') : '') || '沛素 per-sulii';
+    img.alt = s.eyebrow || (s.title ? s.title.replace(/\n/g, ' ') : '') || 'per-sulii 沛素';
     img.loading = i === 0 ? 'eager' : 'lazy';
     d.appendChild(img);
     hero.insertBefore(d, hero.firstChild);
@@ -570,10 +570,10 @@ function setTextOrHide(id, text) {
 /* ============ 關於頁 ============ */
 function renderAbout(data) {
   if (document.body.dataset.page !== 'about') return;
+  setHTML('about-title-1', nl2br(data.h1));
   data.sections.forEach(function (s, i) {
     var n = i + 1;
-    setText('about-eyebrow-' + n, s.eyebrow);
-    setHTML('about-title-' + n, nl2br(s.title));
+    setHTML('about-heading-' + n, nl2br(s.heading));
     setHTML('about-body-' + n, paragraphs(s.body, 'mt16', 'mt16').replace(/class="body /g, 'class="body '));
     if (s.image) {
       var img = document.getElementById('about-img-' + n);
@@ -621,7 +621,7 @@ function renderContact(settings) {
   setText('contact-address', c.address);
 }
 
-/* 經銷洽詢表單：送出至 Web3Forms，轉寄到信箱 */
+/*洽詢表單：送出至 Web3Forms，轉寄到信箱 */
 function initContactForm() {
   var form = document.getElementById('contact-form');
   if (!form) return;

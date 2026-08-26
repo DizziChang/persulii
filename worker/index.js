@@ -19,7 +19,7 @@
 import { LOGO_DATA_URI, LOGO_H, LOGO_W } from './logo-data.js';
 
 /* 維護模式總開關 */
-const MAINTENANCE = true;
+const MAINTENANCE = false;
 
 /* 不受維護模式影響的網域：測試用的 workers.dev 與本機開發。
    採「白名單」而非列出正式網域，因為之後若再綁其他自訂網域
@@ -76,12 +76,12 @@ const MAINTENANCE_HTML = `<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>網站維護中 — 沛素 per-sulii</title>
-<meta name="description" content="沛素 per-sulii 網站維護中，稍後將恢復服務。">
+<title>網站維護中 — per-sulii 沛素</title>
+<meta name="description" content="per-sulii 沛素 網站維護中，稍後將恢復服務。">
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; }
   html, body {
@@ -108,7 +108,7 @@ const MAINTENANCE_HTML = `<!DOCTYPE html>
     margin: 0 auto 40px;
   }
   h1 {
-    font-family: 'Funnel Display', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 500;
     font-size: clamp(28px, 5vw, 44px);
     letter-spacing: .08em;
@@ -118,7 +118,7 @@ const MAINTENANCE_HTML = `<!DOCTYPE html>
 </head>
 <body>
 <div class="wrap">
-  <img class="logo" src="${LOGO_DATA_URI}" width="${LOGO_W}" height="${LOGO_H}" alt="沛素 per-sulii">
+  <img class="logo" src="${LOGO_DATA_URI}" width="${LOGO_W}" height="${LOGO_H}" alt="per-sulii 沛素">
   <h1>網站維護中</h1>
 </div>
 </body>

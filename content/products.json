@@ -11,7 +11,7 @@
       "hoverTitle": "沛素-S",
       "hoverDesc": "外泌體細緻膚質",
       "tagline": "柔潤、透亮肌膚、細緻毛孔",
-      "intro": "使用合法優質外泌體結合多胜肽，調理肌膚，悄悄變美",
+      "intro": "使用合法優質外泌體結合多胜肽，調理肌膚，在家悄悄變美",
       "feature": "柔潤、透亮肌膚、細緻毛孔",
       "ingredients": [
         {
@@ -77,7 +77,7 @@
           "title": "賦活光采"
         }
       ],
-      "videoId": "j-kZjaKQVOc",
+      "videoId": "x2illOn4Tpc",
       "heroImg": "images/S06.webp",
       "banner": "images/pbanner-S.webp"
     },
@@ -85,14 +85,14 @@
       "id": "V-essence",
       "code": "V",
       "en": "V-essence",
-      "name": "精萃蜂胜肽 PLUS 精華",
+      "name": "精萃蜂胜肽PLUS精華",
       "img": "images/pcard_V.webp",
       "homeImg": "images/hproduct_V.webp",
       "hoverImg": "images/V01.webp",
       "hoverTitle": "沛素-V",
       "hoverDesc": "蜂胜肽緊緻撫紋",
       "tagline": "專為淡化肌膚紋路打造",
-      "intro": "蜂胜肽是珍貴的活性多肽成分，有助於維持肌膚彈性與緊緻，改善細紋與乾燥粗糙，讓肌膚展現澎潤光澤與年輕活力。",
+      "intro": "蜂胜肽精華，有助於維持肌膚彈性與緊緻，讓肌膚展現澎潤光澤與年輕活力。",
       "feature": "專為淡化肌膚紋路打造",
       "ingredients": [
         {
@@ -164,9 +164,8 @@
           "title": "美麗肌膚"
         }
       ],
-      "videoId": "QSIAuLwihXo",
+      "videoId": "fHU3fPWBnUY",
       "highlights": [
-        "改善細紋",
         "緊緻肌膚",
         "彈潤光澤",
         "淡化紋路"

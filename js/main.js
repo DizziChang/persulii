@@ -253,7 +253,7 @@ function productVideoHTML(p) {
   var src = '/video/persulii-' + code + '-intro.mp4';
   /* poster 是影片的第一影格，靜態畫面直接銜接到動態，不影響自動播放；
      沒有它時影片 buffer 完成前那塊是空白框。換影片要一併換這張圖。 */
-  var poster = '/images/video-' + code + '-poster.jpg';
+  var poster = '/images/' + code + '-video-cover.webp';
   return '<div class="media pfeature-video">'
     + '<video class="video-el" src="' + src + '" poster="' + poster + '" muted loop playsinline preload="auto"></video>'
     + PLAY_HIT_AREA_HTML

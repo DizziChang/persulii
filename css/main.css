@@ -1467,10 +1467,14 @@ h3.in-view {
 /* form */
 .field label {
   display: block;
-  font-size: 12.5px;
+  font-size: 16px;
   letter-spacing: .05em;
   color: var(--ink-soft);
   margin-bottom: 7px
+}
+
+.field label .req {
+  color: #b5544a
 }
 
 .field input,
@@ -1545,16 +1549,45 @@ h3.in-view {
     order: 1
   }
 
-  /* 保養功效區塊：手機版維持原本欄數，內容改為 icon 在上、文字在下 */
-  .benefits-row.cols-3 {
-    gap: 0
-  }
-
+  /* 保養功效區塊：手機版內容改為 icon 在上、文字在下 */
   .benefits-row .benefit-item {
     flex-direction: column;
     align-items: center;
     text-align: center;
     gap: 8px
+  }
+
+  /* 三大保養功效（cols-3）手機版維持三欄：原本每欄分隔線 padding 是 clamp(16,3vw,32)，
+     窄手機（360px）扣掉左右兩份 padding 只剩約 70px，4 字標題會被擠到逐字換行。
+     這裡把分隔線 padding 縮小到 clamp(10,3vw,20)，說明文字字級也降到 14px，
+     兩者搭配可在 360px 寬時仍讓最長的 6 字說明（細緻柔滑肌膚）維持單行不斷字。
+     8 字說明（調理肌膚狀態平衡／展現自然透亮光澤）改在內容裡手動拆成兩個 4 字
+     .benefit-line，桌面版寬度夠時两段 span 仍會自然接成一行，只有手機版才強制
+     斷成一行 4 字，不依賴瀏覽器自動斷行落在剛好 4+4 的位置。
+     padding-right／padding-left 要加 !important：同樣選擇器在後面「桌面版」規則
+     區塊（非 media query）還會再設一次 clamp(16,3vw,32)，優先度相同時後者會贏 */
+  .benefits-row.cols-3 .benefit-item {
+    padding-right: clamp(10px, 3vw, 20px) !important
+  }
+
+  .benefits-row.cols-3 .benefit-item:nth-child(n+2) {
+    padding-left: clamp(10px, 3vw, 20px) !important
+  }
+
+  #product-feature-sec .benefits-row.cols-3 .small {
+    font-size: 14px
+  }
+
+  /* 下面 560px 那條 .benefit-item p{max-width:77%} 是給兩欄版（四大保養功效）在窄
+     螢幕置中用的，77% 是相對「已經只有 ~85px」的 cols-3 欄寬再打七七折，等於變成
+     ~65px，比上面精算過的可用寬度小很多，中文說明才會被壓到 2、3 個字就換行。
+     三欄版不需要這個置中裁切，改用 none 讓文字寬度回到跟欄位一樣寬 */
+  .benefits-row.cols-3 .benefit-item p {
+    max-width: none
+  }
+
+  .benefit-line {
+    display: block
   }
 
   .pfeature-text {
@@ -2019,6 +2052,81 @@ h3.in-view {
 .checklist.dot li::before {
   content: '•';
   font-weight: 400
+}
+
+/* 通路頁：經銷資訊（Line 聯絡清單 + QR code） */
+.channel-list {
+  display: grid;
+  gap: 28px;
+  list-style: none
+}
+
+.channel-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  line-height: 1.5;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 16px;
+}
+
+.channel-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px
+}
+
+.channel-name {
+  font-size: clamp(17px, 1.4vw, 20px);
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.3
+}
+
+.channel-id {
+  font-size: clamp(13.5px, 1.1vw, 15px);
+  color: #2b6cb0;
+  text-decoration: none;
+  display: inline-block;
+  transition: opacity .2s ease
+}
+
+a.channel-id:hover {
+  text-decoration: underline;
+  opacity: .8
+}
+
+.qr-box {
+  flex: none;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: #fff;
+  overflow: hidden;
+  transition: opacity .2s ease
+}
+
+a.qr-box:hover {
+  opacity: .85
+}
+
+.qr-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block
+}
+
+.qr-placeholder {
+  font-size: 11px;
+  letter-spacing: .02em;
+  color: var(--mid);
+  text-align: center
 }
 
 /* 產品頁：四大保養功效（兩欄式格線，電腦／手機皆維持兩欄，中間十字灰線分隔） */

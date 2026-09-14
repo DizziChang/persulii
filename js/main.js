@@ -575,13 +575,35 @@ function renderFAQ(data) {
   });
 }
 
-/* ============ 聯絡頁 ============ */
-function renderContact(settings) {
-  if (document.body.dataset.page !== 'contact') return;
-  var c = settings.contact_page;
-  setText('contact-company', c.company);
-  setText('contact-phone', c.phone);
-  setText('contact-address', c.address);
+/* ============ 通路頁：經銷資訊 ============ */
+function renderChannels(data) {
+  var c = data.channels;
+  if (!c) return;
+  setText('channels-heading', c.heading);
+  var list = document.getElementById('channels-list');
+  if (!list) return;
+  var items = c.items || [];
+
+  list.innerHTML = items.map(function (it) {
+    var qrContent = it.qr
+      ? '<img src="' + asset(it.qr) + '" alt="' + it.name + ' Line QR Code">'
+      : '<span class="qr-placeholder">QR Code</span>';
+    var qrElem = it.url
+      ? '<a class="qr-box" href="' + it.url + '" target="_blank" rel="noopener" aria-label="' + it.name + ' Line QR Code">' + qrContent + '</a>'
+      : '<div class="qr-box">' + qrContent + '</div>';
+
+    var idElem = it.url
+      ? '<a class="channel-id" href="' + it.url + '" target="_blank" rel="noopener">ID: ' + it.id + '</a>'
+      : '<span class="channel-id">ID: ' + it.id + '</span>';
+
+    return '<li class="channel-item">'
+      + '<div class="channel-info">'
+      + '<span class="channel-name">' + it.name + '</span>'
+      + idElem
+      + '</div>'
+      + qrElem
+      + '</li>';
+  }).join('');
 }
 
 /*洽詢表單：送出至 Web3Forms，轉寄到信箱 */
@@ -767,5 +789,5 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   if (page === 'about') getJSON('/content/about-sections.json').then(renderAbout).catch(console.error);
   if (page === 'faq') getJSON('/content/faq.json').then(renderFAQ).catch(console.error);
-  if (page === 'contact') getJSON('/content/settings-contact.json').then(renderContact).catch(console.error);
+  if (page === 'contact') getJSON('/content/contact-channels.json').then(renderChannels).catch(console.error);
 });

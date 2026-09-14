@@ -50,7 +50,11 @@ function attr(s) {
     .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-function nl2br(s) { return (s || '').split('\n').join('<br>'); }
+/* 保養功效說明：\n 拆成多個 span 而非直接 <br>，手機版靠 CSS 把 span 疊成一行一個，
+   桌面版維持 inline 原樣接在一起——同一份文字兩種斷行需求（見 main.css .benefit-line） */
+function benefitBodyHTML(s) {
+  return (s || '').split('\n').map((line) => '<span class="benefit-line">' + line + '</span>').join('');
+}
 
 /* ---- 影片 ----
    Google 要收錄影片需要兩件事：頁面上的 VideoObject 結構化資料，
@@ -138,7 +142,7 @@ function detailHTML(p, next) {
     + p.benefits.map((b) => '<div class="benefit-item">'
       + '<div class="benefit-thumb"' + (b.img ? ' style="background-image:url(\'' + asset(b.img) + '\');background-size:cover;background-position:center"' : '') + '></div>'
       + '<div><h3 class="h3" style="font-size: clamp(18px, 2.5vw, 20px);">' + b.title + '</h3>'
-      + '<p class="small mt8">' + nl2br(b.body) + '</p></div></div>').join('') + '</div>'
+      + '<p class="small mt8">' + benefitBodyHTML(b.body) + '</p></div></div>').join('') + '</div>'
     : '<h2 class="h3">產品特色</h2><p class="body mt16">' + p.feature + '</p>';
 
   const featureSection = p.videoId
@@ -199,6 +203,7 @@ function detailHTML(p, next) {
     + '<p class="lead mt16">' + p.tagline + '</p>'
     + '<p class="body">' + p.intro + '</p>'
     + (p.highlights && p.highlights.length ? '<div class="chips mt24">' + p.highlights.map((h) => '<span class="chip">' + h + '</span>').join('') + '</div>' : '')
+    + '<div class="mt32"><a href="/contact" class="btn solid">購買通路</a></div>'
     + '</div>'
     + '</div></section>'
     + '<section class="sec tight" id="product-feature-sec" style="background:var(--bg)"><div class="wrap">' + featureSection + '</div></section>'

@@ -1,0 +1,10 @@
+{
+  "channels": {
+    "heading": "官網經銷通路",
+    "items": [
+      { "name": "沛素官方Line", "id": "@persulii", "url": "https://lin.ee/ZiwmByI", "qr": "/images/lineqrcode/persulii-official-Line.png" },
+      { "name": "茶米", "id": "@233olbvq", "url": "https://lin.ee/SiUP7dy", "qr": "/images/lineqrcode/terry-Line.png" },
+      { "name": "瑄", "id": "@583jrlig", "url": "https://lin.ee/QskLntt", "qr": "/images/lineqrcode/shani-Line.png" }
+    ]
+  }
+}

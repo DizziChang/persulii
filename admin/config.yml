@@ -182,6 +182,8 @@ collections:
             fields:
               - { name: tagline, label: 品牌標語, widget: string }
               - { name: company, label: 公司名稱, widget: string }
+              - { name: tax_id, label: 統一編號, widget: string }
+              - { name: address, label: 地址, widget: string }
               - { name: email, label: Email, widget: string }
               - { name: phone, label: 電話, widget: string }
               - { name: copyright, label: 版權文字, widget: string }
@@ -204,3 +206,21 @@ collections:
               - { name: company, label: 公司名稱, widget: string }
               - { name: phone, label: 電話, widget: string }
               - { name: address, label: 地址, widget: string }
+      - name: contact_channels
+        label: 通路頁－經銷資訊
+        file: content/contact-channels.json
+        fields:
+          - name: channels
+            label: 經銷通路
+            widget: object
+            fields:
+              - { name: heading, label: 標題, widget: string }
+              - name: items
+                label: 經銷聯絡人（Line）
+                widget: list
+                summary: "{{fields.name}} {{fields.id}}"
+                fields:
+                  - { name: name, label: 名稱, widget: string }
+                  - { name: id, label: Line ID（含 @）, widget: string }
+                  - { name: url, label: Line 連結網址, widget: string }
+                  - { name: qr, label: Line QR Code 圖片, widget: image, required: false }

@@ -49,8 +49,8 @@ function injectOrganizationLD(settings) {
     url: SITE_URL + '/',
     logo: SITE_URL + '/images/per-sulii-logo-grayscale.webp',
     email: f.email,
-    telephone: f.phone,
-    address: c.address ? { '@type': 'PostalAddress', streetAddress: c.address, addressCountry: 'TW' } : undefined,
+    telephone: f.phone || c.phone,
+    address: (c.address || f.address) ? { '@type': 'PostalAddress', streetAddress: c.address || f.address, addressCountry: 'TW' } : undefined,
     sameAs: [f.social && f.social.line, f.social && f.social.facebook, f.social && f.social.instagram].filter(Boolean)
   });
 }

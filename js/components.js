@@ -73,7 +73,8 @@
       <div class="ftr-grid-item">
           <ul class="info">
             <li>${f.company} ｜ 統一編號${f.tax_id}</li>
-            <li>地公司址 ｜ ${f.address}</li>
+            <li>公司地址 ｜ ${f.address}</li>
+            ${f.phone ? `<li>連絡電話 ｜ ${f.phone}</li>` : ''}
             <li>聯絡信箱 ｜ ${f.email}</li>
             <li class="ftr-social">
               <a href="${f.social.line}" target="_blank" rel="noopener" aria-label="Line" title="Line">

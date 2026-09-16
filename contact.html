@@ -12,7 +12,7 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>聯絡我們 — per-sulii 沛素</title>
+  <title>沛素經銷通路 — per-sulii</title>
   <link rel="icon" type="image/png" href="/images/favicon/favicon-96x96.png" sizes="96x96">
   <link rel="icon" type="image/svg+xml" href="/images/favicon/favicon.svg">
   <link rel="shortcut icon" href="/images/favicon/favicon.ico">
@@ -23,22 +23,22 @@
   <link rel="canonical" href="https://persulii.com.tw/contact">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="per-sulii 沛素">
-  <meta property="og:title" content="聯絡我們 — per-sulii 沛素">
+  <meta property="og:title" content="沛素經銷通路 — per-sulii">
   <meta property="og:description" content="與per-sulii 沛素 聯繫，一同推廣理性保養理念，填寫表單留下需求，我們將盡快與您聯繫。">
   <meta property="og:url" content="https://persulii.com.tw/contact">
   <meta property="og:image" content="https://persulii.com.tw/images/hbanner-homebeauty.webp">
   <meta property="og:locale" content="zh_TW">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="聯絡我們 — per-sulii 沛素">
+  <meta name="twitter:title" content="沛素經銷通路 — per-sulii">
   <meta name="twitter:description" content="與per-sulii 沛素 聯繫，一同推廣理性保養理念。">
   <meta name="twitter:image" content="https://persulii.com.tw/images/hbanner-homebeauty.webp">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首頁","item":"https://persulii.com.tw/"},{"@type":"ListItem","position":2,"name":"聯絡我們","item":"https://persulii.com.tw/contact"}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首頁","item":"https://persulii.com.tw/"},{"@type":"ListItem","position":2,"name":"經銷通路","item":"https://persulii.com.tw/contact"}]}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="/css/main.css?v=7c683fefdc">
+  <link rel="stylesheet" href="/css/main.css?v=1c80a05203">
 </head>
 
 <body data-page="contact">
@@ -47,54 +47,60 @@
 
   <main>
 
+    <section class="pagehead wrap" style="border-bottom: 1px solid var(--line);">
+      <div class="wrap">
+        <div class="crumb"><a href="/">首頁</a> / 經銷通路</div>
+        <h1 class="h2 mt16">沛素經銷通路</h1>
+      </div>
+    </section>
+
     <section class="sec" style="padding-bottom:0">
       <div class="wrap" style="max-width:620px">
         <img src="/images/recruit.webp" alt="成為沛素夥伴" style="width:100%;height:auto;display:block">
       </div>
     </section>
 
-    <section class="sec" style="padding-top:clamp(38px,4.8vw,72px);padding-bottom:clamp(38px,4.8vw,72px)">
-      <form class="wrap" style="max-width:620px" id="contact-form">
-        <input type="hidden" name="access_key" value="c44f2510-388b-477e-a3ec-f2446b1304c2">
-        <input type="hidden" name="subject" value="與沛素聯繫">
-        <input type="checkbox" name="botcheck" class="sr-only" tabindex="-1" autocomplete="off">
-        <h1 class="h2 center" style="margin-bottom:40px">與我們聯繫</h1>
-        <div class="field">
-          <label for="f-company">公司 / 品牌名稱</label>
-          <input id="f-company" name="company" type="text" placeholder="請輸入">
-        </div>
-        <div class="field">
-          <label for="f-contact">聯絡人</label>
-          <input id="f-contact" name="contact" type="text" placeholder="請輸入">
-        </div>
-        <div class="grid g2" style="gap:18px">
-          <div class="field">
-            <label for="f-phone">電話</label>
-            <input id="f-phone" name="phone" type="tel" placeholder="請輸入">
-          </div>
-          <div class="field">
-            <label for="f-email">Email</label>
-            <input id="f-email" name="email" type="email" placeholder="請輸入">
-          </div>
-        </div>
-        <div class="field">
-          <label for="f-msg">需求說明</label>
-          <textarea id="f-msg" name="message" rows="5" placeholder="請簡述合作需求"></textarea>
-        </div>
-        <div class="center mt32">
-          <button type="submit" class="btn solid" id="contact-submit-btn">送出洽詢</button>
-          <p class="small mt16" id="contact-form-status" style="display:none"></p>
-        </div>
-      </form>
+    <section class="sec tight">
+      <div class="wrap" style="max-width:620px">
+        <h2 class="h3" id="channels-heading"></h2>
+        <ul class="channel-list mt24" id="channels-list"></ul>
+      </div>
     </section>
 
-    <!-- 聯絡資訊 -->
-    <section class="sec tight" style="background:var(--bg)">
-      <div class="wrap center">
-        <div class="eyebrow">Contact Info</div>
-        <h2 class="h3 mt16" id="contact-company">諾田康美有限公司</h2>
-        <p class="body mt8" id="contact-phone">0912-125-856</p>
-        <p class="body mt8" id="contact-address">台南市麻豆區客子路116號</p>
+    <section class="sec tight" style="padding-top:clamp(38px,4.8vw,72px);padding-bottom:clamp(38px,4.8vw,72px)">
+      <div class="wrap" style="max-width:620px">
+       <h2 class="h3">與我們聯繫</h2>
+        <form id="contact-form">
+          <input type="hidden" name="access_key" value="c44f2510-388b-477e-a3ec-f2446b1304c2">
+          <input type="hidden" name="subject" value="與沛素聯繫">
+          <input type="checkbox" name="botcheck" class="sr-only" tabindex="-1" autocomplete="off">
+          <div class="field">
+            <label for="f-contact">聯絡人 <span class="req">*</span></label>
+            <input id="f-contact" name="contact" type="text" placeholder="請輸入" required>
+          </div>
+          <div class="field">
+            <label for="f-company">公司 / 品牌名稱</label>
+            <input id="f-company" name="company" type="text" placeholder="請輸入">
+          </div>
+          <div class="grid g2" style="gap:18px">
+            <div class="field">
+              <label for="f-phone">電話 <span class="req">*</span></label>
+              <input id="f-phone" name="phone" type="tel" placeholder="請輸入" required>
+            </div>
+            <div class="field">
+              <label for="f-email">Email</label>
+              <input id="f-email" name="email" type="email" placeholder="請輸入">
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-msg">需求說明</label>
+            <textarea id="f-msg" name="message" rows="5" placeholder="請簡述合作需求"></textarea>
+          </div>
+          <div class="center mt32">
+            <button type="submit" class="btn solid" id="contact-submit-btn">送出洽詢</button>
+            <p class="small mt16" id="contact-form-status" style="display:none"></p>
+          </div>
+        </form>
       </div>
     </section>
 
@@ -102,8 +108,8 @@
 
   <div id="site-footer"></div>
 
-  <script src="/js/components.js?v=bf75cb8eff"></script>
-  <script src="/js/main.js?v=9587b5208d"></script>
+  <script src="/js/components.js?v=401c6ed325"></script>
+  <script src="/js/main.js?v=0fe64d1630"></script>
 </body>
 
 </html>

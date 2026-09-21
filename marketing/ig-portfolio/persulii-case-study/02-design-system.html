@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>MODI DESIGN × per-sulii — 設計系統</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  .ds-body { flex: 1; display: flex; flex-direction: column; gap: 30px; margin-top: 28px; }
+
+  .ds-grid { flex: 1; display: grid; grid-template-columns: 1.05fr 1fr; gap: 50px; }
+
+  .panel-label {
+    font-family: var(--md-sans);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--md-accent);
+    margin-bottom: 14px;
+  }
+
+  /* colour swatches */
+  .swatch-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .swatch { background: var(--md-card); border: 1px solid var(--md-line); box-shadow: 0 10px 24px -16px rgba(34,31,28,.3); }
+  .swatch .fill { height: 78px; border-bottom: 1px solid var(--md-line); }
+  .swatch .meta { padding: 10px 14px; }
+  .swatch .name { font-family: var(--md-sans); font-weight: 600; font-size: 14px; color: var(--md-ink); }
+  .swatch .hex { font-family: var(--md-serif); font-style: italic; font-size: 13px; color: var(--md-ink-soft); margin-top: 2px; }
+
+  /* typography */
+  .type-specimen { display: flex; align-items: baseline; gap: 22px; background: var(--md-card); border: 1px solid var(--md-line); padding: 22px 24px; margin-bottom: 22px; }
+  .type-glyphs { display: flex; gap: 18px; }
+  .type-glyphs .g1 { font-family: 'Montserrat','Inter',sans-serif; font-size: 58px; font-weight: 300; color: var(--ps-ink); }
+  .type-glyphs .g2 { font-family: var(--ps-sans); font-size: 58px; font-weight: 300; color: var(--md-accent); }
+  .type-glyphs-cap { font-family: var(--md-sans); font-size: 13px; color: var(--md-ink-soft); line-height: 1.5; }
+
+  .type-rows { display: flex; flex-direction: column; }
+  .type-row { display: flex; align-items: baseline; justify-content: space-between; padding: 13px 0; border-top: 1px solid var(--md-line); }
+  .type-row:first-child { border-top: none; }
+  .type-row .tag { font-family: var(--md-sans); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--md-ink-soft); width: 92px; flex-shrink: 0; }
+  .type-row .sample { color: var(--ps-ink); font-family: var(--ps-sans); text-align: right; }
+  .type-row.display .sample { font-size: 30px; font-weight: 300; }
+  .type-row.h2 .sample { font-size: 25px; font-weight: 300; }
+  .type-row.h3 .sample { font-size: 19px; font-weight: 500; }
+  .type-row.eyebrow .sample { font-size: 15px; letter-spacing: .1em; text-transform: uppercase; color: var(--ps-taupe); }
+  .type-row.body .sample { font-size: 15px; font-weight: 400; color: var(--ps-ink-soft); line-height: 1.6; max-width: 320px; }
+
+  /* buttons */
+  .btn-row { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+  .ps-btn { font-family: var(--ps-sans); font-size: 14px; font-weight: 500; letter-spacing: .08em; padding: 10px 26px; border-radius: 2px; display: inline-block; }
+  .ps-btn.solid { background: var(--ps-ink); color: #fff; }
+  .ps-btn.ghost { background: transparent; color: var(--ps-ink); border: 1px solid var(--ps-ink); }
+  .btn-dark-demo { background: var(--ps-deep); padding: 20px 22px; display: flex; align-items: center; }
+  .ps-btn.light { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.6); }
+</style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="frame-pad">
+
+      <div class="frame-header">
+        <div class="md-mark"><i class="dot"></i><span>Modi Design</span></div>
+        <div class="frame-tag">per-sulii Case Study</div>
+      </div>
+
+      <div class="ds-body">
+        <div>
+          <div class="slide-kicker">Visual Identity</div>
+          <div class="slide-title">設計系統<span class="en">DESIGN SYSTEM</span></div>
+          <div class="slide-desc">以低彩度中性色系搭配一抹霧藍作為品牌基調，Montserrat 與 Noto Sans TC 交織出簡約而具科研感的閱讀節奏。</div>
+        </div>
+
+        <div class="ds-grid">
+          <div>
+            <div class="panel-label">Color Palette 色彩計畫</div>
+            <div class="swatch-grid">
+              <div class="swatch"><div class="fill" style="background:#FFFFFF"></div><div class="meta"><div class="name">Paper</div><div class="hex">#FFFFFF</div></div></div>
+              <div class="swatch"><div class="fill" style="background:#ECECEC"></div><div class="meta"><div class="name">Mist</div><div class="hex">#ECECEC</div></div></div>
+              <div class="swatch"><div class="fill" style="background:#2A2A2A"></div><div class="meta"><div class="name">Ink</div><div class="hex">#2A2A2A</div></div></div>
+              <div class="swatch"><div class="fill" style="background:#565656"></div><div class="meta"><div class="name">Ink Soft</div><div class="hex">#565656</div></div></div>
+              <div class="swatch"><div class="fill" style="background:#9C9C9C"></div><div class="meta"><div class="name">Mid Grey</div><div class="hex">#9C9C9C</div></div></div>
+              <div class="swatch"><div class="fill" style="background:#6F6F6F"></div><div class="meta"><div class="name">Taupe</div><div class="hex">#6F6F6F</div></div></div>
+              <div class="swatch"><div class="fill" style="background:#1F1F1F"></div><div class="meta"><div class="name">Deep</div><div class="hex">#1F1F1F</div></div></div>
+              <div class="swatch"><div class="fill" style="background:#7791B0"></div><div class="meta"><div class="name">Accent</div><div class="hex">#7791B0</div></div></div>
+            </div>
+
+            <div class="panel-label" style="margin-top:26px">Buttons 按鈕樣式</div>
+            <div class="btn-row">
+              <span class="ps-btn solid">探索產品</span>
+              <span class="ps-btn ghost">品牌故事</span>
+              <div class="btn-dark-demo"><span class="ps-btn light">更多資訊</span></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="panel-label">Typography 字體系統</div>
+            <div class="type-specimen">
+              <div class="type-glyphs"><span class="g1">Aa</span><span class="g2">沛</span></div>
+              <div class="type-glyphs-cap">Montserrat<br>+ Noto Sans TC</div>
+            </div>
+            <div class="type-rows">
+              <div class="type-row display"><span class="tag">Display</span><span class="sample">好肌膚</span></div>
+              <div class="type-row h2"><span class="tag">H2</span><span class="sample">設計理念</span></div>
+              <div class="type-row h3"><span class="tag">H3</span><span class="sample">產品系列介紹</span></div>
+              <div class="type-row eyebrow"><span class="tag">Eyebrow</span><span class="sample">Products</span></div>
+              <div class="type-row body"><span class="tag">Body</span><span class="sample">每天 30 秒，在家養出健康素顏美肌。</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="frame-footer">
+        <div class="site">modidesign.com.tw</div>
+        <div class="count">02 — 05</div>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>

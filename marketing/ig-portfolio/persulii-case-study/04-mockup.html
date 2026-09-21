@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>MODI DESIGN × per-sulii — Mockup</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  .mk-body { flex: 1; display: flex; flex-direction: column; margin-top: 20px; }
+
+  .mk-stage { flex: 1; margin-top: 18px; display: flex; align-items: center; }
+  .device-group { position: relative; }
+
+  /* laptop */
+  .laptop { width: 700px; }
+  .laptop .screen {
+    background: var(--md-ink);
+    border-radius: 10px;
+    padding: 9px 9px 22px;
+    box-shadow: 0 30px 60px -22px rgba(34,31,28,.45);
+  }
+  .laptop .cam { width: 5px; height: 5px; border-radius: 50%; background: #5a5550; margin: 0 auto 8px; }
+  .laptop .screen img { width: 100%; display: block; height: 397px; object-fit: cover; object-position: top center; }
+  .laptop .base {
+    width: 108%;
+    margin-left: -4%;
+    height: 14px;
+    background: linear-gradient(180deg, #2E2A26, var(--md-ink));
+    border-radius: 0 0 8px 8px;
+  }
+  .laptop .tag { margin-top: 16px; }
+
+  /* phone */
+  .phone-wrap {
+    position: absolute;
+    right: -6px;
+    bottom: -70px;
+    background: var(--md-bg);
+    padding: 20px 20px 14px;
+  }
+  .phone { width: 224px; background: var(--md-ink); border-radius: 30px; padding: 14px 10px; box-shadow: 0 26px 50px -18px rgba(34,31,28,.5); }
+  .phone .notch { width: 64px; height: 8px; border-radius: 6px; background: #5a5550; margin: 0 auto 8px; }
+  .phone .screen-inner { border-radius: 16px; overflow: hidden; }
+  .phone .screen-inner img { width: 100%; display: block; height: 430px; object-fit: cover; object-position: top center; }
+  .phone .tag { margin-top: 14px; text-align: right; }
+
+  .device-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--md-sans);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--md-ink-soft);
+  }
+  .device-tag .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--md-accent); }
+</style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="frame-pad">
+
+      <div class="frame-header">
+        <div class="md-mark"><i class="dot"></i><span>Modi Design</span></div>
+        <div class="frame-tag">per-sulii Case Study</div>
+      </div>
+
+      <div class="mk-body">
+        <div>
+          <div class="slide-kicker">Responsive Design</div>
+          <div class="slide-title">跨裝置適配<span class="en">MOCKUP</span></div>
+          <div class="slide-desc">從桌機到手機，版型、圖片比例與互動元件依螢幕尺寸完整優化，維持一致的品牌質感。</div>
+        </div>
+
+        <div class="mk-stage">
+          <div class="device-group">
+            <div class="laptop">
+              <div class="screen">
+                <div class="cam"></div>
+                <img src="assets/home-hero.jpg" alt="桌機版首頁">
+              </div>
+              <div class="base"></div>
+              <div class="tag"><span class="device-tag"><i class="dot"></i>Desktop 桌機版</span></div>
+            </div>
+
+            <div class="phone-wrap">
+              <div class="phone">
+                <div class="notch"></div>
+                <div class="screen-inner"><img src="assets/home-mobile.jpg" alt="手機版首頁"></div>
+              </div>
+              <div class="tag"><span class="device-tag">Mobile 手機版<i class="dot"></i></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="frame-footer">
+        <div class="site">modidesign.com.tw</div>
+        <div class="count">04 — 05</div>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>

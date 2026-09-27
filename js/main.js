@@ -586,22 +586,23 @@ function renderChannels(data) {
 
   list.innerHTML = items.map(function (it) {
     var qrContent = it.qr
-      ? '<img src="' + asset(it.qr) + '" alt="' + it.name + ' Line QR Code">'
+      ? '<img src="' + asset(it.qr) + '" alt="' + it.name + ' Line QR Code" loading="lazy">'
       : '<span class="qr-placeholder">QR Code</span>';
     var qrElem = it.url
       ? '<a class="qr-box" href="' + it.url + '" target="_blank" rel="noopener" aria-label="' + it.name + ' Line QR Code">' + qrContent + '</a>'
       : '<div class="qr-box">' + qrContent + '</div>';
 
-    var idElem = it.url
-      ? '<a class="channel-id" href="' + it.url + '" target="_blank" rel="noopener">ID: ' + it.id + '</a>'
-      : '<span class="channel-id">ID: ' + it.id + '</span>';
+    var btnElem = it.url
+      ? '<a class="btn ghost channel-btn" href="' + it.url + '" target="_blank" rel="noopener">加入 LINE 好友</a>'
+      : '';
 
-    return '<li class="channel-item">'
+    return '<li class="channel-card">'
       + '<div class="channel-info">'
-      + '<span class="channel-name">' + it.name + '</span>'
-      + idElem
+      + '<h3 class="channel-name">' + it.name + '</h3>'
+      + '<span class="channel-id">LINE ID: ' + it.id + '</span>'
       + '</div>'
       + qrElem
+      + (btnElem ? '<div class="channel-action">' + btnElem + '</div>' : '')
       + '</li>';
   }).join('');
 }

@@ -203,7 +203,7 @@ function detailHTML(p, next) {
     + '<p class="lead mt16">' + p.tagline + '</p>'
     + '<p class="body">' + p.intro + '</p>'
     + (p.highlights && p.highlights.length ? '<div class="chips mt24">' + p.highlights.map((h) => '<span class="chip">' + h + '</span>').join('') + '</div>' : '')
-    + '<div class="mt32"><a href="/contact" class="btn solid">購買通路</a></div>'
+    + '<div class="mt32"><a href="/contact" class="btn solid">沛素官方認證經銷夥伴</a></div>'
     + '</div>'
     + '</div></section>'
     + '<section class="sec tight" id="product-feature-sec" style="background:var(--bg)"><div class="wrap">' + featureSection + '</div></section>'

@@ -92,7 +92,6 @@ collections:
                 required: false
                 fields:
                   - { name: name, label: 品名, widget: string }
-                  - { name: purpose, label: 用途, widget: string, required: false }
                   - { name: volume, label: 容量, widget: string }
                   - { name: price, label: 定價, widget: string, required: false }
                   - { name: storage, label: 保存方法, widget: string, required: false }

@@ -185,7 +185,6 @@ function detailHTML(p, next) {
 
   const bottleRows = p.bottleInfo ? [
     p.bottleInfo.name ? '<tr><th>品名</th><td>' + p.bottleInfo.name + '</td></tr>' : '',
-    p.bottleInfo.purpose ? '<tr><th>用途</th><td>' + p.bottleInfo.purpose + '</td></tr>' : '',
     p.bottleInfo.volume ? '<tr><th>容量</th><td>' + p.bottleInfo.volume + '</td></tr>' : '',
     p.bottleInfo.price ? '<tr><th>定價</th><td>' + p.bottleInfo.price + '</td></tr>' : '',
     p.bottleInfo.storage ? '<tr><th>保存方法</th><td>' + p.bottleInfo.storage + '</td></tr>' : '',

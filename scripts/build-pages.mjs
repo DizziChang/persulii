@@ -251,6 +251,19 @@ function pageHTML(p, next) {
     url: url
   };
 
+  /* Google 的 Product 複合式結果必須有 offers／review／aggregateRating 其一，
+     這裡用 CMS 的定價（例如 "NT$ 3,800"）產生 offers；沒填定價就不輸出 */
+  const price = String((p.bottleInfo && p.bottleInfo.price) || '').replace(/[^\d.]/g, '');
+  if (price) {
+    ld.offers = {
+      '@type': 'Offer',
+      price: price,
+      priceCurrency: 'TWD',
+      availability: 'https://schema.org/InStock',
+      url: url
+    };
+  }
+
   const video = productVideo(p);
   const videoLd = video && {
     '@context': 'https://schema.org',

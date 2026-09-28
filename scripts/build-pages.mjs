@@ -179,13 +179,28 @@ function detailHTML(p, next) {
     + (p.specs.inciNote ? '<p class="small mt8">' + p.specs.inciNote + '</p>' : '')
     : '<p class="body mt8">成分標示：' + p.specs.inci + '</p>';
 
+  const certList = (p.certifications && p.certifications.length)
+    ? p.certifications.join(' ｜ ')
+    : (p.bottleInfo && p.bottleInfo.cert ? p.bottleInfo.cert : '');
+
+  const bottleRows = p.bottleInfo ? [
+    p.bottleInfo.name ? '<tr><th>品名</th><td>' + p.bottleInfo.name + '</td></tr>' : '',
+    p.bottleInfo.purpose ? '<tr><th>用途</th><td>' + p.bottleInfo.purpose + '</td></tr>' : '',
+    p.bottleInfo.volume ? '<tr><th>容量</th><td>' + p.bottleInfo.volume + '</td></tr>' : '',
+    p.bottleInfo.price ? '<tr><th>定價</th><td>' + p.bottleInfo.price + '</td></tr>' : '',
+    p.bottleInfo.storage ? '<tr><th>保存方法</th><td>' + p.bottleInfo.storage + '</td></tr>' : '',
+    p.bottleInfo.shelfLife ? '<tr><th>有效期限</th><td>' + p.bottleInfo.shelfLife + '</td></tr>' : '',
+    p.bottleInfo.batchExpiry ? '<tr><th>保存期限與批號</th><td>' + p.bottleInfo.batchExpiry + '</td></tr>' : '',
+    p.bottleInfo.manufacturer ? '<tr><th>製造業者</th><td>' + p.bottleInfo.manufacturer + '</td></tr>' : '',
+    p.bottleInfo.phone ? '<tr><th>客服專線</th><td>' + p.bottleInfo.phone + '</td></tr>' : '',
+    p.bottleInfo.address ? '<tr><th>地址</th><td>' + p.bottleInfo.address + '</td></tr>' : '',
+    certList ? '<tr><th>品質認證</th><td>' + certList + '</td></tr>' : '',
+  ].filter(Boolean).join('') : '';
+
   const bottleSection = p.bottleInfo
     ? '<section class="sec tight" style="background:var(--bg)"><div class="wrap">'
     + '<h2 class="h3">產品資訊</h2><table class="pspecs mt24">'
-    + '<tr><th>品牌</th><td>' + p.bottleInfo.brand + '</td></tr>'
-    + '<tr><th>品名</th><td>' + p.bottleInfo.name + '</td></tr>'
-    + '<tr><th>英文名稱</th><td>' + p.bottleInfo.enName + '</td></tr>'
-    + '<tr><th>容量</th><td>' + p.bottleInfo.volume + '</td></tr>'
+    + bottleRows
     + '</table>'
     + '<div class="mt24">' + inciSection + '</div>'
     + '</div></section>'
@@ -203,7 +218,7 @@ function detailHTML(p, next) {
     + '<p class="lead mt16">' + p.tagline + '</p>'
     + '<p class="body">' + p.intro + '</p>'
     + (p.highlights && p.highlights.length ? '<div class="chips mt24">' + p.highlights.map((h) => '<span class="chip">' + h + '</span>').join('') + '</div>' : '')
-    + '<div class="mt32"><a href="/contact" class="btn solid">沛素官方認證經銷夥伴</a></div>'
+    + '<div class="mt32"><a href="/contact" class="btn solid">購買沛素洽詢官方認證夥伴 ▸ </a></div>'
     + '</div>'
     + '</div></section>'
     + '<section class="sec tight" id="product-feature-sec" style="background:var(--bg)"><div class="wrap">' + featureSection + '</div></section>'

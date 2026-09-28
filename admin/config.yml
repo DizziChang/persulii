@@ -91,10 +91,14 @@ collections:
                 widget: object
                 required: false
                 fields:
-                  - { name: brand, label: 品牌, widget: string }
                   - { name: name, label: 品名, widget: string }
-                  - { name: enName, label: 英文名稱, widget: string }
+                  - { name: purpose, label: 用途, widget: string, required: false }
                   - { name: volume, label: 容量, widget: string }
+                  - { name: price, label: 定價, widget: string, required: false }
+                  - { name: storage, label: 保存方法, widget: string, required: false }
+                  - { name: shelfLife, label: 有效期限, widget: string, required: false }
+                  - { name: batchExpiry, label: 保存期限與批號, widget: string, required: false }
+              - { name: certifications, label: 品質認證, widget: list, required: false, field: { name: item, label: 認證項目, widget: string } }
 
   - name: pages
     label: 頁面內容

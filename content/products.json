@@ -44,10 +44,12 @@
         "inciTitle": "Ingredients / 全成分表"
       },
       "bottleInfo": {
+        "name": "沛素-S 外泌體多胜肽養護精華 (S-essence)",
+        "purpose": "細緻毛孔、均勻膚色、柔嫩透亮",
         "volume": "35ml / 1.18 fl oz",
-        "enName": "S-essence",
-        "name": "沛素-S 外泌體多胜肽養護精華",
-        "brand": "沛素 per-sulii"
+        "price": "NT$ 3,800",
+        "storage": "請置於陰涼乾燥處，避免陽光直射",
+        "shelfLife": "2年 (保存期限與批號標示於包裝上)"
       },
       "certifications": [
         "台灣 TFDA 認證",
@@ -125,10 +127,12 @@
         "inciTitle": "Ingredients / 全成分表"
       },
       "bottleInfo": {
+        "name": "沛素-V 精萃蜂胜肽plus精華 (V-essence)",
+        "purpose": "淡化細紋、緊緻澎潤、調理肌膚紋路、維持肌膚彈性與光澤",
         "volume": "35ml / 1.18 fl. oz.",
-        "enName": "V-essence",
-        "name": "沛素-V 精萃蜂胜肽plus精華",
-        "brand": "沛素 per-sulii"
+        "price": "NT$ 5,200",
+        "storage": "請置於陰涼乾燥處，避免陽光直射",
+        "shelfLife": "2年 (保存期限與批號標示於包裝上)"
       },
       "certifications": [
         "台灣 TFDA 認證",

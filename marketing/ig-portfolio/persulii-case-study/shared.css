@@ -1,0 +1,258 @@
+/* ============================================================
+   MODI DESIGN — IG 作品集貼文共用樣式
+   Case study: per-sulii 沛素官網設計
+   Canvas: 1080 x 1350 (IG 直式 4:5)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700;800&family=Noto+Serif+TC:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap');
+
+:root {
+  /* --- MODI DESIGN 外框品牌（工作室自身識別） --- */
+  --md-bg: #F5F1EA;
+  --md-bg-soft: #EFE9DF;
+  --md-card: #FFFFFF;
+  --md-ink: #221F1C;
+  --md-ink-soft: #6B6259;
+  --md-line: #E1D8C8;
+  --md-accent: #B5602F;
+  --md-accent-soft: #E8CBB4;
+
+  --md-serif: 'Playfair Display', 'Noto Serif TC', serif;
+  --md-sans: 'Inter', 'Noto Sans TC', -apple-system, 'Segoe UI', sans-serif;
+
+  /* --- per-sulii 案例本身的品牌色（設計系統頁展示用） --- */
+  --ps-bg: #ffffff;
+  --ps-bg2: #ececec;
+  --ps-ink: #2A2A2A;
+  --ps-ink-soft: #565656;
+  --ps-mid: #9C9C9C;
+  --ps-taupe: #6f6f6f;
+  --ps-line: #e8e8e8;
+  --ps-deep: #1f1f1f;
+  --ps-link: #7791b0;
+  --ps-serif: 'Montserrat', 'Noto Serif TC', serif;
+  --ps-sans: 'Montserrat', 'Noto Sans TC', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 1080px;
+  height: 1350px;
+  overflow: hidden;
+  background: var(--md-bg);
+  font-family: var(--md-sans);
+  color: var(--md-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+.canvas {
+  position: relative;
+  width: 1080px;
+  height: 1350px;
+  background: var(--md-bg);
+  overflow: hidden;
+}
+
+/* 極細噪點感底紋，避免大面積色塊過於死板 */
+.canvas::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 18% 8%, rgba(181,96,47,.06), transparent 40%),
+                     radial-gradient(circle at 88% 92%, rgba(34,31,28,.05), transparent 45%);
+  pointer-events: none;
+}
+
+/* ---------- 版頭／版尾（每張共用） ---------- */
+.frame-pad {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  padding: 64px 76px 56px;
+  display: flex;
+  flex-direction: column;
+}
+
+.frame-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--md-line);
+}
+
+.md-mark {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.md-mark .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--md-accent);
+  display: inline-block;
+  transform: translateY(-2px);
+}
+
+.md-mark span {
+  font-family: var(--md-sans);
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--md-ink);
+}
+
+.frame-tag {
+  font-family: var(--md-sans);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--md-ink-soft);
+}
+
+.frame-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 20px;
+  margin-top: auto;
+  border-top: 1px solid var(--md-line);
+}
+
+.frame-footer .site {
+  font-family: var(--md-sans);
+  font-size: 14px;
+  letter-spacing: .04em;
+  color: var(--md-ink-soft);
+}
+
+.frame-footer .count {
+  font-family: var(--md-serif);
+  font-style: italic;
+  font-size: 16px;
+  color: var(--md-accent);
+  letter-spacing: .04em;
+}
+
+/* ---------- 標題區（各頁共用的「中文大標 + 英文 eyebrow」樣式，呼應 per-sulii 站內排法） ---------- */
+.slide-kicker {
+  font-family: var(--md-sans);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--md-accent);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.slide-kicker::before {
+  content: '';
+  width: 26px;
+  height: 1px;
+  background: var(--md-accent);
+  display: inline-block;
+}
+
+.slide-title {
+  font-family: var(--md-serif);
+  font-weight: 600;
+  font-size: 56px;
+  line-height: 1.2;
+  color: var(--md-ink);
+  margin-top: 14px;
+}
+
+.slide-title .en {
+  font-family: var(--md-sans);
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: .06em;
+  color: var(--md-ink-soft);
+  margin-left: 16px;
+}
+
+.slide-desc {
+  font-family: var(--md-sans);
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--md-ink-soft);
+  margin-top: 14px;
+  max-width: 760px;
+}
+
+/* ---------- 通用卡片 / 圖片外框 ---------- */
+.shot-card {
+  background: var(--md-card);
+  border: 1px solid var(--md-line);
+  box-shadow: 0 18px 40px -18px rgba(34,31,28,.25);
+  overflow: hidden;
+}
+
+.browser-chrome {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 11px 14px;
+  background: #EDEAE4;
+  border-bottom: 1px solid var(--md-line);
+}
+
+.browser-chrome i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #D8D0C2;
+  display: inline-block;
+}
+
+.shot-img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.shot-label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-top: 10px;
+}
+
+.shot-label .zh {
+  font-family: var(--md-sans);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--md-ink);
+}
+
+.shot-label .en {
+  font-family: var(--md-sans);
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--md-ink-soft);
+}
+
+/* ---------- pill / tag ---------- */
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 20px;
+  border: 1px solid var(--md-ink);
+  border-radius: 999px;
+  font-family: var(--md-sans);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--md-ink);
+  letter-spacing: .02em;
+}

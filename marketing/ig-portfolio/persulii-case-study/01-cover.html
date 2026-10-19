@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>MODI DESIGN × per-sulii — 封面</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  .cover-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 40px;
+  }
+  .cover-title {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .cover-title .latin {
+    font-family: var(--md-serif);
+    font-style: italic;
+    font-weight: 600;
+    font-size: 40px;
+    color: var(--md-accent);
+    letter-spacing: .01em;
+  }
+  .cover-title .zh {
+    font-family: var(--md-serif);
+    font-weight: 700;
+    font-size: 88px;
+    line-height: 1.08;
+    color: var(--md-ink);
+  }
+  .cover-title .sub {
+    margin-top: 10px;
+    font-family: var(--md-sans);
+    font-weight: 600;
+    font-size: 19px;
+    letter-spacing: .06em;
+    color: var(--md-ink-soft);
+  }
+  .cover-shot-wrap {
+    position: relative;
+    margin-bottom: 22px;
+  }
+  .cover-shot-wrap::before {
+    content: '';
+    position: absolute;
+    top: 22px;
+    left: 22px;
+    right: -22px;
+    bottom: -22px;
+    border: 1.5px solid var(--md-accent);
+    z-index: 0;
+  }
+  .cover-shot {
+    position: relative;
+    z-index: 1;
+  }
+  .cover-shot img { height: 470px; }
+  .cover-caption {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .cover-caption p {
+    font-family: var(--md-sans);
+    font-size: 16px;
+    color: var(--md-ink-soft);
+    max-width: 560px;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="frame-pad">
+
+      <div class="frame-header">
+        <div class="md-mark"><i class="dot"></i><span>Modi Design</span></div>
+        <div class="frame-tag">Web Design Portfolio</div>
+      </div>
+
+      <div class="cover-main">
+        <div class="slide-kicker">Case Study · 作品案例</div>
+
+        <div class="cover-title">
+          <div class="latin">per&#8209;sulii</div>
+          <div class="zh">沛素官方網站<br>設計案例</div>
+          <div class="sub">保養品牌官網 ｜ 視覺策略・網站設計・架設維運</div>
+        </div>
+
+        <div class="cover-shot-wrap">
+          <div class="cover-shot shot-card">
+            <div class="browser-chrome"><i></i><i></i><i></i></div>
+            <img class="shot-img" src="assets/home-hero.jpg" alt="per-sulii 首頁視覺">
+          </div>
+        </div>
+
+        <div class="cover-caption">
+          <p>從品牌視覺、設計系統到響應式網站架設，完整呈現 per-sulii 沛素的線上品牌體驗。</p>
+          <div class="tag-pill">→ 滑動看設計亮點</div>
+        </div>
+      </div>
+
+      <div class="frame-footer">
+        <div class="site">modidesign.com.tw</div>
+        <div class="count">01 — 05</div>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>

@@ -354,6 +354,66 @@ function renderReviews(d) {
   var more = document.getElementById('reviews-more');
   if (/^https:\/\//.test(d.link || '')) more.href = d.link; else more.hidden = true;
   sec.hidden = false;
+  initReviewsCarousel();
+}
+
+/* 卡片輪播：scroll-snap 負責滑動與手指拖曳，這裡只處理按鈕、圓點與自動換頁。
+   滑鼠移入、鍵盤聚焦、手指觸碰時暫停自動播放；系統設定為減少動態時完全不自動播放。 */
+function initReviewsCarousel() {
+  var track = document.getElementById('reviews-list');
+  var cards = track.querySelectorAll('.review');
+  var dotsBox = document.getElementById('reviews-dots');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cur = 0, timer = null;
+
+  dotsBox.innerHTML = Array.prototype.map.call(cards, function (_, i) {
+    return '<button type="button" class="rc-dot" aria-label="第 ' + (i + 1) + ' 則"></button>';
+  }).join('');
+  var dots = dotsBox.querySelectorAll('.rc-dot');
+
+  function mark(i) {
+    cur = i;
+    dots.forEach(function (d, k) { d.classList.toggle('on', k === i); });
+  }
+
+  function go(i) {
+    i = (i + cards.length) % cards.length;
+    var c = cards[i];
+    track.scrollTo({ left: c.offsetLeft - (track.clientWidth - c.offsetWidth) / 2, behavior: reduce ? 'auto' : 'smooth' });
+    mark(i);
+  }
+
+  /* 依捲動位置找出最靠近中間的卡片，手指滑動時圓點才會跟著變 */
+  var raf = 0;
+  track.addEventListener('scroll', function () {
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(function () {
+      var mid = track.scrollLeft + track.clientWidth / 2, best = 0, bd = Infinity;
+      cards.forEach(function (c, k) {
+        var d = Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid);
+        if (d < bd) { bd = d; best = k; }
+      });
+      if (best !== cur) mark(best);
+    });
+  }, { passive: true });
+
+  document.getElementById('reviews-prev').addEventListener('click', function () { go(cur - 1); });
+  document.getElementById('reviews-next').addEventListener('click', function () { go(cur + 1); });
+  dots.forEach(function (d, k) { d.addEventListener('click', function () { go(k); }); });
+  track.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1); }
+  });
+
+  function stop() { clearInterval(timer); timer = null; }
+  function start() { if (!reduce && !timer && cards.length > 1) timer = setInterval(function () { go(cur + 1); }, 6000); }
+  var box = track.parentNode;
+  ['mouseenter', 'focusin', 'touchstart'].forEach(function (ev) { box.addEventListener(ev, stop, { passive: true }); });
+  ['mouseleave', 'focusout', 'touchend'].forEach(function (ev) { box.addEventListener(ev, start, { passive: true }); });
+
+  mark(0);
+  go(0);
+  start();
 }
 
 /* ---- Hero 輪播 ---- */

@@ -349,6 +349,7 @@ function renderReviews(d) {
       + '<figcaption class="review-head"><span class="review-name">' + escHTML(v.author) + '</span>'
       + (v.time ? '<span class="review-time">' + escHTML(v.time) + '</span>' : '') + '</figcaption>'
       + '<blockquote class="review-text">' + escHTML(v.text) + '</blockquote>'
+      + '<button type="button" class="review-more" hidden aria-expanded="false">展開</button>'
       + '</figure>';
   }).join('');
   var more = document.getElementById('reviews-more');
@@ -357,45 +358,89 @@ function renderReviews(d) {
   initReviewsCarousel();
 }
 
-/* 卡片輪播：scroll-snap 負責滑動與手指拖曳，這裡只處理按鈕、圓點與自動換頁。
-   滑鼠移入、鍵盤聚焦、手指觸碰時暫停自動播放；系統設定為減少動態時完全不自動播放。 */
+/* 卡片輪播（疊放式）：所有卡片疊在同一個位置，依與目前這張的距離（--off）左右錯開、
+   縮小、壓低層級，形成景深。過長的評論先收合成固定行數，有溢出才顯示「展開」。
+   展開時暫停自動播放並把舞台撐高；滑鼠移入、鍵盤聚焦、手指按住也會暫停；
+   系統設定為減少動態時不自動播放。 */
 function initReviewsCarousel() {
   var track = document.getElementById('reviews-list');
-  var cards = track.querySelectorAll('.review');
+  var cards = Array.prototype.slice.call(track.querySelectorAll('.review'));
   var dotsBox = document.getElementById('reviews-dots');
+  var n = cards.length;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var cur = 0, timer = null;
+  var cur = 0, timer = null, hover = false;
 
-  dotsBox.innerHTML = Array.prototype.map.call(cards, function (_, i) {
+  dotsBox.innerHTML = cards.map(function (_, i) {
     return '<button type="button" class="rc-dot" aria-label="第 ' + (i + 1) + ' 則"></button>';
   }).join('');
   var dots = dotsBox.querySelectorAll('.rc-dot');
 
-  function mark(i) {
-    cur = i;
-    dots.forEach(function (d, k) { d.classList.toggle('on', k === i); });
+  /* 環狀最短距離：最後一張在第一張左邊，輪播才會無縫繞回 */
+  function offOf(i) {
+    var d = (i - cur) % n;
+    if (d > n / 2) d -= n;
+    if (d < -n / 2) d += n;
+    return d;
+  }
+
+  function opened() { return track.querySelector('.review.open'); }
+
+  function fitStage() {
+    var o = opened();
+    track.style.height = o ? o.offsetHeight + 'px' : '';
+  }
+
+  function collapse() {
+    var o = opened();
+    if (!o) return;
+    o.classList.remove('open');
+    var b = o.querySelector('.review-more');
+    b.textContent = '展開';
+    b.setAttribute('aria-expanded', 'false');
+    fitStage();
+  }
+
+  function layout() {
+    cards.forEach(function (c, i) {
+      var off = offOf(i), abs = Math.abs(off);
+      c.style.setProperty('--off', off);
+      c.style.setProperty('--abs', abs);
+      c.style.zIndex = 10 - abs;
+      c.classList.toggle('is-active', off === 0);
+      c.classList.toggle('is-hidden', abs > 2);
+      c.setAttribute('aria-hidden', off === 0 ? 'false' : 'true');
+    });
+    dots.forEach(function (d, k) { d.classList.toggle('on', k === cur); });
   }
 
   function go(i) {
-    i = (i + cards.length) % cards.length;
-    var c = cards[i];
-    track.scrollTo({ left: c.offsetLeft - (track.clientWidth - c.offsetWidth) / 2, behavior: reduce ? 'auto' : 'smooth' });
-    mark(i);
+    collapse();
+    cur = ((i % n) + n) % n;
+    layout();
   }
 
-  /* 依捲動位置找出最靠近中間的卡片，手指滑動時圓點才會跟著變 */
-  var raf = 0;
-  track.addEventListener('scroll', function () {
-    cancelAnimationFrame(raf);
-    raf = requestAnimationFrame(function () {
-      var mid = track.scrollLeft + track.clientWidth / 2, best = 0, bd = Infinity;
-      cards.forEach(function (c, k) {
-        var d = Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid);
-        if (d < bd) { bd = d; best = k; }
-      });
-      if (best !== cur) mark(best);
+  /* 只有被行數限制截斷的評論才需要「展開」；字型載入或視窗縮放後要重算 */
+  function measure() {
+    cards.forEach(function (c) {
+      if (c.classList.contains('open')) return;
+      var t = c.querySelector('.review-text');
+      c.querySelector('.review-more').hidden = !(t.scrollHeight > t.clientHeight + 1);
     });
-  }, { passive: true });
+  }
+
+  track.addEventListener('click', function (e) {
+    var card = e.target.closest('.review');
+    if (!card) return;
+    var btn = e.target.closest('.review-more');
+    if (btn) {
+      var open = card.classList.toggle('open');
+      btn.textContent = open ? '收合' : '展開';
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      fitStage();
+      return;
+    }
+    if (!card.classList.contains('is-active')) go(cards.indexOf(card));
+  });
 
   document.getElementById('reviews-prev').addEventListener('click', function () { go(cur - 1); });
   document.getElementById('reviews-next').addEventListener('click', function () { go(cur + 1); });
@@ -405,14 +450,35 @@ function initReviewsCarousel() {
     if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1); }
   });
 
-  function stop() { clearInterval(timer); timer = null; }
-  function start() { if (!reduce && !timer && cards.length > 1) timer = setInterval(function () { go(cur + 1); }, 6000); }
-  var box = track.parentNode;
-  ['mouseenter', 'focusin', 'touchstart'].forEach(function (ev) { box.addEventListener(ev, stop, { passive: true }); });
-  ['mouseleave', 'focusout', 'touchend'].forEach(function (ev) { box.addEventListener(ev, start, { passive: true }); });
+  /* 手指／滑鼠左右拖曳換張（垂直方向仍交給頁面捲動，見 CSS touch-action） */
+  var sx = null;
+  track.addEventListener('pointerdown', function (e) { sx = e.clientX; });
+  track.addEventListener('pointerup', function (e) {
+    if (sx === null) return;
+    var dx = e.clientX - sx;
+    sx = null;
+    if (Math.abs(dx) > 50) go(cur + (dx < 0 ? 1 : -1));
+  });
+  track.addEventListener('pointercancel', function () { sx = null; });
 
-  mark(0);
-  go(0);
+  function stop() { clearInterval(timer); timer = null; }
+  function start() {
+    if (reduce || timer || n < 2 || hover || opened()) return;
+    timer = setInterval(function () { go(cur + 1); }, 6000);
+  }
+  var box = track.parentNode;
+  box.addEventListener('mouseenter', function () { hover = true; stop(); });
+  box.addEventListener('mouseleave', function () { hover = false; start(); });
+  box.addEventListener('focusin', stop);
+  box.addEventListener('focusout', start);
+  /* 展開／收合後依狀態決定是否繼續播放 */
+  track.addEventListener('click', function () { if (opened()) stop(); else start(); });
+
+  window.addEventListener('resize', function () { measure(); fitStage(); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+
+  layout();
+  measure();
   start();
 }
 

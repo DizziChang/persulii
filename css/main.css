@@ -2302,7 +2302,7 @@ a.qr-box:hover {
   gap: 20px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  padding: 4px calc(50% - var(--card) / 2);
+  padding: 12px calc(50% - var(--card) / 2) 40px;
   scrollbar-width: none;
   outline: none;
 }
@@ -2322,9 +2322,12 @@ a.qr-box:hover {
   border-radius: 50%;
   background: var(--bg);
   color: var(--ink);
-  font-size: 26px;
-  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
   cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .1);
 }
 
 .rc-prev { left: max(0px, calc(50% - var(--card) / 2 - 64px)); }
@@ -2363,6 +2366,7 @@ a.qr-box:hover {
   border: 1px solid var(--line);
   border-radius: var(--img-radius);
   background: var(--bg);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .04), 0 12px 32px rgba(0, 0, 0, .08);
   display: flex;
   flex-direction: column;
   gap: 12px;

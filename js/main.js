@@ -345,11 +345,10 @@ function renderReviews(d) {
     stars(d.rating) + ' <strong>' + escHTML(Number(d.rating).toFixed(1)) + '</strong> · ' + escHTML(d.count) + ' 則 Google 評論';
   document.getElementById('reviews-list').innerHTML = d.items.map(function (v) {
     return '<figure class="review">'
-      + '<figcaption class="review-head"><span><span class="review-name">' + escHTML(v.author) + '</span>'
-      + (v.time ? '<span class="review-time">' + escHTML(v.time) + '</span>' : '') + '</span></figcaption>'
       + stars(v.rating)
+      + '<figcaption class="review-head"><span class="review-name">' + escHTML(v.author) + '</span>'
+      + (v.time ? '<span class="review-time">' + escHTML(v.time) + '</span>' : '') + '</figcaption>'
       + '<blockquote class="review-text">' + escHTML(v.text) + '</blockquote>'
-      + '<span class="review-src">Google</span>'
       + '</figure>';
   }).join('');
   var more = document.getElementById('reviews-more');

@@ -2292,10 +2292,12 @@ a.qr-box:hover {
 }
 
 .reviews-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 20px;
-  align-items: start;
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .review {
@@ -2311,13 +2313,9 @@ a.qr-box:hover {
 
 .review-head {
   display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.review-name,
-.review-time {
-  display: block;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
 }
 
 .review-time {
@@ -2330,12 +2328,6 @@ a.qr-box:hover {
   color: var(--ink-soft);
   line-height: 1.8;
   white-space: pre-line;
-}
-
-.review-src {
-  margin-top: auto;
-  font-size: 12px;
-  color: var(--mid-text);
 }
 
 .reviews-more {

@@ -342,7 +342,7 @@ function renderReviews(d) {
   var sec = document.getElementById('reviews');
   if (!sec || !d || !d.items || !d.items.length) return;
   document.getElementById('reviews-summary').innerHTML =
-    stars(d.rating) + ' <strong>' + escHTML(Number(d.rating).toFixed(1)) + '</strong> · ' + escHTML(d.count) + ' 則 Google 評論';
+    stars(d.rating) + ' <strong>' + escHTML(Number(d.rating).toFixed(1)) + '</strong>';
   document.getElementById('reviews-list').innerHTML = d.items.map(function (v) {
     return '<figure class="review">'
       + stars(v.rating)

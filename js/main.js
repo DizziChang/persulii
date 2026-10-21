@@ -326,6 +326,37 @@ function renderHome(data) {
 }
 
 
+/* ---- Google 評論（手動維護 content/reviews.json；items 為空時區塊維持隱藏） ---- */
+function escHTML(t) {
+  return String(t).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+
+function stars(n) {
+  var r = Math.round(n);
+  return '<span class="stars" aria-label="' + n + ' 星">' + '★★★★★'.slice(0, r) + '<span class="stars-off">' + '★★★★★'.slice(r) + '</span></span>';
+}
+
+function renderReviews(d) {
+  var sec = document.getElementById('reviews');
+  if (!sec || !d || !d.items || !d.items.length) return;
+  document.getElementById('reviews-summary').innerHTML =
+    stars(d.rating) + ' <strong>' + escHTML(Number(d.rating).toFixed(1)) + '</strong> · ' + escHTML(d.count) + ' 則 Google 評論';
+  document.getElementById('reviews-list').innerHTML = d.items.map(function (v) {
+    return '<figure class="review">'
+      + '<figcaption class="review-head"><span><span class="review-name">' + escHTML(v.author) + '</span>'
+      + (v.time ? '<span class="review-time">' + escHTML(v.time) + '</span>' : '') + '</span></figcaption>'
+      + stars(v.rating)
+      + '<blockquote class="review-text">' + escHTML(v.text) + '</blockquote>'
+      + '<span class="review-src">Google</span>'
+      + '</figure>';
+  }).join('');
+  var more = document.getElementById('reviews-more');
+  if (/^https:\/\//.test(d.link || '')) more.href = d.link; else more.hidden = true;
+  sec.hidden = false;
+}
+
 /* ---- Hero 輪播 ---- */
 function initHeroCarousel(h) {
   var hero = document.querySelector('.hero');
@@ -787,6 +818,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (page === 'home') {
     getJSON('/content/home.json').then(renderHome).catch(console.error);
     getJSON('/content/home-hero.json').then(initHeroCarousel).catch(console.error);
+    getJSON('/content/reviews.json').then(renderReviews).catch(console.error);
   }
   if (page === 'about') getJSON('/content/about-sections.json').then(renderAbout).catch(console.error);
   if (page === 'faq') getJSON('/content/faq.json').then(renderFAQ).catch(console.error);

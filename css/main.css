@@ -2276,3 +2276,68 @@ a.qr-box:hover {
 .inci-text {
   max-width: 800px;
 }
+/* ============ Google 評論 ============ */
+.reviews-summary {
+  margin: 12px 0 0;
+  color: var(--ink-soft);
+}
+
+.stars {
+  color: #e7a82b;
+  letter-spacing: 2px;
+}
+
+.stars-off {
+  color: var(--line);
+}
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+
+.review {
+  margin: 0;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--img-radius);
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.review-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.review-name,
+.review-time {
+  display: block;
+}
+
+.review-time {
+  font-size: 13px;
+  color: var(--mid-text);
+}
+
+.review-text {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.8;
+  white-space: pre-line;
+}
+
+.review-src {
+  margin-top: auto;
+  font-size: 12px;
+  color: var(--mid-text);
+}
+
+.reviews-more {
+  color: var(--link);
+}

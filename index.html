@@ -124,6 +124,21 @@
       </div>
     </section>
 
+    <!-- Google 評論：由 /api/reviews 取得資料後才顯示，取不到就維持隱藏 -->
+    <section class="sec" id="reviews" hidden>
+      <div class="wrap">
+        <div class="center">
+          <div class="title-line">
+            <h2 class="h2">顧客評價</h2>
+            <span class="eyebrow">Reviews</span>
+          </div>
+          <p class="reviews-summary" id="reviews-summary"></p>
+        </div>
+        <div class="reviews-grid mt32" id="reviews-list"></div>
+        <p class="center mt32"><a class="reviews-more" id="reviews-more" href="#" target="_blank" rel="noopener">在 Google 查看全部評論</a></p>
+      </div>
+    </section>
+
   </main>
 
   <div id="site-footer"></div>

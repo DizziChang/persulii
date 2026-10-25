@@ -39,6 +39,8 @@ function injectJSONLD(id, data) {
   document.head.appendChild(s);
 }
 function injectOrganizationLD(settings) {
+  /* 首頁已在建置時寫入 Organization＋WebSite（scripts/prerender-pages.mjs），不覆蓋 */
+  if (document.getElementById('ld-org')) return;
   var f = settings.footer || {};
   var c = settings.contact_page || {};
   injectJSONLD('ld-org', {
@@ -285,7 +287,8 @@ function homeProductRowHTML(p, videoFirst) {
 
 function renderProducts(PRODUCTS) {
   var home = document.getElementById('home-products');
-  if (home) {
+  /* 建置時已預渲染的內容就不覆蓋，避免影片被重設 */
+  if (home && !home.firstElementChild) {
     var v = PRODUCTS.find(function (p) { return p.id === 'V-essence'; });
     var s = PRODUCTS.find(function (p) { return p.id === 'S-essence'; });
     var rows = [];
@@ -294,7 +297,7 @@ function renderProducts(PRODUCTS) {
     home.innerHTML = rows.join('');
   }
   var list = document.getElementById('product-list');
-  if (list) list.innerHTML = PRODUCTS.map(function (p) { return productCardHTML(p, null, null, HOME_PRODUCT_CTA[p.id]); }).join('');
+  if (list && !list.firstElementChild) list.innerHTML = PRODUCTS.map(function (p) { return productCardHTML(p, null, null, HOME_PRODUCT_CTA[p.id]); }).join('');
 }
 
 /* ============ 首頁內容 ============ */

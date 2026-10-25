@@ -3,18 +3,15 @@
         xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
   <url>
     <loc>https://persulii.com.tw/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://persulii.com.tw/about</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <lastmod>2026-10-11</lastmod>
   </url>
   <url>
     <loc>https://persulii.com.tw/products</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <lastmod>2026-10-11</lastmod>
     <video:video>
       <video:thumbnail_loc>https://persulii.com.tw/images/video-vs-poster.webp</video:thumbnail_loc>
       <video:title>per-sulii 沛素 產品介紹影片</video:title>
@@ -25,18 +22,15 @@
   </url>
   <url>
     <loc>https://persulii.com.tw/faq</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <lastmod>2026-10-11</lastmod>
   </url>
   <url>
     <loc>https://persulii.com.tw/contact</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
+    <lastmod>2026-10-11</lastmod>
   </url>
   <url>
     <loc>https://persulii.com.tw/products/s-essence</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <lastmod>2026-10-11</lastmod>
     <video:video>
       <video:thumbnail_loc>https://persulii.com.tw/images/video-s-poster.webp</video:thumbnail_loc>
       <video:title>S-essence 外泌體多胜肽養護精華 介紹影片</video:title>
@@ -47,8 +41,7 @@
   </url>
   <url>
     <loc>https://persulii.com.tw/products/v-essence</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <lastmod>2026-10-11</lastmod>
     <video:video>
       <video:thumbnail_loc>https://persulii.com.tw/images/video-v-poster.webp</video:thumbnail_loc>
       <video:title>V-essence 精萃蜂胜肽PLUS精華 介紹影片</video:title>

@@ -21,6 +21,7 @@
    ============================================================ */
 
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -290,7 +291,7 @@ function pageHTML(p, next) {
   const breadcrumbLdTag = '\n  <script type="application/ld+json">' + JSON.stringify(breadcrumbLd) + '</script>';
 
   return `<!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-Hant-TW">
 
 <head>
   <!-- Google tag (gtag.js) -->
@@ -368,11 +369,11 @@ function pageHTML(p, next) {
 
 /* ---- sitemap ---- */
 const STATIC_PAGES = [
-  { path: '/', changefreq: 'weekly', priority: '1.0' },
-  { path: '/about', changefreq: 'monthly', priority: '0.8' },
-  { path: '/products', changefreq: 'weekly', priority: '0.9' },
-  { path: '/faq', changefreq: 'monthly', priority: '0.6' },
-  { path: '/contact', changefreq: 'yearly', priority: '0.5' }
+  { path: '/', files: ['index.html', 'content/home.json', 'content/home-hero.json', 'content/products.json'] },
+  { path: '/about', files: ['about.html', 'content/about-sections.json'] },
+  { path: '/products', files: ['products.html', 'content/products.json'] },
+  { path: '/faq', files: ['faq.html', 'content/faq.json'] },
+  { path: '/contact', files: ['contact.html', 'content/contact-channels.json', 'content/settings-contact.json'] }
 ];
 
 /* video 擴充的子標籤有固定順序，對調會驗證失敗。attr() 逸出的字元
@@ -389,19 +390,27 @@ function videoXML(v) {
     + '    </video:video>\n';
 }
 
+/* lastmod 取相關檔案最後一次 commit 的日期（Google 只在日期可信時才採用，
+   changefreq／priority 已不被採用所以不輸出）。取不到（淺層 clone、非 git 環境）就省略。 */
+function lastmodOf(files) {
+  try {
+    const out = execFileSync('git', ['log', '-1', '--format=%cs', '--', ...files], { cwd: ROOT, encoding: 'utf8' }).trim();
+    return out || null;
+  } catch { return null; }
+}
+
 function sitemapXML(products) {
   const entries = STATIC_PAGES.map((e) => (
     e.path === '/products' ? { ...e, video: PRODUCTS_PAGE_VIDEO } : e
   )).concat(
-    products.map((p) => ({ path: pathOf(p), changefreq: 'monthly', priority: '0.8', video: productVideo(p) }))
+    products.map((p) => ({ path: pathOf(p), files: ['products/' + slugOf(p) + '.html', 'content/products.json'], video: productVideo(p) }))
   );
   return '<?xml version="1.0" encoding="UTF-8"?>\n'
     + '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n'
     + '        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">\n'
     + entries.map((e) => '  <url>\n'
       + '    <loc>' + SITE_URL + e.path + '</loc>\n'
-      + '    <changefreq>' + e.changefreq + '</changefreq>\n'
-      + '    <priority>' + e.priority + '</priority>\n'
+      + (lastmodOf(e.files) ? '    <lastmod>' + lastmodOf(e.files) + '</lastmod>\n' : '')
       + videoXML(e.video)
       + '  </url>\n').join('')
     + '</urlset>\n';
@@ -444,3 +453,6 @@ if (existsSync(OUT_DIR)) {
 
 writeFileSync(join(ROOT, 'sitemap.xml'), sitemapXML(products));
 console.log('  ✓ sitemap.xml（' + (STATIC_PAGES.length + products.length) + ' 筆）');
+
+/* 預渲染首頁／產品總覽／關於／FAQ 的內文（見 prerender-pages.mjs） */
+await import('./prerender-pages.mjs');

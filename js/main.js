@@ -788,7 +788,9 @@ function initContactForm() {
       .then(function (data) {
         if (data.success) {
           form.reset();
-          status.textContent = '已送出，我們會盡快與您聯繫。';
+          /* 導向感謝頁：該頁載入時會送出 GA4 generate_lead 事件，用來計算轉換 */
+          window.location.href = '/thank-you';
+          return;
         } else {
           status.textContent = '送出失敗，請稍後再試一次。';
         }

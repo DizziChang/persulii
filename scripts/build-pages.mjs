@@ -194,7 +194,6 @@ function detailHTML(p, next) {
     p.bottleInfo.manufacturer ? '<tr><th>製造業者</th><td>' + p.bottleInfo.manufacturer + '</td></tr>' : '',
     p.bottleInfo.phone ? '<tr><th>客服專線</th><td>' + p.bottleInfo.phone + '</td></tr>' : '',
     p.bottleInfo.address ? '<tr><th>地址</th><td>' + p.bottleInfo.address + '</td></tr>' : '',
-    certList ? '<tr><th>品質認證</th><td>' + certList + '</td></tr>' : '',
   ].filter(Boolean).join('') : '';
 
   const bottleSection = p.bottleInfo
@@ -202,7 +201,7 @@ function detailHTML(p, next) {
     + '<h2 class="h3">產品資訊</h2><table class="pspecs mt24">'
     + bottleRows
     + '</table>'
-    + '<div class="mt24">' + inciSection + '</div>'
+    + '<div class="mt24">' + inciSection + (certList ? '<p class="small mt8">' + certList + '</p>' : '') + '</div>'
     + '</div></section>'
     : '';
 

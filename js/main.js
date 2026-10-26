@@ -304,7 +304,7 @@ function renderProducts(PRODUCTS) {
 function renderHome(data) {
   if (document.body.dataset.page !== 'home') return;
   var s = data.science;
-  setText('sci-title', s.title);
+  setHTML('sci-title', nl2br(s.title));
 
   var mb = document.getElementById('sci-more-btn');
   if (mb) {

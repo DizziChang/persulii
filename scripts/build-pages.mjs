@@ -213,8 +213,8 @@ function detailHTML(p, next) {
     + '<div class="media product" id="product-hero-media"' + (p.heroImg ? '' : ' data-mono="' + attr(p.code) + '"') + '>'
     + (p.heroImg ? '<img class="media-img" src="' + asset(p.heroImg) + '" alt="' + alt + '">' : '')
     + '</div>'
-    + '<div><div class="eyebrow">' + p.en + '</div>'
-    + '<h1 class="h2 mt12">' + p.name + '</h1>'
+    + '<div>'
+    + '<h1 class="h2 mt12">' + p.en + ' ' + p.name + '</h1>'
     + '<p class="lead mt16">' + p.tagline + '</p>'
     + '<p class="body">' + p.intro + '</p>'
     + (p.highlights && p.highlights.length ? '<div class="chips mt24">' + p.highlights.map((h) => '<span class="chip">' + h + '</span>').join('') + '</div>' : '')
@@ -236,7 +236,11 @@ function detailHTML(p, next) {
 
 /* ---- 整頁 ---- */
 function pageHTML(p, next) {
-  const title = p.en + ' ' + p.name + ' — ' + SITE_NAME;
+  const TITLES = {
+    'V-essence': '蜂胜肽精華 V-essence｜淡化細紋・緊緻彈潤｜沛素 per-sulii',
+    'S-essence': '外泌體精華 S-essence｜細緻毛孔・穩定膚況｜沛素 per-sulii',
+  };
+  const title = TITLES[p.en] || (p.en + ' ' + p.name + ' — ' + SITE_NAME);
   const url = SITE_URL + pathOf(p);
   const ogImage = p.banner ? (SITE_URL + asset(p.banner)) : DEFAULT_OG_IMAGE;
 

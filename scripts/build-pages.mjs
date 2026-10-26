@@ -244,7 +244,10 @@ function pageHTML(p, next) {
   const url = SITE_URL + pathOf(p);
   const ogImage = p.banner ? (SITE_URL + asset(p.banner)) : DEFAULT_OG_IMAGE;
 
-  const desc = descOf(p);
+  const DESCS = {
+    'S-essence': '沛素 S-essence 外泌體多胜肽養護精華，細緻毛孔、穩定膚況。使用合法優質外泌體結合多胜肽，調理肌膚，在家悄悄變美。',
+  };
+  const desc = DESCS[p.en] || descOf(p);
 
   const ld = {
     '@context': 'https://schema.org',

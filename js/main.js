@@ -800,7 +800,7 @@ function initContactForm() {
       })
       .finally(function () {
         btn.disabled = false;
-        btn.textContent = '送出洽詢';
+        btn.textContent = '送出';
       });
   });
 }

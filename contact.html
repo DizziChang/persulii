@@ -38,7 +38,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="/css/main.css?v=bba5c0fad4">
+  <link rel="stylesheet" href="/css/main.css?v=584934bbc1">
   <!-- Meta Pixel Code -->
   <script>
   !function(f,b,e,v,n,t,s)
@@ -83,7 +83,7 @@
     <section class="sec tight" style="padding-top:clamp(38px,4.8vw,72px);padding-bottom:clamp(38px,4.8vw,72px)">
       <div class="wrap" style="max-width: 960px;">
        <h2 class="h3 center">與我們聯繫</h2>
-        <form id="contact-form">
+        <form id="contact-form" novalidate>
           <input type="hidden" name="access_key" value="c44f2510-388b-477e-a3ec-f2446b1304c2">
           <input type="hidden" name="subject" value="與沛素聯繫">
           <input type="checkbox" name="botcheck" class="sr-only" tabindex="-1" autocomplete="off">
@@ -105,6 +105,14 @@
             <label for="f-msg">留言內容</label>
             <textarea id="f-msg" name="message" rows="5" placeholder="請描述您的問題或需求"></textarea>
           </div>
+          <div class="field">
+            <label for="f-captcha">驗證碼 <span class="req">*</span></label>
+            <div class="captcha-row">
+              <input id="f-captcha" type="text" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="off" placeholder="請輸入驗證碼" required>
+              <canvas id="captcha-canvas" class="captcha-canvas" width="120" height="48" role="img" aria-label="驗證碼圖片，點擊可更換" title="看不清楚？點擊更換"></canvas>
+              <button type="button" class="captcha-refresh" id="captcha-refresh" aria-label="更換驗證碼"><img src="/images/icon/refresh.svg" alt="" width="14" height="14">再換一組</button>
+            </div>
+          </div>
           <div class="center mt32">
             <button type="submit" class="btn solid" id="contact-submit-btn">送出</button>
             <p class="small mt16" id="contact-form-status" style="display:none"></p>
@@ -118,7 +126,7 @@
   <div id="site-footer"></div>
 
   <script src="/js/components.js?v=401c6ed325"></script>
-  <script src="/js/main.js?v=fb1ad39cd8"></script>
+  <script src="/js/main.js?v=cccd5ba334"></script>
 </body>
 
 </html>

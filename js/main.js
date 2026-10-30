@@ -772,9 +772,120 @@ function initContactForm() {
   if (!form) return;
   var btn = document.getElementById('contact-submit-btn');
   var status = document.getElementById('contact-form-status');
+  var captchaInput = document.getElementById('f-captcha');
+  var captchaCanvas = document.getElementById('captcha-canvas');
+  var captchaCode = '';
+
+  /* 四位數驗證碼：畫在 canvas 上（加旋轉與干擾線），只在前端比對，不送給 Web3Forms */
+  function refreshCaptcha() {
+    captchaCode = '';
+    for (var i = 0; i < 4; i++) captchaCode += Math.floor(Math.random() * 10);
+    captchaInput.value = '';
+
+    var ctx = captchaCanvas.getContext('2d');
+    var w = captchaCanvas.width, h = captchaCanvas.height;
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = '#f4f1ec';
+    ctx.fillRect(0, 0, w, h);
+
+    for (var l = 0; l < 4; l++) {
+      ctx.strokeStyle = 'rgba(90,80,70,' + (0.25 + Math.random() * 0.25) + ')';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(Math.random() * w, Math.random() * h);
+      ctx.lineTo(Math.random() * w, Math.random() * h);
+      ctx.stroke();
+    }
+
+    ctx.font = 'bold 26px Georgia, serif';
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'center';
+    for (var d = 0; d < 4; d++) {
+      ctx.save();
+      ctx.translate(20 + d * 27, h / 2 + (Math.random() * 8 - 4));
+      ctx.rotate((Math.random() * 30 - 15) * Math.PI / 180);
+      ctx.fillStyle = 'rgb(' + (40 + Math.floor(Math.random() * 50)) + ',' + (35 + Math.floor(Math.random() * 40)) + ',' + (30 + Math.floor(Math.random() * 40)) + ')';
+      ctx.fillText(captchaCode[d], 0, 0);
+      ctx.restore();
+    }
+
+    for (var p = 0; p < 30; p++) {
+      ctx.fillStyle = 'rgba(90,80,70,0.35)';
+      ctx.fillRect(Math.random() * w, Math.random() * h, 1.5, 1.5);
+    }
+  }
+
+  refreshCaptcha();
+  captchaCanvas.addEventListener('click', refreshCaptcha);
+  document.getElementById('captcha-refresh').addEventListener('click', refreshCaptcha);
+
+  /* 欄位驗證：表單加了 novalidate，改由這裡顯示繁中提示（瀏覽器內建訊息會跟著系統語言變成英文） */
+  function setFieldError(input, msg) {
+    var field = input.closest('.field');
+    var err = field.querySelector('.field-error');
+    if (!err) {
+      err = document.createElement('p');
+      err.className = 'field-error';
+      err.id = input.id + '-error';
+      field.appendChild(err);
+    }
+    err.textContent = msg;
+    field.classList.add('invalid');
+    input.setAttribute('aria-invalid', 'true');
+    input.setAttribute('aria-describedby', err.id);
+  }
+
+  function clearFieldError(input) {
+    var field = input.closest('.field');
+    var err = field.querySelector('.field-error');
+    if (err) err.remove();
+    field.classList.remove('invalid');
+    input.removeAttribute('aria-invalid');
+    input.removeAttribute('aria-describedby');
+  }
+
+  function validate() {
+    var name = form.elements.contact;
+    var phone = form.elements.phone;
+    var email = form.elements.email;
+    var errors = [];
+
+    if (!name.value.trim()) errors.push([name, '請輸入姓名']);
+
+    var phoneVal = phone.value.trim();
+    if (!phoneVal) errors.push([phone, '請輸入電話']);
+    else if (!/^[0-9+\-()#\s]+$/.test(phoneVal) || phoneVal.replace(/\D/g, '').length < 8) {
+      errors.push([phone, '電話格式不正確，請輸入至少 8 碼數字']);
+    }
+
+    if (email.value.trim() && email.validity.typeMismatch) {
+      errors.push([email, 'Email 格式不正確，例如 name@example.com']);
+    }
+
+    var code = captchaInput.value.trim();
+    if (!code) errors.push([captchaInput, '請輸入驗證碼']);
+    else if (code !== captchaCode) errors.push([captchaInput, '驗證碼錯誤，請重新輸入']);
+
+    [name, phone, email, captchaInput].forEach(clearFieldError);
+    errors.forEach(function (e) { setFieldError(e[0], e[1]); });
+    return errors;
+  }
+
+  /* 使用者開始修改就拿掉該欄的錯誤提示 */
+  form.addEventListener('input', function (e) {
+    if (e.target.closest('.field.invalid')) clearFieldError(e.target);
+  });
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
+    var errors = validate();
+    if (errors.length) {
+      status.style.display = 'none';
+      /* 驗證碼答錯就換一組，避免被反覆猜 */
+      if (captchaInput.value.trim() && captchaInput.value.trim() !== captchaCode) refreshCaptcha();
+      errors[0][0].focus();
+      return;
+    }
     btn.disabled = true;
     btn.textContent = '送出中...';
     status.style.display = 'none';
@@ -803,6 +914,8 @@ function initContactForm() {
       .finally(function () {
         btn.disabled = false;
         btn.textContent = '送出';
+        /* 送出失敗時換一組，避免同一組碼被重複使用 */
+        refreshCaptcha();
       });
   });
 }

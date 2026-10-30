@@ -1501,6 +1501,88 @@ h3.in-view {
   margin-top: 18px
 }
 
+/* 驗證失敗：紅框 + 欄位下方提示文字 */
+.field.invalid input,
+.field.invalid textarea,
+.field.invalid input:focus,
+.field.invalid textarea:focus {
+  border-color: #b5544a
+}
+
+.field-error {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #b5544a
+}
+
+/* 聯絡表單驗證碼：輸入框 + 數字圖片 + 換一組 */
+.captcha-row {
+  display: flex;
+  align-items: center;
+  gap: 10px
+}
+
+.field .captcha-row input {
+  flex: 1;
+  min-width: 0
+}
+
+.captcha-canvas {
+  flex: none;
+  width: 120px;
+  height: 48px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  cursor: pointer
+}
+
+.captcha-refresh {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 48px;
+  font-family: var(--sans);
+  font-size: 14px;
+  white-space: nowrap;
+  color: var(--ink-soft);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 0 14px;
+  cursor: pointer;
+  transition: .2s
+}
+
+.captcha-refresh img {
+  width: 14px;
+  height: 14px;
+  opacity: .6;
+  transition: transform .4s
+}
+
+.captcha-refresh:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+  background: #fff
+}
+
+.captcha-refresh:hover img {
+  opacity: 1;
+  transform: rotate(180deg)
+}
+
+/* 窄螢幕：輸入框獨佔一行，圖片與按鈕排到下方 */
+@media (max-width:480px) {
+  .captcha-row {
+    flex-wrap: wrap
+  }
+
+  .field .captcha-row input {
+    flex-basis: 100%
+  }
+}
+
 /* ---- responsive ---- */
 @media (max-width:768px) {
   /* 產品頁（V/S）介紹影片手機版改直式 9:16 */

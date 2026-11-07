@@ -27,6 +27,12 @@ a { color: inherit; }
 .top nav a:hover, .top nav a.on { opacity: 1; background: rgba(255,255,255,.12); }
 .top .me { font-size: 12px; opacity: .8; white-space: nowrap; }
 .top .me button { color: #fff; text-decoration: underline; margin-left: 8px; font-size: 12px; }
+/* 手機：logo 與登出一行，選單另起一行 */
+@media (max-width: 640px) {
+  .top .in { flex-wrap: wrap; height: auto; padding-top: 10px; padding-bottom: 6px; row-gap: 6px; justify-content: space-between; }
+  .top nav { order: 3; flex: 1 0 100%; margin: 0 -12px; }
+  main { padding-top: 16px; }
+}
 
 main { max-width: 1120px; margin: 0 auto; padding: 24px 16px 64px; }
 h1 { font-size: 20px; font-weight: 500; margin-bottom: 16px; }
@@ -65,7 +71,11 @@ tr:last-child td { border-bottom: 0; }
 tr.click { cursor: pointer; }
 tr.click:hover td { background: #fafafa; }
 td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
-.tablewrap { overflow-x: auto; }
+/* 表格在窄螢幕不壓縮文字，改成整張往右滑 */
+.tablewrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.tablewrap th, .tablewrap td { white-space: nowrap; }
+/* 地址、備註這類長文字允許換行，但給足寬度 */
+.tablewrap td.wrap, .tablewrap .wrap { white-space: normal; min-width: 180px; max-width: 260px; }
 
 .badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 999px; background: #eee; color: var(--soft); white-space: nowrap; }
 .badge.vip { background: #f5ecd9; color: var(--vip); }

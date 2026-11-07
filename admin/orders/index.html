@@ -48,11 +48,11 @@
       const { orders } = await MS.api('/api/admin/orders' + (status ? '?status=' + status : ''));
       $('rows').innerHTML = orders.length ? orders.map((o) => `
         <tr>
-          <td>${esc(o.orderNo)} ${o.upgraded ? '<span class="badge up">升級單</span>' : ''}${o.note ? `<div class="small muted">${esc(o.note)}</div>` : ''}</td>
+          <td>${esc(o.orderNo)} ${o.upgraded ? '<span class="badge up">升級單</span>' : ''}${o.note ? `<div class="small muted wrap">${esc(o.note)}</div>` : ''}</td>
           <td class="small">${esc(MS.twTime(o.createdAt))}</td>
           <td><a href="/admin/members/${esc(o.memberId)}">${esc(o.memberName)}</a><div>${MS.tierBadge(o.tierAtOrder)}</div></td>
           <td class="small">${o.items.map((i) => `${esc(i.product_name)} × ${i.quantity}`).join('<br>')}</td>
-          <td class="small" style="max-width:220px">${esc(o.shipAddress || '—')}</td>
+          <td class="small wrap">${esc(o.shipAddress || '—')}</td>
           <td class="num">${money(o.total)}</td>
           <td>${MS.statusBadge(o.status)}${o.shippedAt ? `<div class="small muted">${esc(MS.twTime(o.shippedAt).split(' ')[0])}</div>` : ''}</td>
           <td><div class="row" style="flex-wrap:nowrap">

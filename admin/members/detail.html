@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>會員詳情 — 沛素會員後台</title>
+<link rel="icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/admin/ms.css">
+</head>
+<body>
+<main id="main"><p class="center">載入中…</p></main>
+
+<script src="/admin/ms.js"></script>
+<script>
+(async () => {
+  if (!(await MS.boot('members'))) return;
+  const { esc, money } = MS;
+  const main = document.getElementById('main');
+  const id = location.pathname.split('/').filter(Boolean).pop();
+
+  async function render(flash) {
+    let d;
+    try {
+      d = await MS.api('/api/admin/members/' + encodeURIComponent(id));
+    } catch (e) {
+      main.innerHTML = `<div class="card center">${esc(e.message)}</div>`;
+      return;
+    }
+    const m = d.member;
+    const active = m.status === 'active';
+
+    main.innerHTML = `
+      <p class="small"><a href="/admin/members/">← 會員列表</a></p>
+      <div class="spread mt">
+        <h1>${esc(m.name || '（個資已清除）')} ${MS.tierBadge(m.tierCode)}</h1>
+        ${active ? `<a class="btn" href="/admin/orders/new?member=${esc(m.id)}">＋ 為此會員建單</a>` : ''}
+      </div>
+      ${flash ? `<div class="alert ok">${esc(flash)}</div>` : ''}
+      ${m.status === 'merged' ? `<div class="alert warn">此帳號已轉移至 <a href="/admin/members/${esc(m.mergedIntoId)}">新帳號</a>，個資已清除。</div>` : ''}
+      ${m.status === 'erased' ? `<div class="alert warn">此帳號已停用並清除個資（${esc(MS.twTime(m.erasedAt))}）。訂單保留作為營收紀錄。</div>` : ''}
+      ${m.needsReview ? `<div class="alert err">此電話已有其他會員帳號，請確認是否為同一人換 LINE 帳號，並執行「轉移至新帳號」。
+        <button class="btn sm ghost" id="clearReview" style="margin-left:8px">確認不是同一人，清除標記</button></div>` : ''}
+
+      <div class="grid2">
+        <section class="card">
+          <h2>會員資料</h2>
+          <dl class="kv">
+            <dt>姓名</dt><dd>${esc(m.name || '—')}</dd>
+            <dt>電話</dt><dd>${esc(m.phone || '—')}</dd>
+            <dt>LINE 暱稱</dt><dd>${esc(m.lineDisplayName || '—')}</dd>
+            <dt>等級</dt><dd>${esc(m.tierName)}${m.tierExpiresAt ? `，${esc(m.tierExpiresAt)} 到期` : '（終身）'}</dd>
+            <dt>註冊時間</dt><dd>${esc(MS.twTime(m.createdAt))}</dd>
+          </dl>
+        </section>
+
+        <section class="card">
+          <h2>收件地址與 email</h2>
+          <form id="pf">
+            <label class="f" for="addr">收件地址</label>
+            <textarea id="addr" ${active ? '' : 'disabled'}>${esc(m.address || '')}</textarea>
+            <label class="f" for="email">email</label>
+            <input type="email" id="email" value="${esc(m.email || '')}" ${active ? '' : 'disabled'}>
+            <p class="err" id="pfErr"></p>
+            ${active ? '<button class="btn" type="submit">儲存</button>' : ''}
+          </form>
+        </section>
+      </div>
+
+      <section class="card">
+        <h2>訂單（${d.orders.length}）</h2>
+        <div class="tablewrap"><table>
+          <thead><tr><th>訂單編號</th><th>日期</th><th>品項</th><th class="num">組數</th><th>套用等級</th><th class="num">金額</th><th>狀態</th></tr></thead>
+          <tbody>${d.orders.length ? d.orders.map((o) => `
+            <tr>
+              <td>${esc(o.orderNo)} ${o.upgraded ? '<span class="badge up">升級單</span>' : ''}</td>
+              <td>${esc(o.date)}</td>
+              <td>${o.items.map((i) => `${esc(i.product_name)} × ${i.quantity}`).join('<br>')}</td>
+              <td class="num">${o.qualifyingQty}</td>
+              <td>${MS.tierBadge(o.tierAtOrder)}</td>
+              <td class="num">${money(o.total)}</td>
+              <td>${MS.statusBadge(o.status)}</td>
+            </tr>`).join('') : '<tr><td colspan="7" class="muted">沒有訂單</td></tr>'}</tbody>
+        </table></div>
+      </section>
+
+      ${active ? `
+      <section class="card">
+        <h2>帳號異動</h2>
+        <p class="muted small">會員換電話或換 LINE 帳號重新註冊時，在<strong>舊帳號</strong>這頁執行轉移：訂單、等級與到期日搬到新帳號，舊帳號個資清除。</p>
+        <div class="row mt">
+          <select id="target" style="max-width:420px">
+            <option value="">選擇要轉移到的新帳號…</option>
+            ${d.samePhone.map((s) => `<option value="${esc(s.id)}">${esc(s.name)}・${esc(s.phone)}・${esc(s.lineDisplayName || '')}（同電話）</option>`).join('')}
+          </select>
+          <input type="text" id="targetSearch" placeholder="或搜尋新帳號姓名／電話" style="max-width:260px">
+          <button class="btn ghost" id="merge">轉移至新帳號</button>
+        </div>
+        <div class="pick hidden" id="pick"></div>
+
+        <hr style="border:0;border-top:1px solid var(--line);margin:20px 0">
+        <p class="muted small">會員要求刪除資料時使用。清除姓名、電話、地址、email、LINE 暱稱與 LINE User ID；訂單只保留編號、日期、品項、組數與金額。無法復原。</p>
+        <button class="btn danger mt" id="erase">停用並清除個資</button>
+      </section>` : ''}`;
+
+    const $ = (s) => main.querySelector(s);
+    if ($('#clearReview')) $('#clearReview').onclick = async () => {
+      await MS.api('/api/admin/members/' + id, { method: 'PATCH', body: JSON.stringify({ needsReview: false }) });
+      render('已清除電話重複標記');
+    };
+    if (!active) return;
+
+    $('#pf').onsubmit = async (e) => {
+      e.preventDefault();
+      $('#pfErr').textContent = '';
+      try {
+        await MS.api('/api/admin/members/' + id, { method: 'PATCH', body: JSON.stringify({ address: $('#addr').value, email: $('#email').value }) });
+        render('已儲存地址與 email');
+      } catch (err) { $('#pfErr').textContent = err.message; }
+    };
+
+    let t;
+    $('#targetSearch').oninput = (e) => {
+      clearTimeout(t);
+      const q = e.target.value.trim();
+      if (q.length < 2) return $('#pick').classList.add('hidden');
+      t = setTimeout(async () => {
+        const { members } = await MS.api('/api/admin/members?q=' + encodeURIComponent(q));
+        const list = members.filter((x) => x.id !== id);
+        $('#pick').innerHTML = list.length ? list.map((x) => `<button type="button" data-id="${esc(x.id)}" data-label="${esc(x.name)}・${esc(x.phone)}">${esc(x.name)}・${esc(x.phone)}・<span class="muted">${esc(x.lineDisplayName || '')}</span></button>`).join('') : '<p class="muted small" style="padding:8px">找不到</p>';
+        $('#pick').classList.remove('hidden');
+        $('#pick').querySelectorAll('button').forEach((b) => (b.onclick = () => {
+          const sel = $('#target');
+          if (![...sel.options].some((o) => o.value === b.dataset.id)) sel.add(new Option(b.dataset.label, b.dataset.id));
+          sel.value = b.dataset.id;
+          $('#pick').classList.add('hidden');
+        }));
+      }, 250);
+    };
+
+    $('#merge').onclick = async () => {
+      const sel = $('#target');
+      if (!sel.value) return alert('請先選擇新帳號');
+      const label = sel.options[sel.selectedIndex].text;
+      const ok = await MS.confirmDialog({
+        title: '轉移至新帳號',
+        body: `把「${esc(m.name)}」的訂單、等級與到期日轉移到<br><strong>${esc(label)}</strong><br>舊帳號個資會清除，無法復原。`,
+        ok: '確定轉移', danger: true
+      });
+      if (!ok) return;
+      try {
+        await MS.api(`/api/admin/members/${id}/merge`, { method: 'POST', body: JSON.stringify({ target_id: sel.value }) });
+        location.href = '/admin/members/' + sel.value;
+      } catch (err) { alert(err.message); }
+    };
+
+    $('#erase').onclick = async () => {
+      const ok = await MS.confirmDialog({
+        title: '停用並清除個資',
+        body: `將清除「${esc(m.name)}」的姓名、電話、地址、email 與 LINE 資料，並清除其訂單上的收件地址。<br><strong>執行後無法復原。</strong>`,
+        ok: '清除', danger: true, requireText: '清除'
+      });
+      if (!ok) return;
+      try {
+        await MS.api(`/api/admin/members/${id}/erase`, { method: 'POST', body: JSON.stringify({ confirm: true }) });
+        render('已停用並清除個資');
+      } catch (err) { alert(err.message); }
+    };
+  }
+  render();
+})();
+</script>
+</body>
+</html>

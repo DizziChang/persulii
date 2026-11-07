@@ -1,0 +1,89 @@
+/* 會員中心（LIFF，在 LINE 內開啟的手機畫面） */
+:root {
+  --bg: #f4f5f6;
+  --card: #ffffff;
+  --ink: #2a2a2a;
+  --soft: #6f6f6f;
+  --line: #e6e6e6;
+  --accent: #1f1f1f;
+  --ok: #2f7a4f;
+  --warn: #9a5b12;
+  --warn-bg: #fdf4e6;
+  --err: #b3261e;
+  --radius: 14px;
+  --sans: 'Montserrat', 'Noto Sans TC', -apple-system, 'Segoe UI', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+.wrap { max-width: 480px; margin: 0 auto; padding: 20px 16px 48px; }
+.brand { display: block; width: 92px; margin: 4px auto 20px; opacity: .85; }
+h1 { font-size: 20px; font-weight: 500; letter-spacing: .04em; margin-bottom: 4px; }
+h2 { font-size: 15px; font-weight: 500; margin: 28px 0 12px; letter-spacing: .04em; }
+.sub { color: var(--soft); font-size: 13px; line-height: 1.6; }
+.card { background: var(--card); border-radius: var(--radius); padding: 20px; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+.card + .card { margin-top: 12px; }
+
+.who { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.who img, .who .ph { width: 48px; height: 48px; border-radius: 50%; background: #ddd; object-fit: cover; flex: none; }
+.who .nm { font-weight: 500; }
+
+/* 等級卡 */
+.tier {
+  border-radius: 18px; padding: 22px 22px 20px; color: #fff; position: relative; overflow: hidden;
+  background: linear-gradient(135deg, #5d6166, #2e3135);
+}
+.tier[data-tier="vip"] { background: linear-gradient(135deg, #a98a57, #6b5530); }
+.tier[data-tier="vvip"] { background: linear-gradient(135deg, #2b2b2b, #050505); }
+.tier[data-tier="vvip"] .tier-name { color: #e7cf9b; }
+.tier .label { font-size: 12px; letter-spacing: .12em; opacity: .75; }
+.tier .tier-name { font-size: 28px; font-weight: 600; letter-spacing: .06em; margin: 6px 0 18px; }
+.tier dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; font-size: 13px; }
+.tier dt { opacity: .7; }
+.tier dd { font-weight: 500; }
+.tier .note { margin-top: 14px; font-size: 11px; opacity: .65; line-height: 1.6; }
+
+/* 購買紀錄 */
+.order { padding: 14px 0; border-top: 1px solid var(--line); }
+.order:first-child { border-top: 0; padding-top: 0; }
+.order:last-child { padding-bottom: 0; }
+.order .top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.order .no { font-size: 12px; color: var(--soft); }
+.order .amt { font-weight: 600; }
+.order ul { list-style: none; margin-top: 6px; font-size: 13px; color: var(--soft); line-height: 1.7; }
+.pill { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 999px; background: #eee; color: var(--soft); margin-left: 6px; vertical-align: 1px; }
+.pill.shipped { background: #e7f3ec; color: var(--ok); }
+.empty { color: var(--soft); font-size: 13px; text-align: center; padding: 8px 0; }
+
+.rows { display: grid; grid-template-columns: auto 1fr; gap: 10px 16px; font-size: 14px; }
+.rows dt { color: var(--soft); }
+
+/* 表單 */
+label.f { display: block; font-size: 13px; color: var(--soft); margin: 18px 0 6px; }
+input[type=text], input[type=tel] {
+  width: 100%; font: inherit; font-size: 16px; padding: 12px 14px; border: 1px solid var(--line);
+  border-radius: 10px; background: #fff; color: var(--ink);
+}
+input:focus { outline: 2px solid #9aa7b5; outline-offset: 0; border-color: transparent; }
+.consent { display: flex; gap: 10px; align-items: flex-start; margin-top: 22px; font-size: 13px; line-height: 1.6; }
+.consent input { width: 18px; height: 18px; margin-top: 2px; flex: none; }
+details.terms { margin-top: 10px; font-size: 12px; color: var(--soft); line-height: 1.7; }
+details.terms summary { cursor: pointer; }
+details.terms div { margin-top: 8px; padding: 12px; background: var(--bg); border-radius: 8px; }
+.btn {
+  display: block; width: 100%; margin-top: 24px; padding: 14px; border-radius: 999px; border: 0;
+  background: var(--accent); color: #fff; font: inherit; font-size: 15px; letter-spacing: .08em; cursor: pointer;
+}
+.btn:disabled { opacity: .45; cursor: default; }
+.err { color: var(--err); font-size: 13px; margin-top: 8px; min-height: 1em; }
+.notice { background: var(--warn-bg); color: var(--warn); border-radius: 10px; padding: 12px 14px; font-size: 13px; line-height: 1.6; margin-bottom: 12px; }
+
+.loading { text-align: center; color: var(--soft); padding: 80px 0; font-size: 14px; }
+.hidden { display: none !important; }
+.foot { text-align: center; font-size: 11px; color: #a0a0a0; margin-top: 36px; }

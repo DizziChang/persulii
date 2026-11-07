@@ -16,6 +16,7 @@
    才輪得到判斷網域要不要擋。
    ============================================================ */
 
+import { handleApi } from './api/index.js';
 import { LOGO_DATA_URI, LOGO_H, LOGO_W } from './logo-data.js';
 
 /* 維護模式總開關 */
@@ -30,8 +31,13 @@ function isTestHost(hostname) {
 }
 
 /* 維護期間在正式網址上仍要放行的路徑：
-   /admin  — Sveltia CMS 後台，維護期間還是要能改內容 */
-const ALLOW_PREFIXES = ['/admin'];
+   /admin  — Sveltia CMS 後台與會員管理後台，維護期間還是要能改內容、建單
+   /member — LINE 會員中心（只從 LINE 進入）
+   /api    — 會員系統 API */
+const ALLOW_PREFIXES = ['/admin', '/member', '/api'];
+
+/* 會員中心與會員管理後台不給搜尋引擎收錄 */
+const NOINDEX_PREFIXES = ['/member', '/admin'];
 
 function isAllowedPath(pathname) {
   return ALLOW_PREFIXES.some((p) => pathname === p || pathname.startsWith(p + '/'));
@@ -45,9 +51,24 @@ export default {
       return maintenanceResponse();
     }
 
+    if (url.pathname === '/api' || url.pathname.startsWith('/api/')) {
+      return handleApi(request, env);
+    }
+
+    /* /admin/members/<id> 是會員詳情，實際檔案只有一份 detail.html，由前端讀網址上的 id */
+    let assetReq = request;
+    const detail = url.pathname.match(/^\/admin\/members\/([0-9a-f-]{36})\/?$/i);
+    if (detail) assetReq = new Request(new URL('/admin/members/detail', url), request);
+
     /* 其餘一律交還給靜態資源伺服器，行為與加這支 Worker 之前完全相同
        （/about → about.html 的副檔名補齊、_headers 的快取規則都照舊） */
-    return env.ASSETS.fetch(request);
+    const res = await env.ASSETS.fetch(assetReq);
+    if (NOINDEX_PREFIXES.some((p) => url.pathname === p || url.pathname.startsWith(p + '/'))) {
+      const out = new Response(res.body, res);
+      out.headers.set('X-Robots-Tag', 'noindex, nofollow');
+      return out;
+    }
+    return res;
   }
 };
 

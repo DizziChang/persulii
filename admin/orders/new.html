@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>建立訂單 — 沛素會員後台</title>
+<link rel="icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/admin/ms.css">
+</head>
+<body>
+<main>
+  <h1>建立訂單</h1>
+  <div id="result"></div>
+
+  <div class="grid2" id="form" style="grid-template-columns: 1.4fr 1fr; align-items:start">
+    <div>
+      <section class="card">
+        <h2>會員</h2>
+        <div id="memberBox">
+          <input type="search" id="memberQ" placeholder="搜尋姓名、LINE 暱稱或電話">
+          <div class="pick hidden" id="pick"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>品項與組數</h2>
+        <div class="qty" id="qty"><span class="muted">載入中…</span></div>
+      </section>
+
+      <section class="card">
+        <h2>收件與備註</h2>
+        <label class="f" for="addr">收件地址</label>
+        <textarea id="addr" placeholder="選擇會員後自動帶入，可修改"></textarea>
+        <label class="f" for="note">內部備註（會員看不到）</label>
+        <textarea id="note"></textarea>
+      </section>
+    </div>
+
+    <aside class="card summary">
+      <h2>試算</h2>
+      <div id="calc" class="muted">選擇會員與組數後顯示</div>
+      <p class="err" id="err"></p>
+      <button class="btn" id="submit" style="width:100%;justify-content:center;margin-top:12px;padding:12px" disabled>確認建立訂單</button>
+      <p class="small muted" style="margin-top:10px">訂單建立後不可編輯，只能作廢後重建。全館免運。</p>
+    </aside>
+  </div>
+</main>
+
+<script src="/admin/ms.js"></script>
+<script>
+(async () => {
+  if (!(await MS.boot('new'))) return;
+  const { esc, money } = MS;
+  const $ = (id) => document.getElementById(id);
+  let member = null;
+  let preview = null;
+  let products = [];
+
+  /* 品項 */
+  ({ products } = await MS.api('/api/admin/products'));
+  $('qty').innerHTML = products.map((p) => `
+    <div><div>${esc(p.name)}</div><div class="small muted">定價 ${money(p.list_price)}${p.member_discount ? '' : '・不適用會員折扣'}</div></div>
+    <input type="number" min="0" max="999" step="1" value="0" data-pid="${esc(p.id)}" aria-label="${esc(p.name)} 組數">
+    <div class="num small muted" data-sub="${esc(p.id)}">—</div>`).join('');
+  $('qty').querySelectorAll('input').forEach((i) => (i.oninput = schedule));
+
+  /* 會員 */
+  function setMember(m) {
+    member = m;
+    $('memberBox').innerHTML = `
+      <div class="spread" style="margin:0">
+        <div><strong>${esc(m.name)}</strong> ${MS.tierBadge(m.tierCode)}
+          <div class="small muted">${esc(m.phone)}・${esc(m.lineDisplayName || '')}${m.tierExpiresAt ? `・${esc(m.tierExpiresAt)} 到期` : ''}</div></div>
+        <button class="btn ghost sm" id="changeMember">更換</button>
+      </div>`;
+    $('changeMember').onclick = () => location.href = '/admin/orders/new';
+    if (!$('addr').value && m.address) $('addr').value = m.address;
+    schedule();
+  }
+
+  const preset = new URLSearchParams(location.search).get('member');
+  if (preset) {
+    try {
+      const d = await MS.api('/api/admin/members/' + encodeURIComponent(preset));
+      if (d.member.status === 'active') setMember(d.member);
+    } catch {}
+  }
+
+  let st;
+  if ($('memberQ')) $('memberQ').oninput = (e) => {
+    clearTimeout(st);
+    const q = e.target.value.trim();
+    if (q.length < 1) return $('pick').classList.add('hidden');
+    st = setTimeout(async () => {
+      const { members } = await MS.api('/api/admin/members?q=' + encodeURIComponent(q));
+      $('pick').innerHTML = members.length ? members.map((m, i) => `<button type="button" data-i="${i}">${esc(m.name)}・${esc(m.phone)} ${MS.tierBadge(m.tierCode)} <span class="muted small">${esc(m.lineDisplayName || '')}</span></button>`).join('') : '<p class="muted small" style="padding:8px">找不到會員</p>';
+      $('pick').classList.remove('hidden');
+      $('pick').querySelectorAll('button').forEach((b) => (b.onclick = async () => {
+        const d = await MS.api('/api/admin/members/' + members[b.dataset.i].id);
+        setMember(d.member);
+      }));
+    }, 250);
+  };
+
+  /* 試算：每次變動都問後端，金額與升級判斷以後端為準 */
+  function items() {
+    return [...$('qty').querySelectorAll('input')].map((i) => ({ product_id: i.dataset.pid, quantity: Math.max(0, parseInt(i.value, 10) || 0) }));
+  }
+  let pt;
+  function schedule() { clearTimeout(pt); pt = setTimeout(calc, 200); }
+
+  async function calc() {
+    preview = null;
+    $('submit').disabled = true;
+    $('err').textContent = '';
+    document.querySelectorAll('[data-sub]').forEach((el) => (el.textContent = '—'));
+    const its = items().filter((i) => i.quantity > 0);
+    if (!member || !its.length) { $('calc').innerHTML = '<span class="muted">選擇會員與組數後顯示</span>'; return; }
+    try {
+      const r = await MS.api('/api/admin/orders/preview', { method: 'POST', body: JSON.stringify({ member_id: member.id, items: its }) });
+      preview = r;
+      for (const l of r.lines) document.querySelector(`[data-sub="${l.product_id}"]`).textContent = money(l.subtotal);
+      $('calc').innerHTML = `
+        ${r.upgrade ? `<div class="alert ok" style="margin-bottom:12px">本單 ${r.qualifyingQty} 組，達到 <strong>${esc(MS.TIER[r.appliedTier])}</strong> 門檻：會員立即升級，本單套用新折扣，效期至 ${esc(r.newExpiresAt)}。</div>` : ''}
+        <dl class="kv small" style="grid-template-columns:auto 1fr">
+          <dt>目前等級</dt><dd>${MS.tierBadge(r.currentTier)}</dd>
+          <dt>本單套用</dt><dd>${MS.tierBadge(r.appliedTier)}</dd>
+          <dt>門檻組數</dt><dd>${r.qualifyingQty} 組</dd>
+        </dl>
+        <table class="mt small"><tbody>
+          ${r.lines.map((l) => `<tr><td>${esc(l.product_name)}<div class="muted">${money(l.unit_price)} × ${l.quantity}</div></td><td class="num">${money(l.subtotal)}</td></tr>`).join('')}
+        </tbody></table>
+        <div class="spread mt" style="margin-bottom:0"><span>總額（免運）</span><span class="total">${money(r.total)}</span></div>
+        ${!r.upgrade && r.nextTier && r.nextTier.missing > 0 && r.nextTier.missing <= 5 ? `<p class="small muted mt">再 ${r.nextTier.missing} 組可升級 ${esc(r.nextTier.name)}</p>` : ''}`;
+      $('submit').disabled = false;
+    } catch (e) {
+      $('calc').innerHTML = '';
+      $('err').textContent = e.message;
+    }
+  }
+
+  $('submit').onclick = async () => {
+    if (!preview) return;
+    if (!$('addr').value.trim()) { $('err').textContent = '請填寫收件地址'; return; }
+    const ok = await MS.confirmDialog({
+      title: '確認建立訂單',
+      body: `${esc(member.name)}・${preview.lines.map((l) => `${esc(l.product_name)} × ${l.quantity}`).join('、')}<br>總額 <strong>${money(preview.total)}</strong>${preview.upgrade ? `<br>建立後會員升級為 ${esc(MS.TIER[preview.appliedTier])}` : ''}<br><span class="muted small">建立後不可編輯</span>`,
+      ok: '建立訂單'
+    });
+    if (!ok) return;
+    $('submit').disabled = true;
+    try {
+      const r = await MS.api('/api/admin/orders', {
+        method: 'POST',
+        body: JSON.stringify({ member_id: member.id, items: items().filter((i) => i.quantity > 0), ship_address: $('addr').value, note: $('note').value })
+      });
+      $('form').classList.add('hidden');
+      $('result').innerHTML = `<div class="card">
+        <div class="alert ok">已建立訂單 <strong>${esc(r.orderNo)}</strong>，總額 ${money(r.total)}${r.upgrade ? `，${esc(member.name)} 已升級為 ${esc(MS.TIER[r.appliedTier])}` : ''}。會員中心已同步更新。</div>
+        <div class="row"><a class="btn" href="/admin/orders/new">再建一筆</a><a class="btn ghost" href="/admin/members/${esc(member.id)}">查看會員</a><a class="btn ghost" href="/admin/orders/">訂單列表</a></div></div>`;
+    } catch (e) {
+      $('err').textContent = e.message;
+      $('submit').disabled = false;
+    }
+  };
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+# 本機 wrangler dev 用的機密設定；複製成 .dev.vars（已 gitignore）後填值
+# 產生隨機值：openssl rand -base64 32
+PII_KEY=
+PHONE_HASH_KEY=
+SESSION_SECRET=
+LINE_LOGIN_CHANNEL_SECRET=
+# 1 = 本機測試模式：不經 LINE 與 Cloudflare Access，直接以測試身分登入（只在 localhost 生效）
+DEV_AUTH=1

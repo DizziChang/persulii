@@ -16,5 +16,25 @@
   },
   "compatibility_flags": [
     "nodejs_compat"
-  ]
+  ],
+  // 會員系統資料庫。第一次部署前先建立：
+  //   npx wrangler d1 create persulii-members
+  // 再把回傳的 database_id 填到下面，然後套用資料表：
+  //   npx wrangler d1 migrations apply persulii-members --remote
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "persulii-members",
+      "database_id": "e4d72639-cbbb-4543-a38e-24976d2cc953",
+      "migrations_dir": "migrations"
+    }
+  ],
+  // 非機密設定。機密（LINE_LOGIN_CHANNEL_SECRET、PII_KEY、PHONE_HASH_KEY、SESSION_SECRET）
+  // 一律用 npx wrangler secret put <名稱> 設定，不寫進這裡、不進 GitHub。
+  "vars": {
+    "LINE_LOGIN_CHANNEL_ID": "2012441387",
+    "LIFF_ID": "2012441387-bRygQ9gJ",
+    "ACCESS_TEAM_DOMAIN": "persulii.cloudflareaccess.com",
+    "ACCESS_AUD": "eca8b0ef47e64d7ff90b0eb1c5301ba4041d8b80b60265f28792dd5a48651a8e"
+  }
 }

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>會員列表 — 沛素會員後台</title>
+<link rel="icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/admin/ms.css">
+</head>
+<body>
+<main>
+  <div class="spread">
+    <h1>會員</h1>
+    <a class="btn" href="/admin/orders/new">＋ 建立訂單</a>
+  </div>
+
+  <div class="card">
+    <form class="row" id="search">
+      <input type="search" id="q" placeholder="搜尋姓名、LINE 暱稱或電話" style="flex:1;min-width:200px">
+      <label class="row small muted" style="gap:4px"><input type="checkbox" id="review"> 只看電話重複待處理</label>
+      <button class="btn" type="submit">搜尋</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>姓名</th><th>電話</th><th>LINE 暱稱</th><th>等級</th><th>到期日</th><th>註冊日</th></tr></thead>
+        <tbody id="rows"><tr><td colspan="6" class="muted">載入中…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<script src="/admin/ms.js"></script>
+<script>
+(async () => {
+  if (!(await MS.boot('members'))) return;
+  const { esc } = MS;
+  const $ = (id) => document.getElementById(id);
+  const params = new URLSearchParams(location.search);
+  $('q').value = params.get('q') || '';
+  $('review').checked = params.get('review') === '1';
+
+  async function load() {
+    const qs = new URLSearchParams();
+    if ($('q').value.trim()) qs.set('q', $('q').value.trim());
+    if ($('review').checked) qs.set('review', '1');
+    history.replaceState(null, '', '?' + qs);
+    $('rows').innerHTML = '<tr><td colspan="6" class="muted">載入中…</td></tr>';
+    try {
+      const { members } = await MS.api('/api/admin/members?' + qs);
+      $('rows').innerHTML = members.length ? members.map((m) => `
+        <tr class="click" data-id="${esc(m.id)}">
+          <td>${esc(m.name)} ${m.needsReview ? '<span class="badge review">電話重複</span>' : ''}</td>
+          <td>${esc(m.phone)}</td>
+          <td class="muted">${esc(m.lineDisplayName)}</td>
+          <td>${MS.tierBadge(m.tierCode)}</td>
+          <td>${esc(m.tierExpiresAt || '—')}</td>
+          <td class="muted">${esc(MS.twTime(m.createdAt).split(' ')[0])}</td>
+        </tr>`).join('') : '<tr><td colspan="6" class="muted">沒有符合的會員</td></tr>';
+      document.querySelectorAll('tr.click').forEach((tr) => (tr.onclick = () => (location.href = '/admin/members/' + tr.dataset.id)));
+    } catch (e) {
+      $('rows').innerHTML = `<tr><td colspan="6" class="err">${esc(e.message)}</td></tr>`;
+    }
+  }
+  $('search').onsubmit = (e) => { e.preventDefault(); load(); };
+  $('review').onchange = load;
+  load();
+})();
+</script>
+</body>
+</html>

@@ -12,6 +12,11 @@ scripts/
 worker/
 wrangler.jsonc
 部署方案規劃.md
+會員系統上線步驟.md
 
 # 舊版的頁首／頁尾片段，現由 js/components.js 直接產生，已無引用
 html/
+
+# 會員系統資料表定義（只給 wrangler d1 migrations 用）
+migrations/
+.dev.vars*

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>加入會員 — per-sulii 沛素</title>
+<link rel="icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/member/member.css">
+</head>
+<body>
+<main class="wrap">
+  <div class="loading" id="loading">載入中…</div>
+
+  <div id="done" class="hidden">
+    <img class="brand" src="/images/per-sulii-logo-grayscale.webp" alt="per-sulii 沛素">
+    <section class="card">
+      <h1>註冊完成</h1>
+      <div class="notice" id="dupNotice" style="margin-top:14px">此電話已註冊，請聯繫客服。我們會協助把舊資料合併到這個帳號。</div>
+      <a class="btn" href="/member/" style="text-align:center;text-decoration:none">前往會員中心</a>
+    </section>
+  </div>
+
+  <form id="form" class="hidden" novalidate>
+    <img class="brand" src="/images/per-sulii-logo-grayscale.webp" alt="per-sulii 沛素">
+    <section class="card">
+      <h1>加入沛素會員</h1>
+      <p class="sub">免費註冊即享沛素精華液 2 入組合 8 折。</p>
+
+      <div class="who" style="margin:20px 0 0">
+        <span class="ph" id="pic"></span>
+        <div><div class="nm" id="lineName"></div><div class="sub">LINE 帳號</div></div>
+      </div>
+
+      <label class="f" for="name">真實姓名</label>
+      <input type="text" id="name" autocomplete="name" maxlength="30" required>
+
+      <label class="f" for="phone">手機號碼</label>
+      <input type="tel" id="phone" autocomplete="tel" inputmode="tel" placeholder="0912345678" required>
+
+      <label class="consent">
+        <input type="checkbox" id="consent">
+        <span>我已閱讀並同意個人資料蒐集告知與會員條款</span>
+      </label>
+      <details class="terms">
+        <summary>查看個資告知與會員條款</summary>
+        <!-- 條款正式文字待定（見規格「待決定事項」），以下為草稿 -->
+        <div>
+          沛素（per-sulii）為提供會員服務、訂單處理與出貨，蒐集您的姓名、電話、收件地址、email 與 LINE 帳號識別資料，
+          僅於會員服務期間在台灣地區使用，並以加密方式保存。您可隨時透過官方 LINE 要求查詢、更正或刪除個人資料；
+          刪除後將無法繼續享有會員優惠。會員優惠限官方 LINE 下單，經銷通路不適用。
+        </div>
+      </details>
+
+      <p class="err" id="err" role="alert"></p>
+      <button class="btn" type="submit" id="submit">完成註冊</button>
+    </section>
+  </form>
+</main>
+
+<script src="/member/member.js"></script>
+<script>
+(async () => {
+  const $ = (id) => document.getElementById(id);
+  try {
+    await PS.init();
+    // 已註冊就直接進會員中心
+    try {
+      await PS.api('/api/member/me');
+      location.replace('/member/');
+      return;
+    } catch (e) {
+      if (e.code !== 'not_registered') throw e;
+    }
+
+    const p = PS.profile || {};
+    $('lineName').textContent = p.displayName || '';
+    if (p.pictureUrl) {
+      const img = document.createElement('img');
+      img.src = p.pictureUrl;
+      img.alt = '';
+      $('pic').replaceWith(img);
+    }
+    $('loading').classList.add('hidden');
+    $('form').classList.remove('hidden');
+
+    $('form').addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      const name = $('name').value.trim();
+      const phone = $('phone').value.trim();
+      $('err').textContent = '';
+      if (!name) return ($('err').textContent = '請填寫真實姓名');
+      if (!/^0\d{8,9}$/.test(phone.replace(/[\s-]/g, '')) && !/^\+886/.test(phone)) return ($('err').textContent = '手機號碼格式不正確，例：0912345678');
+      if (!$('consent').checked) return ($('err').textContent = '請勾選同意個資蒐集與會員條款');
+
+      $('submit').disabled = true;
+      try {
+        const r = await PS.api('/api/member/register', {
+          method: 'POST',
+          body: JSON.stringify({ name, phone, consent: true })
+        });
+        if (!r.duplicatePhone) { location.replace('/member/'); return; }
+        $('form').classList.add('hidden');
+        $('done').classList.remove('hidden');
+      } catch (e) {
+        if (e.code === 'already_registered') { location.replace('/member/'); return; }
+        $('err').textContent = e.message;
+        $('submit').disabled = false;
+      }
+    });
+  } catch (e) {
+    $('loading').textContent = e.message;
+  }
+})();
+</script>
+</body>
+</html>

@@ -2546,3 +2546,282 @@ a.qr-box:hover {
 .reviews-more {
   color: var(--link);
 }
+
+/* ============================================================
+   會員制度頁（/membership）
+   ============================================================ */
+.mcards {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2.4vw, 32px);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.mcard {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1.586 / 1;
+  border-radius: 14px;
+  padding: clamp(16px, 1.8vw, 24px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, .10), 0 2px 6px rgba(0, 0, 0, .06);
+  color: var(--ink);
+}
+
+/* 斜向光澤 */
+.mcard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0) 35%, rgba(255, 255, 255, .28) 50%, rgba(255, 255, 255, 0) 65%);
+  pointer-events: none;
+}
+
+.mcard--general {
+  background: linear-gradient(135deg, #ffffff 0%, #eef0f1 55%, #dfe2e4 100%);
+  border: 1px solid var(--line);
+}
+
+.mcard--vip {
+  background: linear-gradient(135deg, #f3ebdc 0%, #dccaa8 55%, #c4ab80 100%);
+  color: #3b3226;
+}
+
+.mcard--vvip {
+  background: linear-gradient(135deg, #3a3a3a 0%, #1c1c1c 50%, #0b0b0b 100%);
+  color: #fff;
+}
+
+.mcard--vvip::after {
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0) 35%, rgba(255, 255, 255, .10) 50%, rgba(255, 255, 255, 0) 65%);
+}
+
+.mcard-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.mcard-logo {
+  height: clamp(22px, 2.4vw, 30px);
+  width: auto;
+  display: block;
+}
+
+.mcard-kind {
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  opacity: .7;
+}
+
+.mcard-tier {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mcard-name {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: clamp(26px, 3vw, 38px);
+  letter-spacing: .14em;
+  line-height: 1.1;
+}
+
+.mcard-zh {
+  font-size: 13px;
+  letter-spacing: .12em;
+  opacity: .8;
+}
+
+.mcard-bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.mcard-off {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.mcard-off b {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: clamp(34px, 3.8vw, 48px);
+  margin-right: 2px;
+}
+
+.mcard--vvip .mcard-off b {
+  color: #dcc69c;
+}
+
+.mcard-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 12px;
+  letter-spacing: .06em;
+  line-height: 1.6;
+  opacity: .85;
+  text-align: right;
+}
+
+/* 表格 */
+.mtable-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mtable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: clamp(15px, 1.2vw, 17px);
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+.mtable th,
+.mtable td {
+  padding: 14px 12px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.mtable thead th {
+  background: var(--ink);
+  color: #fff;
+  font-weight: 500;
+  letter-spacing: .06em;
+}
+
+.mtable tbody th {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.mtable small {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  opacity: .75;
+  margin-top: 2px;
+}
+
+.mtable-off {
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 1.1em;
+}
+
+.mtable-list {
+  color: var(--mid-text);
+}
+
+.mtable tbody tr:nth-child(2) th,
+.mtable tbody tr:nth-child(2) td {
+  background: #faf6ef;
+}
+
+.mtable tbody tr:nth-child(3) th,
+.mtable tbody tr:nth-child(3) td {
+  background: #f4f4f4;
+}
+
+/* 加入官方 LINE */
+.mjoin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(24px, 4vw, 56px);
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.mjoin-qr {
+  width: 180px;
+  height: 180px;
+  margin-bottom: 0;
+}
+
+.btn-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #06C755;
+  border-color: #06C755;
+  color: #fff;
+  border-radius: 999px;
+  padding: 10px 32px;
+}
+
+.btn-line:hover {
+  background: #05b04b;
+  border-color: #05b04b;
+}
+
+/* 會員辦法小字 */
+.mterms {
+  border-top: 1px solid var(--line);
+  padding-top: 24px;
+}
+
+.mterms-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: .06em;
+}
+
+.mterms ol {
+  margin-top: 12px;
+  padding-left: 1.4em;
+  font-size: 13px;
+  line-height: 1.85;
+  color: var(--mid-text);
+}
+
+.mterms li+li {
+  margin-top: 4px;
+}
+
+@media (max-width: 900px) {
+  .mcards {
+    grid-template-columns: minmax(0, 380px);
+    justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .mjoin {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .mjoin-qr {
+    width: 160px;
+    height: 160px;
+  }
+  .mtable {
+    font-size: 13px;
+  }
+
+  .mtable th,
+  .mtable td {
+    padding: 10px 4px;
+    white-space: normal;
+    word-break: keep-all;
+  }
+
+  .mtable small {
+    font-size: 11px;
+  }
+}

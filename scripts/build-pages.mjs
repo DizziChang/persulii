@@ -379,6 +379,7 @@ const STATIC_PAGES = [
   { path: '/about', files: ['about.html', 'content/about-sections.json'] },
   { path: '/products', files: ['products.html', 'content/products.json'] },
   { path: '/faq', files: ['faq.html', 'content/faq.json'] },
+  { path: '/membership', files: ['membership.html'] },
   { path: '/contact', files: ['contact.html', 'content/contact-channels.json', 'content/settings-contact.json'] }
 ];
 

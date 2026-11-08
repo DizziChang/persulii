@@ -2550,7 +2550,7 @@ a.qr-box:hover {
 /* ============================================================
    會員制度頁（/membership）
    ============================================================ */
-/* 會員等級制度：左邊會員卡、中間直式進度條、右邊等級說明 */
+/* 會員等級制度：手機版直式（左卡片｜進度條｜右說明），電腦版橫式（見檔尾 min-width:601px） */
 .mprog {
   max-width: 820px;
   margin: 0 auto;
@@ -2960,5 +2960,60 @@ a.qr-box:hover {
 
   .mtable--tier tbody tr:nth-child(n) th {
     width: 25%;
+  }
+}
+
+/* 會員等級制度・電腦版橫式進度條：每欄由上而下為 會員卡 → 節點 → 說明，
+   進度線從本欄節點中心橫向接到下一欄節點中心。
+   卡片固定寬度，進度線的高度位置才算得出來（卡高 = 寬 ÷ 1.586）。 */
+@media (min-width: 601px) {
+  .mprog {
+    max-width: 1040px;
+  }
+
+  .mprog-steps {
+    --cardw: 220px;
+    --stack-gap: 24px;
+    --col-gap: 24px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: var(--col-gap);
+    width: 100%;
+  }
+
+  .mprog-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--stack-gap);
+  }
+
+  .mprog-step .mcard {
+    width: var(--cardw);
+  }
+
+  .mprog-step:not(:last-child)::after {
+    top: calc(var(--cardw) / 1.586 + var(--stack-gap) + var(--dot) / 2 - 4px);
+    left: 50%;
+    width: calc(100% + var(--col-gap));
+    height: 8px;
+    background: linear-gradient(90deg, #dfe2e4, #c4ab80);
+  }
+
+  .mprog-step--vip::after {
+    background: linear-gradient(90deg, #c4ab80, #141414) !important;
+  }
+
+  .mprog-step:first-child::after {
+    border-radius: 999px 0 0 999px;
+  }
+
+  .mprog-name {
+    text-align: center;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+  .mprog-steps {
+    --cardw: 180px;
   }
 }

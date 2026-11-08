@@ -2686,6 +2686,30 @@ a.qr-box:hover {
   }
 }
 
+/* 右下角 P 圖示裝飾：15% 透明度，放大後推出卡片右下角，只露出一部分。
+   淺色卡（銀卡、VIP）用黑色圖示，黑卡（VVIP）用白色圖示。 */
+.mcard::before {
+  content: "";
+  position: absolute;
+  right: -14%;
+  bottom: -30%;
+  width: 62%;
+  aspect-ratio: 1;
+  background: url("/images/per-sulii Logo_P-icon-b.webp") no-repeat right bottom / contain;
+  opacity: .15;
+  pointer-events: none;
+}
+
+.mcard--vvip::before {
+  background-image: url("/images/per-sulii Logo_P-icon-w.webp");
+}
+
+.mcard-top,
+.mcard-name {
+  position: relative;
+  z-index: 1;
+}
+
 .mcard--general {
   background: linear-gradient(135deg, #ffffff 0%, #eef0f1 55%, #dfe2e4 100%);
   border: 1px solid var(--line);

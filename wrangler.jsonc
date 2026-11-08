@@ -35,6 +35,10 @@
     "LINE_LOGIN_CHANNEL_ID": "2012441387",
     "LIFF_ID": "2012441387-bRygQ9gJ",
     "ACCESS_TEAM_DOMAIN": "persulii.cloudflareaccess.com",
-    "ACCESS_AUD": "eca8b0ef47e64d7ff90b0eb1c5301ba4041d8b80b60265f28792dd5a48651a8e"
+    "ACCESS_AUD": "eca8b0ef47e64d7ff90b0eb1c5301ba4041d8b80b60265f28792dd5a48651a8e",
+    // 測試中的會員制度頁（/membership）：選用的 Access 應用程式 AUD Tag。
+    // 主要用 IP 白名單（Secret：MEMBERSHIP_ALLOWED_IPS，不寫在這裡）。兩者都沒設定時頁面一律回 404。
+    // 設定步驟見 會員系統上線步驟.md「七、會員制度頁」。
+    "MEMBERSHIP_ACCESS_AUD": "b84306ea01a1ec82893e30756c00b489e6c8a730d708fd0405f2c232ecb621dc"
   }
 }

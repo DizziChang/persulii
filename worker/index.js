@@ -17,6 +17,8 @@
    ============================================================ */
 
 import { handleApi } from './api/index.js';
+import { verifyAccessJwt } from './api/auth.js';
+import { ipAllowed, parseAllowList } from './ip-allow.js';
 import { LOGO_DATA_URI, LOGO_H, LOGO_W } from './logo-data.js';
 
 /* 維護模式總開關 */
@@ -39,6 +41,14 @@ const ALLOW_PREFIXES = ['/admin', '/member', '/api'];
 /* 會員中心與會員管理後台不給搜尋引擎收錄 */
 const NOINDEX_PREFIXES = ['/member', '/admin'];
 
+/* 測試中、只開放白名單的頁面。符合任一條件即可檢視，否則回 404：
+     1. IP 白名單：訪客 IP（CF-Connecting-IP）在 Secret「MEMBERSHIP_ALLOWED_IPS」名單內，
+        不需要登入，打開網址就能看
+     2. Cloudflare Access（選用）：MEMBERSHIP_ACCESS_AUD 有設定、且帶著該 Access 應用程式的有效 JWT
+   兩者都沒設定時一律拒絕，不會不小心公開。
+   正式公開時：把該頁從這裡移除（若有建 Access 應用程式也一併刪除）。 */
+const PREVIEW_PAGES = ['/membership', '/membership/', '/membership.html'];
+
 function isAllowedPath(pathname) {
   return ALLOW_PREFIXES.some((p) => pathname === p || pathname.startsWith(p + '/'));
 }
@@ -53,6 +63,15 @@ export default {
 
     if (url.pathname === '/api' || url.pathname.startsWith('/api/')) {
       return handleApi(request, env);
+    }
+
+    if (PREVIEW_PAGES.includes(url.pathname)) {
+      if (!(await previewAllowed(env, request, url))) return previewDeniedResponse();
+      const res = await env.ASSETS.fetch(request);
+      const out = new Response(res.body, res);
+      out.headers.set('X-Robots-Tag', 'noindex, nofollow');
+      out.headers.set('Cache-Control', 'private, no-store');
+      return out;
     }
 
     /* /admin/members/<id> 是會員詳情，實際檔案只有一份 detail.html，由前端讀網址上的 id */
@@ -71,6 +90,28 @@ export default {
     return res;
   }
 };
+
+async function previewAllowed(env, request, url) {
+  const ip = request.headers.get('CF-Connecting-IP');
+  if (ip && ipAllowed(ip, parseAllowList(env.MEMBERSHIP_ALLOWED_IPS))) return true;
+  try {
+    return await verifyAccessJwt(env, request, url, env.MEMBERSHIP_ACCESS_AUD);
+  } catch {
+    return false;
+  }
+}
+
+/* 白名單頁面驗證不過時的回應。404 而不是 403：不透露這個網址存在。 */
+function previewDeniedResponse() {
+  return new Response('Not Found', {
+    status: 404,
+    headers: {
+      'Content-Type': 'text/plain; charset=utf-8',
+      'X-Robots-Tag': 'noindex, nofollow',
+      'Cache-Control': 'no-store'
+    }
+  });
+}
 
 /* 回 503 而不是 200：503 是「暫時無法服務」，Google 看到會知道要晚點再來，
    不會把整站從搜尋結果移除；若回 200 並顯示維護頁，反而可能被當成頁面內容

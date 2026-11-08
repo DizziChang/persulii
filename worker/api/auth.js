@@ -104,9 +104,16 @@ async function accessKeys(domain) {
 }
 
 async function verifyAccess(env, request, url) {
+  return verifyAccessJwt(env, request, url, env.ACCESS_AUD);
+}
+
+/** 驗 Cloudflare Access 的 JWT 是否屬於指定的 Access 應用程式（aud）。
+    後台用 ACCESS_AUD；測試中的會員制度頁用 MEMBERSHIP_ACCESS_AUD（見 worker/index.js）。
+    沒設定就一律拒絕，不會在沒有保護的情況下開放。 */
+export async function verifyAccessJwt(env, request, url, expectedAud) {
   if (devAuthOn(env, url)) return true;
-  if (!env.ACCESS_TEAM_DOMAIN || !env.ACCESS_AUD) {
-    throw new HttpError(503, 'access_not_configured', 'Cloudflare Access 尚未設定，後台暫不開放');
+  if (!env.ACCESS_TEAM_DOMAIN || !expectedAud) {
+    throw new HttpError(503, 'access_not_configured', 'Cloudflare Access 尚未設定，暫不開放');
   }
   const jwt = request.headers.get('Cf-Access-Jwt-Assertion');
   if (!jwt) throw new HttpError(403, 'access_required', '請先通過 Cloudflare Access 驗證');
@@ -118,7 +125,7 @@ async function verifyAccess(env, request, url) {
   const key = await crypto.subtle.importKey('jwk', jwk, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['verify']);
   const ok = await crypto.subtle.verify('RSASSA-PKCS1-v1_5', key, b64urlToBytes(s), enc.encode(h + '.' + p));
   const aud = Array.isArray(payload.aud) ? payload.aud : [payload.aud];
-  if (!ok || !aud.includes(env.ACCESS_AUD) || payload.exp * 1000 < Date.now()) {
+  if (!ok || !aud.includes(expectedAud) || payload.exp * 1000 < Date.now()) {
     throw new HttpError(403, 'access_invalid', 'Access 驗證失敗');
   }
   return true;

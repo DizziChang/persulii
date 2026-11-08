@@ -6,3 +6,5 @@ SESSION_SECRET=
 LINE_LOGIN_CHANNEL_SECRET=
 # 1 = 本機測試模式：不經 LINE 與 Cloudflare Access，直接以測試身分登入（只在 localhost 生效）
 DEV_AUTH=1
+# 測試中的 /membership 頁 IP 白名單（逗號分隔，可用 CIDR）；正式環境用 wrangler secret put 或後台 Secret 設定
+MEMBERSHIP_ALLOWED_IPS=

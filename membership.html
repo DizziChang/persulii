@@ -39,7 +39,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="/css/main.css?v=d62f59e4d4">
+  <link rel="stylesheet" href="/css/main.css?v=5b921c756a">
   <!-- Meta Pixel Code -->
   <script>
   !function(f,b,e,v,n,t,s)
@@ -138,54 +138,57 @@
       <div class="wrap maxwl">
         <h2 class="h3 center">會員等級與優惠</h2>
         <div class="mtable-scroll mt24">
-          <table class="mtable mtable--tier">
+          <table class="mplans">
             <thead>
               <tr>
-                <td class="mtable-corner"></td>
-                <th scope="col">沛素會員</th>
-                <th scope="col">VIP 會員</th>
-                <th scope="col">VVIP 會員</th>
+                <td></td>
+                <th scope="col" class="plan-head plan-head--general">沛素會員</th>
+                <th scope="col" class="plan-head plan-head--vip">VIP 會員</th>
+                <th scope="col" class="plan-head plan-head--vvip">VVIP 會員</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <th scope="row">取得資格</th>
-                <td>免費加入</td>
-                <td>單筆購買滿 5 組</td>
-                <td>單筆購買滿 20 組</td>
+                <th scope="row">升級條件</th>
+                <td class="plan-col plan-col--general">免費加入</td>
+                <td class="plan-col plan-col--vip">單筆購買滿 5 組</td>
+                <td class="plan-col plan-col--vvip">單筆購買滿 20 組</td>
               </tr>
-              <tr>
-                <th scope="row">沛素精華液 2 入組</th>
-                <td class="mtable-off"><span class="msticker">8折</span></td>
-                <td class="mtable-off"><span class="msticker">7折</span></td>
-                <td class="mtable-off"><span class="msticker">55折</span></td>
+              <tr class="plan-off">
+                <th scope="row">會員優惠</th>
+                <td class="plan-col plan-col--general"><span class="msticker">8折</span></td>
+                <td class="plan-col plan-col--vip"><span class="msticker">7折</span></td>
+                <td class="plan-col plan-col--vvip"><span class="msticker">55折</span></td>
               </tr>
               <tr>
                 <th scope="row">資格效期</th>
-                <td>永久</td>
-                <td>自升級當下起算 1 年</td>
-                <td>自升級當下起算 1 年</td>
+                <td class="plan-col plan-col--general">永久</td>
+                <td class="plan-col plan-col--vip">自升級當下起算 1 年</td>
+                <td class="plan-col plan-col--vvip">自升級當下起算 1 年</td>
               </tr>
-              <tr class="mtable-sub">
-                <th scope="rowgroup" colspan="4">會員價試算</th>
-              </tr>
-              <tr>
-                <th scope="row">沛素V+S<small>定價 NT$ 11,600</small></th>
-                <td>NT$ 9,280</td>
-                <td>NT$ 8,120</td>
-                <td>NT$ 6,380</td>
+              <tr class="plan-divider">
+                <th scope="row">會員價試算</th>
+                <td class="plan-col plan-col--general"></td>
+                <td class="plan-col plan-col--vip"></td>
+                <td class="plan-col plan-col--vvip"></td>
               </tr>
               <tr>
-                <th scope="row">沛素V x2<small>定價 NT$ 13,600</small></th>
-                <td>NT$ 10,880</td>
-                <td>NT$ 9,520</td>
-                <td>NT$ 7,480</td>
+                <th scope="row">沛素V+S</th>
+                <td class="plan-col plan-col--general">NT$ 9,280</td>
+                <td class="plan-col plan-col--vip">NT$ 8,120</td>
+                <td class="plan-col plan-col--vvip">NT$ 6,380</td>
               </tr>
               <tr>
-                <th scope="row">沛素S x2<small>定價 NT$ 9,600</small></th>
-                <td>NT$ 7,680</td>
-                <td>NT$ 6,720</td>
-                <td>NT$ 5,280</td>
+                <th scope="row">沛素V x2</th>
+                <td class="plan-col plan-col--general">NT$ 10,880</td>
+                <td class="plan-col plan-col--vip">NT$ 9,520</td>
+                <td class="plan-col plan-col--vvip">NT$ 7,480</td>
+              </tr>
+              <tr class="plan-last">
+                <th scope="row">沛素S x2</th>
+                <td class="plan-col plan-col--general">NT$ 7,680</td>
+                <td class="plan-col plan-col--vip">NT$ 6,720</td>
+                <td class="plan-col plan-col--vvip">NT$ 5,280</td>
               </tr>
             </tbody>
           </table>

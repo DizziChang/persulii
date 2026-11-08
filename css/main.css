@@ -2889,17 +2889,36 @@ a.qr-box:hover {
 /* 加入官方 LINE */
 .mjoin {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   gap: clamp(24px, 4vw, 56px);
   max-width: 820px;
   margin: 0 auto;
 }
 
+/* QR Code 與右側「標題＋按鈕」同高：兩邊都是 --join-h，
+   右欄用 space-between 讓標題貼齊 QR 頂端、按鈕貼齊底端 */
+.mjoin {
+  --join-h: 112px;
+}
+
 .mjoin-qr {
-  width: 180px;
-  height: 180px;
+  width: var(--join-h);
+  height: var(--join-h);
   margin-bottom: 0;
+  padding: 4px;
+}
+
+.mjoin-copy {
+  min-height: var(--join-h);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.mjoin-copy .btn-line {
+  margin-top: 16px;
 }
 
 .btn-line {
@@ -2949,9 +2968,18 @@ a.qr-box:hover {
     text-align: center;
   }
 
+  .mjoin {
+    align-items: center;
+  }
+
+  .mjoin-copy {
+    align-items: center;
+    min-height: 0;
+  }
+
   .mjoin-qr {
-    width: 160px;
-    height: 160px;
+    width: 120px;
+    height: 120px;
   }
 
   /* 手機版：會員卡縮小，維持「卡片｜進度條｜說明」三欄 */

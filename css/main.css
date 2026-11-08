@@ -2550,107 +2550,78 @@ a.qr-box:hover {
 /* ============================================================
    會員制度頁（/membership）
    ============================================================ */
-.mcards {
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(16px, 2.4vw, 32px);
+/* 升級門檻進度條：桌機橫向，三個節點平均分布；手機改直式 */
+.mprog {
   max-width: 1100px;
   margin: 0 auto;
 }
 
-.mcard {
-  position: relative;
-  overflow: hidden;
-  aspect-ratio: 1.586 / 1;
-  border-radius: 14px;
-  padding: clamp(16px, 1.8vw, 24px);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, .10), 0 2px 6px rgba(0, 0, 0, .06);
+.mprog-title {
+  font-size: clamp(18px, 2.5vw, 26px);
+  font-weight: 500;
   color: var(--ink);
 }
 
-/* 斜向光澤 */
-.mcard::after {
+.mprog-steps {
+  --dot: 22px;
+  position: relative;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 40px;
+}
+
+/* 進度線：從第一個節點中心連到最後一個節點中心 */
+.mprog-steps::before {
   content: "";
   position: absolute;
-  inset: 0;
-  background: linear-gradient(115deg, rgba(255, 255, 255, 0) 35%, rgba(255, 255, 255, .28) 50%, rgba(255, 255, 255, 0) 65%);
-  pointer-events: none;
+  top: calc(var(--dot) / 2 - 4px);
+  left: calc(100% / 6);
+  right: calc(100% / 6);
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #dfe2e4 0%, #c4ab80 50%, #141414 100%);
 }
 
-.mcard--general {
-  background: linear-gradient(135deg, #ffffff 0%, #eef0f1 55%, #dfe2e4 100%);
-  border: 1px solid var(--line);
-}
-
-.mcard--vip {
-  background: linear-gradient(135deg, #f3ebdc 0%, #dccaa8 55%, #c4ab80 100%);
-  color: #3b3226;
-}
-
-.mcard--vvip {
-  background: linear-gradient(135deg, #3a3a3a 0%, #1c1c1c 50%, #0b0b0b 100%);
-  color: #fff;
-}
-
-.mcard--vvip::after {
-  background: linear-gradient(115deg, rgba(255, 255, 255, 0) 35%, rgba(255, 255, 255, .10) 50%, rgba(255, 255, 255, 0) 65%);
-}
-
-.mcard-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.mcard-logo {
-  height: clamp(22px, 2.4vw, 30px);
-  width: auto;
-  display: block;
-}
-
-.mcard-kind {
-  font-size: 11px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  opacity: .7;
-}
-
-.mcard-name {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 300;
-  font-size: clamp(30px, 3.4vw, 44px);
-  letter-spacing: .16em;
-  line-height: 1.1;
-}
-
-.mcard--vvip .mcard-name {
-  color: #dcc69c;
-}
-
-/* 卡片下方的福利文字 */
-.mtier {
+.mprog-step {
+  position: relative;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 20px;
 }
 
-.mtier-title {
-  font-size: clamp(17px, 1.5vw, 20px);
+.mprog-dot {
+  flex: none;
+  width: var(--dot);
+  height: var(--dot);
+  border-radius: 50%;
+  border: 4px solid #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .25);
+}
+
+.mprog-step--general .mprog-dot {
+  background: #dfe2e4;
+}
+
+.mprog-step--vip .mprog-dot {
+  background: #c4ab80;
+}
+
+.mprog-step--vvip .mprog-dot {
+  background: #141414;
+}
+
+.mprog-name {
+  font-size: clamp(17px, 1.6vw, 20px);
   font-weight: 500;
   color: var(--ink);
   letter-spacing: .06em;
+  text-align: center;
 }
 
-.mtier-perks {
-  padding: 0 4px;
-}
-
-.mtier-perks ul {
+.mprog-text ul {
   list-style: none;
   margin-top: 10px;
   font-size: clamp(15px, 1.2vw, 17px);
@@ -2658,98 +2629,20 @@ a.qr-box:hover {
   color: var(--ink-soft);
 }
 
-.mtier-perks li {
+.mprog-text li {
   position: relative;
-  padding-left: 1.1em;
+  padding-left: 1em;
 }
 
-.mtier-perks li+li {
+.mprog-text li+li {
   margin-top: 6px;
 }
 
-.mtier-perks li::before {
-  content: "";
+.mprog-text li::before {
+  content: "·";
   position: absolute;
   left: 0;
-  top: .65em;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--mid);
-}
-
-/* 升級門檻進度條 */
-.mprog {
-  max-width: 1000px;
-  margin: clamp(48px, 6vw, 80px) auto 0;
-}
-
-.mprog-track {
-  position: relative;
-  height: 8px;
-  margin: 40px 44px 76px;
-  border-radius: 999px;
-  background: var(--bg2);
-}
-
-.mprog-bar {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(90deg, #dfe2e4 0%, #c4ab80 25%, #8a7a5e 60%, #141414 100%);
-}
-
-.mprog-node {
-  position: absolute;
-  left: var(--pos);
-  top: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.mprog-dot {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  border: 4px solid #fff;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, .25);
-}
-
-.mprog-node--general .mprog-dot {
-  background: #dfe2e4;
-}
-
-.mprog-node--vip .mprog-dot {
-  background: #c4ab80;
-}
-
-.mprog-node--vvip .mprog-dot {
-  background: #141414;
-}
-
-.mprog-label {
-  position: absolute;
-  top: 30px;
-  white-space: nowrap;
-  text-align: center;
-  font-size: 13px;
-  color: var(--mid-text);
-  line-height: 1.5;
-}
-
-.mprog-label b {
-  display: block;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: .12em;
-  color: var(--ink);
-}
-
-.mprog-note {
-  margin-top: 0;
+  font-weight: 700;
 }
 
 /* 表格 */
@@ -2870,14 +2763,6 @@ a.qr-box:hover {
   margin-top: 4px;
 }
 
-@media (max-width: 900px) {
-  .mcards {
-    grid-template-columns: minmax(0, 380px);
-    justify-content: center;
-    row-gap: 40px;
-  }
-}
-
 @media (max-width: 600px) {
   .mjoin {
     flex-direction: column;
@@ -2889,27 +2774,50 @@ a.qr-box:hover {
     height: 160px;
   }
 
-  /* 手機版進度條改直式，避免 MEMBER 與 VIP 標籤相撞 */
-  .mprog-track {
+  /* 手機版進度條改直式 */
+  .mprog-steps {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+    margin-top: 32px;
+  }
+
+  /* 直式時改由每一段各自畫線，線段剛好接到下一個節點中心 */
+  .mprog-steps::before {
+    display: none;
+  }
+
+  .mprog-step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: calc(var(--dot) / 2);
+    left: calc(var(--dot) / 2 - 4px);
     width: 8px;
-    height: 260px;
-    margin: 32px 0 32px calc(50% - 70px);
+    height: calc(100% + 32px);
+    background: linear-gradient(180deg, #dfe2e4, #c4ab80);
   }
 
-  .mprog-bar {
-    background: linear-gradient(180deg, #dfe2e4 0%, #c4ab80 25%, #8a7a5e 60%, #141414 100%);
+  .mprog-step--vip::after {
+    background: linear-gradient(180deg, #c4ab80, #141414) !important;
   }
 
-  .mprog-node {
-    left: 50%;
-    top: var(--pos);
+  .mprog-step:first-child::after {
+    border-radius: 999px 999px 0 0;
   }
 
-  .mprog-label {
-    top: 50%;
-    left: 34px;
-    transform: translateY(-50%);
+  .mprog-steps {
+    isolation: isolate;
+  }
+
+  .mprog-step {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .mprog-name {
     text-align: left;
+    line-height: var(--dot);
   }
   .mtable {
     font-size: 13px;

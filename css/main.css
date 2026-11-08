@@ -2563,14 +2563,16 @@ a.qr-box:hover {
 }
 
 .mprog-steps {
-  --cardw: 300px;
+  --cardw: 220px;
   --dot: 22px;
   --col-gap: 32px;
   --row-gap: 40px;
   list-style: none;
   display: grid;
   gap: var(--row-gap);
-  margin-top: 40px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 40px auto 0;
   isolation: isolate;
 }
 
@@ -2642,6 +2644,11 @@ a.qr-box:hover {
   margin-top: 4px;
 }
 
+.mprog-off {
+  color: #a8823f;
+  font-weight: 700;
+}
+
 .mprog-text li::before {
   content: "·";
   position: absolute;
@@ -2654,8 +2661,8 @@ a.qr-box:hover {
   position: relative;
   overflow: hidden;
   aspect-ratio: 1.586 / 1;
-  border-radius: 12px;
-  padding: 16px 18px;
+  border-radius: 10px;
+  padding: 12px 14px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -2663,12 +2670,49 @@ a.qr-box:hover {
   color: var(--ink);
 }
 
+/* 金屬反光：一道斜向亮光平時停在卡片左外側，滑鼠移上去時掃過一次 */
+.mcard {
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+
 .mcard::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(115deg, rgba(255, 255, 255, 0) 35%, rgba(255, 255, 255, .28) 50%, rgba(255, 255, 255, 0) 65%);
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, .75) 50%, rgba(255, 255, 255, 0) 60%);
+  background-size: 250% 100%;
+  background-position: 130% 0;
+  background-repeat: no-repeat;
   pointer-events: none;
+}
+
+.mcard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, .14), 0 3px 8px rgba(0, 0, 0, .08);
+}
+
+.mcard:hover::after {
+  animation: mcard-shine .8s ease-out;
+}
+
+@keyframes mcard-shine {
+  from {
+    background-position: 130% 0;
+  }
+
+  to {
+    background-position: -30% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mcard:hover {
+    transform: none;
+  }
+
+  .mcard:hover::after {
+    animation: none;
+  }
 }
 
 .mcard--general {
@@ -2687,7 +2731,7 @@ a.qr-box:hover {
 }
 
 .mcard--vvip::after {
-  background: linear-gradient(115deg, rgba(255, 255, 255, 0) 35%, rgba(255, 255, 255, .10) 50%, rgba(255, 255, 255, 0) 65%);
+  background-image: linear-gradient(115deg, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, .35) 50%, rgba(255, 255, 255, 0) 60%);
 }
 
 .mcard-top {
@@ -2698,13 +2742,13 @@ a.qr-box:hover {
 }
 
 .mcard-logo {
-  height: 24px;
+  height: 18px;
   width: auto;
   display: block;
 }
 
 .mcard-kind {
-  font-size: 10px;
+  font-size: 8px;
   letter-spacing: .18em;
   text-transform: uppercase;
   opacity: .7;
@@ -2713,7 +2757,7 @@ a.qr-box:hover {
 .mcard-name {
   font-family: 'Montserrat', sans-serif;
   font-weight: 300;
-  font-size: 34px;
+  font-size: 26px;
   letter-spacing: .16em;
   line-height: 1.1;
 }
@@ -2773,14 +2817,19 @@ a.qr-box:hover {
   color: var(--mid-text);
 }
 
-.mtable tbody tr:nth-child(2) th,
-.mtable tbody tr:nth-child(2) td {
-  background: #faf6ef;
+.mtable tbody tr:nth-child(even) th,
+.mtable tbody tr:nth-child(even) td {
+  background: #fafafa;
 }
 
-.mtable tbody tr:nth-child(3) th,
-.mtable tbody tr:nth-child(3) td {
+/* 等級表：會員等級在上方橫條，左欄是項目 */
+.mtable-corner {
+  background: var(--ink);
+}
+
+.mtable--tier tbody tr:nth-child(n) th {
   background: #f4f4f4;
+  width: 22%;
 }
 
 /* 加入官方 LINE */
@@ -2858,6 +2907,7 @@ a.qr-box:hover {
     --col-gap: 12px;
     --row-gap: 28px;
     margin-top: 28px;
+    width: auto;
   }
 
   .mprog-dot {
@@ -2898,10 +2948,17 @@ a.qr-box:hover {
   .mtable td {
     padding: 10px 4px;
     white-space: normal;
-    word-break: keep-all;
   }
 
   .mtable small {
     font-size: 11px;
+  }
+
+  .mtable--tier {
+    table-layout: fixed;
+  }
+
+  .mtable--tier tbody tr:nth-child(n) th {
+    width: 25%;
   }
 }

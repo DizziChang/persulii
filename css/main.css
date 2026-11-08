@@ -2813,6 +2813,31 @@ a.qr-box:hover {
   font-size: 1.1em;
 }
 
+/* 會員價試算表：表頭不填底色，折扣用貼紙樣式放在等級名稱旁 */
+.mtable--price thead th {
+  background: none;
+  color: var(--ink);
+  font-weight: 600;
+  border-bottom: 2px solid var(--ink);
+  padding-top: 20px;
+}
+
+.msticker {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #c8a462 0%, #a07633 100%);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  line-height: 1.3;
+  vertical-align: 2px;
+  transform: rotate(-8deg);
+  box-shadow: 0 2px 5px rgba(140, 105, 50, .35);
+}
+
 .mtable-list {
   color: var(--mid-text);
 }
@@ -2956,6 +2981,14 @@ a.qr-box:hover {
 
   .mtable--tier {
     table-layout: fixed;
+  }
+
+  .msticker {
+    display: block;
+    width: fit-content;
+    margin: 4px auto 0;
+    font-size: 12px;
+    padding: 3px 8px;
   }
 
   .mtable--tier tbody tr:nth-child(n) th {

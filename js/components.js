@@ -33,7 +33,6 @@
       <a href="/about"    data-page="about">關於</a>
       <a href="/products" data-page="products">產品</a>
       <a href="/faq"      data-page="faq">問答</a>
-      <a href="/membership" data-page="membership">會員</a>
       <a href="/contact"  data-page="contact">通路</a>
     </nav>
     <button class="burger mob" id="burger" type="button"
@@ -46,7 +45,6 @@
     <a href="/about">關於</a>
     <a href="/products">產品</a>
     <a href="/faq">常見問答</a>
-    <a href="/membership">會員制度</a>
     <a href="/contact">通路</a>
   </nav>
 </header>`;
@@ -62,7 +60,6 @@
       <a href="/about">關於</a>
       <a href="/products">產品</a>
       <a href="/faq">問答</a>
-      <a href="/membership">會員</a>
       <a href="/contact">通路</a>
     </div>
     <div class="ftr-grid">

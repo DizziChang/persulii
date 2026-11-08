@@ -17,6 +17,7 @@
    ============================================================ */
 
 import { handleApi } from './api/index.js';
+import { verifyAccessJwt } from './api/auth.js';
 import { LOGO_DATA_URI, LOGO_H, LOGO_W } from './logo-data.js';
 
 /* 維護模式總開關 */
@@ -39,6 +40,12 @@ const ALLOW_PREFIXES = ['/admin', '/member', '/api'];
 /* 會員中心與會員管理後台不給搜尋引擎收錄 */
 const NOINDEX_PREFIXES = ['/member', '/admin'];
 
+/* 測試中、只開放白名單的頁面（Cloudflare Access 的 email 白名單）。
+   Cloudflare Access 會先在邊緣攔下沒登入的人；這裡再驗一次 Access JWT，
+   確保 Access 沒設好、或從 workers.dev 等其他網址進來時也不會外流（一律拒絕）。
+   正式公開時：把該頁從這裡移除，並刪掉 Cloudflare 上對應的 Access 應用程式。 */
+const PREVIEW_PAGES = ['/membership', '/membership/', '/membership.html'];
+
 function isAllowedPath(pathname) {
   return ALLOW_PREFIXES.some((p) => pathname === p || pathname.startsWith(p + '/'));
 }
@@ -53,6 +60,19 @@ export default {
 
     if (url.pathname === '/api' || url.pathname.startsWith('/api/')) {
       return handleApi(request, env);
+    }
+
+    if (PREVIEW_PAGES.includes(url.pathname)) {
+      try {
+        await verifyAccessJwt(env, request, url, env.MEMBERSHIP_ACCESS_AUD);
+      } catch {
+        return previewDeniedResponse();
+      }
+      const res = await env.ASSETS.fetch(request);
+      const out = new Response(res.body, res);
+      out.headers.set('X-Robots-Tag', 'noindex, nofollow');
+      out.headers.set('Cache-Control', 'private, no-store');
+      return out;
     }
 
     /* /admin/members/<id> 是會員詳情，實際檔案只有一份 detail.html，由前端讀網址上的 id */
@@ -71,6 +91,18 @@ export default {
     return res;
   }
 };
+
+/* 白名單頁面驗證不過時的回應。404 而不是 403：不透露這個網址存在。 */
+function previewDeniedResponse() {
+  return new Response('Not Found', {
+    status: 404,
+    headers: {
+      'Content-Type': 'text/plain; charset=utf-8',
+      'X-Robots-Tag': 'noindex, nofollow',
+      'Cache-Control': 'no-store'
+    }
+  });
+}
 
 /* 回 503 而不是 200：503 是「暫時無法服務」，Google 看到會知道要晚點再來，
    不會把整站從搜尋結果移除；若回 200 並顯示維護頁，反而可能被當成頁面內容

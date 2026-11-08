@@ -39,7 +39,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="/css/main.css?v=8df5ec8463">
+  <link rel="stylesheet" href="/css/main.css?v=ca909c1b4e">
   <!-- Meta Pixel Code -->
   <script>
   !function(f,b,e,v,n,t,s)
@@ -80,49 +80,79 @@
     <section class="sec">
       <div class="wrap">
         <ul class="mcards" aria-label="會員等級">
-          <li class="mcard mcard--general">
-            <div class="mcard-top">
-              <img class="mcard-logo" src="/images/per-sulii-logo-grayscale.webp" alt="per-sulii 沛素">
-              <span class="mcard-kind">Member Card</span>
-            </div>
-            <div class="mcard-tier">
+          <li class="mtier">
+            <div class="mcard mcard--general" aria-hidden="true">
+              <div class="mcard-top">
+                <img class="mcard-logo" src="/images/per-sulii-logo-grayscale.webp" alt="">
+                <span class="mcard-kind">Member Card</span>
+              </div>
               <span class="mcard-name">MEMBER</span>
-              <span class="mcard-zh">一般會員</span>
             </div>
-            <div class="mcard-bottom">
-              <div class="mcard-off"><b>8</b>折</div>
-              <div class="mcard-meta"><span>免費加入</span><span>永久資格</span></div>
+            <div class="mtier-perks">
+              <h2 class="mtier-title">一般會員</h2>
+              <ul>
+                <li>免費加入</li>
+                <li>沛素精華液 2 入組享 8 折</li>
+                <li>會員資格永久有效</li>
+              </ul>
             </div>
           </li>
-          <li class="mcard mcard--vip">
-            <div class="mcard-top">
-              <img class="mcard-logo" src="/images/per-sulii-logo-grayscale.webp" alt="per-sulii 沛素">
-              <span class="mcard-kind">Member Card</span>
-            </div>
-            <div class="mcard-tier">
+          <li class="mtier">
+            <div class="mcard mcard--vip" aria-hidden="true">
+              <div class="mcard-top">
+                <img class="mcard-logo" src="/images/per-sulii-logo-grayscale.webp" alt="">
+                <span class="mcard-kind">Member Card</span>
+              </div>
               <span class="mcard-name">VIP</span>
-              <span class="mcard-zh">VIP 會員</span>
             </div>
-            <div class="mcard-bottom">
-              <div class="mcard-off"><b>7</b>折</div>
-              <div class="mcard-meta"><span>單筆購買 5 組</span><span>效期 1 年</span></div>
+            <div class="mtier-perks">
+              <h2 class="mtier-title">VIP 會員</h2>
+              <ul>
+                <li>沛素精華液 2 入組享 7 折</li>
+                <li>升級當筆訂單即享 VIP 優惠</li>
+                <li>資格效期一年，自升級當下起算</li>
+              </ul>
             </div>
           </li>
-          <li class="mcard mcard--vvip">
-            <div class="mcard-top">
-              <img class="mcard-logo" src="/images/per-sulii Logo-logo-whitepng.webp" alt="per-sulii 沛素">
-              <span class="mcard-kind">Member Card</span>
-            </div>
-            <div class="mcard-tier">
+          <li class="mtier">
+            <div class="mcard mcard--vvip" aria-hidden="true">
+              <div class="mcard-top">
+                <img class="mcard-logo" src="/images/per-sulii Logo-logo-whitepng.webp" alt="">
+                <span class="mcard-kind">Member Card</span>
+              </div>
               <span class="mcard-name">VVIP</span>
-              <span class="mcard-zh">VVIP 會員</span>
             </div>
-            <div class="mcard-bottom">
-              <div class="mcard-off"><b>55</b>折</div>
-              <div class="mcard-meta"><span>單筆購買 20 組</span><span>效期 1 年</span></div>
+            <div class="mtier-perks">
+              <h2 class="mtier-title">VVIP 會員</h2>
+              <ul>
+                <li>沛素精華液 2 入組享 55 折</li>
+                <li>升級當筆訂單即享 VVIP 優惠</li>
+                <li>資格效期一年，自升級當下起算</li>
+              </ul>
             </div>
           </li>
         </ul>
+
+        <!-- 升級門檻進度條：節點位置依組數比例（5 / 20 = 25%） -->
+        <div class="mprog">
+          <h2 class="mtier-title center">會員升級門檻</h2>
+          <div class="mprog-track" role="img" aria-label="免費加入為一般會員，單筆購買 5 組升級 VIP，單筆購買 20 組升級 VVIP">
+            <div class="mprog-bar"></div>
+            <div class="mprog-node mprog-node--general" style="--pos:0%">
+              <span class="mprog-dot"></span>
+              <span class="mprog-label"><b>MEMBER</b>免費加入</span>
+            </div>
+            <div class="mprog-node mprog-node--vip" style="--pos:25%">
+              <span class="mprog-dot"></span>
+              <span class="mprog-label"><b>VIP</b>單筆 5 組</span>
+            </div>
+            <div class="mprog-node mprog-node--vvip" style="--pos:100%">
+              <span class="mprog-dot"></span>
+              <span class="mprog-label"><b>VVIP</b>單筆 20 組</span>
+            </div>
+          </div>
+          <p class="small center mprog-note">以單筆訂單購買的沛素精華液 2 入組組數計算，VV、VS、SS 組合可合併計算</p>
+        </div>
       </div>
     </section>
 

@@ -3,7 +3,7 @@
 const MS = (() => {
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const money = (n) => 'NT$ ' + Number(n || 0).toLocaleString('en-US');
-  const TIER = { general: '一般會員', vip: 'VIP', vvip: 'VVIP' };
+  const TIER = { general: '銀卡會員', vip: 'VIP', vvip: 'VVIP' };
   const STATUS = { pending: '待出貨', shipped: '已出貨', voided: '已作廢' };
   const tierBadge = (code) => `<span class="badge ${esc(code)}">${esc(TIER[code] || code)}</span>`;
   const statusBadge = (s) => `<span class="badge ${esc(s)}">${esc(STATUS[s] || s)}</span>`;

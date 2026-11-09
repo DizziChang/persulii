@@ -2,7 +2,8 @@
 
 import { bearer, verifyIdToken } from './auth.js';
 import { decrypt, encrypt, phoneHash } from './pii.js';
-import { effectiveTierCode, rateLabel } from './tiers.js';
+import { rateLabel } from './tiers.js';
+import { currentTierState } from './tier-state.js';
 import { HttpError, json, maskPhone, normalizePhone, nowIso, readJson, twDate, uuid } from './util.js';
 
 async function whoami(env, request, url) {
@@ -47,8 +48,10 @@ export async function me(env, request, url) {
     await env.DB.prepare('UPDATE members SET line_display_name = ? WHERE id = ?').bind(who.name, m.id).run();
   }
 
-  const code = effectiveTierCode(m, twDate());
-  const tier = await env.DB.prepare('SELECT * FROM tiers WHERE code = ?').bind(code).first();
+  const { results: tiers } = await env.DB.prepare('SELECT * FROM tiers ORDER BY rank').all();
+  const st = await currentTierState(env, m, tiers, twDate(), true);
+  const code = st.code;
+  const tier = tiers.find((t) => t.code === code);
   const phone = await decrypt(env, m.phone_enc);
 
   return json({
@@ -61,7 +64,9 @@ export async function me(env, request, url) {
       code,
       name: tier.name,
       discount: rateLabel(tier.discount_rate),
-      expiresAt: code === 'general' ? null : m.tier_expires_at
+      expiresAt: code === 'general' ? null : st.member.tier_expires_at,
+      // 本期續等進度：{ qty, renewQty, missing, reached, nextTier, nextTierName, nextExpiresAt, periodStart, periodEnd }
+      renewal: st.renewal
     },
     memberSince: twDate(m.created_at)
   });

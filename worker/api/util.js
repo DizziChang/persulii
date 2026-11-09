@@ -45,12 +45,22 @@ export function twDate(at = new Date()) {
   return new Date(t + TW_OFFSET_MS).toISOString().slice(0, 10);
 }
 
-/** 日期加 1 年；2/29 落到非閏年時取 2/28 */
-export function addOneYear(dateStr) {
+/** 日期加 n 年（可為負）；2/29 落到非閏年時取 2/28 */
+export function addYears(dateStr, n) {
   const [y, m, d] = dateStr.split('-').map(Number);
-  const ny = y + 1;
+  const ny = y + n;
   const last = new Date(Date.UTC(ny, m, 0)).getUTCDate();
   return `${ny}-${String(m).padStart(2, '0')}-${String(Math.min(d, last)).padStart(2, '0')}`;
+}
+
+/** 日期加 1 年；2/29 落到非閏年時取 2/28 */
+export function addOneYear(dateStr) {
+  return addYears(dateStr, 1);
+}
+
+/** 日期加 n 天（可為負） */
+export function addDays(dateStr, n) {
+  return new Date(Date.parse(dateStr + 'T00:00:00Z') + n * 86400000).toISOString().slice(0, 10);
 }
 
 /** b 比 a 晚幾天（兩者皆 YYYY-MM-DD） */

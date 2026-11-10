@@ -8,7 +8,33 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-LZB61GG4PM');
+    /* 內部人員裝置：開過一次 /?internal=1 的瀏覽器會帶 traffic_type=internal，
+       被 GA4「Internal Traffic」資料篩選器排除；/?internal=0 取消。
+       參數讀完立刻從網址列移除，複製網址分享出去也不會帶到。 */
+    var psInternal = false;
+    try {
+      var psQ = new URLSearchParams(location.search).get('internal');
+      if (psQ === '1') localStorage.setItem('ps_internal', '1');
+      if (psQ === '0') localStorage.removeItem('ps_internal');
+      if (psQ !== null) {
+        var psU = new URL(location.href);
+        psU.searchParams.delete('internal');
+        history.replaceState(history.state, '', psU.pathname + psU.search + psU.hash);
+      }
+      psInternal = localStorage.getItem('ps_internal') === '1';
+    } catch (e) {}
+    gtag('config', 'G-LZB61GG4PM', psInternal ? { traffic_type: 'internal' } : {});
+  </script>
+  <!-- Microsoft Clarity：熱圖與工作階段錄影。只裝在公開頁面，會員中心與後台不裝 -->
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "zbbts8blws");
+    /* 開過 /?internal=1 的裝置（psInternal 由上方 GA 區塊判斷）在 Clarity 標成 internal=1，
+       看熱圖／錄影時用「自訂標記 internal」篩掉 */
+    if (window.psInternal) clarity('set', 'internal', '1');
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -126,7 +152,7 @@
   <div id="site-footer"></div>
 
   <script src="/js/components.js?v=401c6ed325"></script>
-  <script src="/js/main.js?v=cccd5ba334"></script>
+  <script src="/js/main.js?v=e133ca3ae3"></script>
 </body>
 
 </html>

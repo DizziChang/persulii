@@ -74,6 +74,15 @@ export default {
       return out;
     }
 
+    /* 舊版 .html 網址一律 301 永久轉到乾淨網址（/contact.html → /contact、/index.html → /）。
+       靜態資源伺服器預設只回 307 暫時轉址，搜尋引擎不會把舊網址的權重轉給新網址，
+       GA 報表也會同時出現兩種網址。query string（例如 utm_*）原樣保留。 */
+    if ((request.method === 'GET' || request.method === 'HEAD') && /\.html$/i.test(url.pathname)) {
+      const clean = new URL(url);
+      clean.pathname = url.pathname.replace(/(^|\/)index\.html$/i, '$1').replace(/\.html$/i, '');
+      return Response.redirect(clean.toString(), 301);
+    }
+
     /* /admin/members/<id> 是會員詳情，實際檔案只有一份 detail.html，由前端讀網址上的 id */
     let assetReq = request;
     const detail = url.pathname.match(/^\/admin\/members\/([0-9a-f-]{36})\/?$/i);

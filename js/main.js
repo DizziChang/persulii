@@ -744,6 +744,8 @@ function renderChannels(data) {
   var items = c.items || [];
 
   list.innerHTML = items.map(function (it) {
+    /* 後台填網址時常漏掉 https://，沒有協定的連結會被當成站內相對路徑而 404 */
+    if (it.url && !/^https?:\/\//i.test(it.url)) it.url = 'https://' + String(it.url).replace(/^\/+/, '');
     var qrContent = it.qr
       ? '<img src="' + asset(it.qr) + '" alt="' + it.name + ' Line QR Code" loading="lazy">'
       : '<span class="qr-placeholder">QR Code</span>';
@@ -755,7 +757,7 @@ function renderChannels(data) {
       ? '<a class="btn ghost channel-btn" href="' + it.url + '" target="_blank" rel="noopener">加入 LINE 好友</a>'
       : '';
 
-    return '<li class="channel-card">'
+    return '<li class="channel-card" data-channel="' + it.name + '">'
       + '<div class="channel-info">'
       + '<h3 class="channel-name">' + it.name + '</h3>'
       + '<span class="channel-id">LINE ID: ' + it.id + '</span>'
@@ -899,8 +901,14 @@ function initContactForm() {
       .then(function (data) {
         if (data.success) {
           form.reset();
-          /* 導向感謝頁：該頁載入時會送出 GA4 generate_lead 事件，用來計算轉換 */
-          window.location.href = '/thank-you';
+          /* GA4 轉換只在 Web3Forms 回報成功時送一次，送完才導向感謝頁。
+             以前放在感謝頁載入時送，重新整理、按上一頁、直接打網址都會重複計算。
+             event_callback 等事件送出再跳頁；GA 被擋（廣告攔截）時 1.5 秒後照樣跳。 */
+          var go = function () { if (!go.done) { go.done = true; window.location.href = '/thank-you'; } };
+          if (typeof gtag === 'function') {
+            gtag('event', 'generate_lead', { form_name: 'contact', event_callback: go, event_timeout: 1500 });
+          }
+          setTimeout(go, 1500);
           return;
         } else {
           status.textContent = '送出失敗，請稍後再試一次。';
@@ -1036,8 +1044,37 @@ function initScrollReveal() {
   mo.observe(document.body, { childList: true, subtree: true });
 }
 
+/* ---- GA4：經銷通路與 LINE 點擊 ----
+   用事件委派掛在 document 上，之後才用 JS 產生的通路卡片、footer 也抓得到。
+   - channel_click：通路頁經銷夥伴卡片（QR Code 或「加入 LINE 好友」按鈕），帶 channel_name
+   - line_click：其他位置的官方 LINE 連結（例如 footer），帶 link_location
+   兩者都到 GA4「管理 → 事件」標成關鍵事件。連結都是開新分頁，原頁不會被卸載，事件送得出去。 */
+function initClickTracking() {
+  document.addEventListener('click', function (e) {
+    if (typeof gtag !== 'function') return;
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var card = a.closest('.channel-card');
+    if (card) {
+      gtag('event', 'channel_click', {
+        channel_name: card.dataset.channel || '',
+        link_type: a.classList.contains('qr-box') ? 'qr_code' : 'button',
+        link_url: a.href
+      });
+      return;
+    }
+    if (/^https?:\/\/(lin\.ee|line\.me|page\.line\.me)\//i.test(a.href)) {
+      gtag('event', 'line_click', {
+        link_location: a.closest('footer') ? 'footer' : (a.closest('header') ? 'header' : 'content'),
+        link_url: a.href
+      });
+    }
+  });
+}
+
 /* ---- 初始化 ---- */
 document.addEventListener('DOMContentLoaded', function () {
+  initClickTracking();
   initScrollReveal();
   initHeroScroll();
   initAboutImgPin();

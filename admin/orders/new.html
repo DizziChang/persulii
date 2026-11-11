@@ -133,7 +133,10 @@
           ${r.lines.map((l) => `<tr><td>${esc(l.product_name)}<div class="muted">${money(l.unit_price)} × ${l.quantity}</div></td><td class="num">${money(l.subtotal)}</td></tr>`).join('')}
         </tbody></table>
         <div class="spread mt" style="margin-bottom:0"><span>總額（免運）</span><span class="total">${money(r.total)}</span></div>
-        ${!r.upgrade && r.nextTier && r.nextTier.missing > 0 && r.nextTier.missing <= 5 ? `<p class="small muted mt">再 ${r.nextTier.missing} 組可升級 ${esc(r.nextTier.name)}</p>` : ''}`;
+        ${!r.upgrade && r.nextTier && r.nextTier.missing > 0 && r.nextTier.missing <= 5 ? `<p class="small muted mt">再 ${r.nextTier.missing} 組可升級 ${esc(r.nextTier.name)}</p>` : ''}
+        ${r.renewal ? (r.renewal.newlyReached
+          ? `<div class="alert ok mt">本單後本期累積 ${r.renewal.qty} 組，達到續等門檻 ${r.renewal.renewQty} 組：${esc(MS.TIER[r.renewal.tier])} 到期後自動延續至 ${esc(r.renewal.nextExpiresAt)}。</div>`
+          : `<p class="small muted mt">續等進度：本單後本期累積 ${r.renewal.qty} / ${r.renewal.renewQty} 組${r.renewal.reached ? '（已達標）' : `，還差 ${r.renewal.missing} 組`}</p>`) : ''}`;
       $('submit').disabled = false;
     } catch (e) {
       $('calc').innerHTML = '';

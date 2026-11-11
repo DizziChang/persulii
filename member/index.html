@@ -33,6 +33,20 @@
     const { orders } = await PS.api('/api/member/orders');
     const pic = PS.profile && PS.profile.pictureUrl;
 
+    /* 本期續等進度：VIP 累積 8 組、VVIP 累積 35 組，到期後自動延續一年 */
+    function renewalRow(t) {
+      const r = t.renewal;
+      if (!r) return '';
+      let txt;
+      if (r.reached) {
+        txt = `本期已累積 ${r.qty} 組，已達續等門檻，到期後自動延續 ${esc(t.name)} 至 ${esc(r.nextExpiresAt)}`;
+      } else {
+        txt = `本期已累積 ${r.qty} 組，再 ${r.missing} 組即可於到期後延續 ${esc(t.name)} 一年`;
+        if (r.nextTier && r.nextTier !== 'general' && r.nextTier !== t.code) txt += `（未達標則到期後轉為 ${esc(r.nextTierName)}）`;
+      }
+      return `<dt>續等進度</dt><dd>${txt}</dd>`;
+    }
+
     app.innerHTML = `
       <img class="brand" src="/images/per-sulii-logo-grayscale.webp" alt="per-sulii 沛素">
       <div class="who">
@@ -47,9 +61,10 @@
         <div class="tier-name">${esc(me.tier.name)}</div>
         <dl>
           <dt>專屬折扣</dt><dd>沛素精華液 2 入組合 ${esc(me.tier.discount)}</dd>
-          <dt>效期</dt><dd>${me.tier.expiresAt ? esc(me.tier.expiresAt) + ' 到期' : '終身'}</dd>
+          <dt>效期</dt><dd>${me.tier.expiresAt ? esc(me.tier.expiresAt) + ' 到期' : '永久'}</dd>
+          ${renewalRow(me.tier)}
         </dl>
-        <p class="note">會員優惠限官方 LINE 下單。單筆購買 5 組升級 VIP（7 折）、20 組升級 VVIP（55 折），效期 1 年。</p>
+        <p class="note">會員優惠限官方 LINE 下單。單筆購買 5 組升級 VIP（7 折）、20 組升級 VVIP（55 折），效期 1 年；效期內累積購買 VIP 滿 8 組、VVIP 滿 35 組，到期後自動延續一年。</p>
       </section>
 
       <h2>購買紀錄</h2>

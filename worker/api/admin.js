@@ -2,7 +2,8 @@
    金額一律從 products、tiers 帶入計算，不接受前端傳來的價格或折扣。 */
 
 import { decrypt, encrypt, phoneHash } from './pii.js';
-import { effectiveTierCode, planOrder, shouldRevertOnVoid } from './tiers.js';
+import { periodStartOf, planOrder, shouldRevertOnVoid } from './tiers.js';
+import { currentTierState } from './tier-state.js';
 import { HttpError, json, normalizePhone, nowIso, readJson, twDate, uuid } from './util.js';
 
 /* ── 共用 ─────────────────────────────────────────────── */
@@ -22,8 +23,12 @@ async function getMember(env, id) {
   return m;
 }
 
-async function memberView(env, m, tiersByCode, today, full = false) {
-  const code = effectiveTierCode(m, today);
+/** full = true 時含詳細資料與本期續等進度 */
+async function memberView(env, m, tiers, today, full = false) {
+  const tiersByCode = byCode(tiers);
+  const st = await currentTierState(env, m, tiers, today, full);
+  m = st.member;
+  const code = st.code;
   const v = {
     id: m.id,
     status: m.status,
@@ -33,6 +38,7 @@ async function memberView(env, m, tiersByCode, today, full = false) {
     tierCode: code,
     tierName: tiersByCode[code].name,
     tierExpiresAt: code === 'general' ? null : m.tier_expires_at,
+    tierPeriodStart: code === 'general' ? null : m.tier_period_start,
     needsReview: Boolean(m.needs_review),
     createdAt: m.created_at
   };
@@ -42,6 +48,7 @@ async function memberView(env, m, tiersByCode, today, full = false) {
     v.mergedIntoId = m.merged_into_id;
     v.erasedAt = m.erased_at;
     v.tierOrderId = m.tier_order_id;
+    v.renewal = st.renewal;
   }
   return v;
 }
@@ -57,7 +64,7 @@ export async function me(env, admin) {
 export async function searchMembers(env, url) {
   const q = (url.searchParams.get('q') || '').trim();
   const reviewOnly = url.searchParams.get('review') === '1';
-  const tiers = byCode(await loadTiers(env));
+  const tiers = await loadTiers(env);
   const today = twDate();
 
   let rows;
@@ -87,7 +94,7 @@ export async function searchMembers(env, url) {
 }
 
 export async function memberDetail(env, id) {
-  const tiers = byCode(await loadTiers(env));
+  const tiers = await loadTiers(env);
   const m = await getMember(env, id);
   const member = await memberView(env, m, tiers, twDate(), true);
 
@@ -139,10 +146,14 @@ export async function mergeMember(env, request, id) {
   const to = await getMember(env, target_id);
   if (from.status !== 'active' || to.status !== 'active') throw new HttpError(409, 'not_active', '兩個帳號都必須是正常狀態');
 
-  const tiers = byCode(await loadTiers(env));
+  const tierList = await loadTiers(env);
+  const tiers = byCode(tierList);
   const today = twDate();
-  const fromCode = effectiveTierCode(from, today);
-  const toCode = effectiveTierCode(to, today);
+  // 先把兩邊的等級推進到今天（到期的續等／降級），再比較高低
+  const fromSt = await currentTierState(env, from, tierList, today, false);
+  const toSt = await currentTierState(env, to, tierList, today, false);
+  const fromCode = fromSt.code;
+  const toCode = toSt.code;
 
   const stmts = [env.DB.prepare('UPDATE orders SET member_id = ? WHERE member_id = ?').bind(to.id, from.id)];
 
@@ -150,8 +161,8 @@ export async function mergeMember(env, request, id) {
   const toVals = [];
   if (tiers[fromCode].rank > tiers[toCode].rank) {
     // 等級與到期日維持舊帳號原本的日期
-    toSets.push('tier_code = ?', 'tier_expires_at = ?', 'tier_order_id = ?');
-    toVals.push(from.tier_code, from.tier_expires_at, from.tier_order_id);
+    toSets.push('tier_code = ?', 'tier_expires_at = ?', 'tier_period_start = ?', 'tier_order_id = ?');
+    toVals.push(fromSt.member.tier_code, fromSt.member.tier_expires_at, fromSt.member.tier_period_start, fromSt.member.tier_order_id);
   }
   if (!to.address_enc && from.address_enc) { toSets.push('address_enc = ?'); toVals.push(from.address_enc); }
   if (!to.email_enc && from.email_enc) { toSets.push('email_enc = ?'); toVals.push(from.email_enc); }
@@ -186,11 +197,15 @@ export async function listProducts(env) {
 }
 
 async function plan(env, body) {
-  const member = await getMember(env, body.member_id);
-  if (member.status !== 'active') throw new HttpError(409, 'not_active', '此帳號已轉移或清除，無法建單');
+  const raw = await getMember(env, body.member_id);
+  if (raw.status !== 'active') throw new HttpError(409, 'not_active', '此帳號已轉移或清除，無法建單');
   const [tiers, products] = await Promise.all([loadTiers(env), loadProducts(env)]);
+  const today = twDate();
+  // 先推進到今天的等級（到期的續等／降級），並取得本期已累積組數
+  const st = await currentTierState(env, raw, tiers, today, true);
+  const member = st.member;
   try {
-    return { member, tiers, result: planOrder({ member, tiers, products, items: body.items, today: twDate() }) };
+    return { member, tiers, result: planOrder({ member, tiers, products, items: body.items, today, periodQty: st.periodQty }) };
   } catch (e) {
     throw new HttpError(400, 'bad_items', e.message);
   }
@@ -225,12 +240,13 @@ export async function createOrder(env, request, admin) {
     const stmts = [
       env.DB.prepare(`INSERT INTO orders
           (id, order_no, member_id, admin_id, tier_at_order, qualifying_qty, total_amount, ship_address_enc,
-           upgraded, prev_tier_code, prev_tier_expires_at, prev_tier_order_id, status, note, created_at)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?)`)
+           upgraded, prev_tier_code, prev_tier_expires_at, prev_tier_period_start, prev_tier_order_id, status, note, created_at)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?)`)
         .bind(orderId, orderNo, member.id, admin.id, result.appliedTier, result.qualifyingQty, result.total, shipEnc,
           result.upgrade ? 1 : 0,
           result.upgrade ? member.tier_code : null,
           result.upgrade ? member.tier_expires_at : null,
+          result.upgrade ? member.tier_period_start : null,
           result.upgrade ? member.tier_order_id : null,
           note, now),
       ...result.lines.map((l) => env.DB.prepare(`INSERT INTO order_items
@@ -239,8 +255,8 @@ export async function createOrder(env, request, admin) {
         .bind(uuid(), orderId, l.product_id, l.product_name, l.quantity, l.list_price, l.discount_rate, l.unit_price, l.subtotal))
     ];
     if (result.upgrade) {
-      stmts.push(env.DB.prepare('UPDATE members SET tier_code = ?, tier_expires_at = ?, tier_order_id = ? WHERE id = ?')
-        .bind(result.appliedTier, result.newExpiresAt, orderId, member.id));
+      stmts.push(env.DB.prepare('UPDATE members SET tier_code = ?, tier_expires_at = ?, tier_period_start = ?, tier_order_id = ? WHERE id = ?')
+        .bind(result.appliedTier, result.newExpiresAt, result.newPeriodStart, orderId, member.id));
     }
     // 會員若還沒有地址，順手存成預設地址
     if (!member.address_enc) {
@@ -318,8 +334,12 @@ export async function updateOrder(env, request, id) {
     const revert = shouldRevertOnVoid(o, m, twDate(now));
     const stmts = [env.DB.prepare("UPDATE orders SET status = 'voided', voided_at = ? WHERE id = ?").bind(now, id)];
     if (revert) {
-      stmts.push(env.DB.prepare('UPDATE members SET tier_code = ?, tier_expires_at = ?, tier_order_id = ? WHERE id = ?')
-        .bind(o.prev_tier_code || 'general', o.prev_tier_expires_at, o.prev_tier_order_id, m.id));
+      const prevCode = o.prev_tier_code || 'general';
+      // 舊訂單沒有記錄效期起始日時，由到期日往前一年回推
+      const prevStart = prevCode === 'general' ? null
+        : (o.prev_tier_period_start || (o.prev_tier_expires_at ? periodStartOf(o.prev_tier_expires_at) : null));
+      stmts.push(env.DB.prepare('UPDATE members SET tier_code = ?, tier_expires_at = ?, tier_period_start = ?, tier_order_id = ? WHERE id = ?')
+        .bind(prevCode, o.prev_tier_expires_at, prevStart, o.prev_tier_order_id, m.id));
     }
     await env.DB.batch(stmts);
     return json({ ok: true, tierReverted: revert });

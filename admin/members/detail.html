@@ -50,7 +50,10 @@
             <dt>姓名</dt><dd>${esc(m.name || '—')}</dd>
             <dt>電話</dt><dd>${esc(m.phone || '—')}</dd>
             <dt>LINE 暱稱</dt><dd>${esc(m.lineDisplayName || '—')}</dd>
-            <dt>等級</dt><dd>${esc(m.tierName)}${m.tierExpiresAt ? `，${esc(m.tierExpiresAt)} 到期` : '（終身）'}</dd>
+            <dt>等級</dt><dd>${esc(m.tierName)}${m.tierExpiresAt ? `，${esc(m.tierPeriodStart || '')} ～ ${esc(m.tierExpiresAt)}` : '（永久）'}</dd>
+            ${m.renewal ? `<dt>續等進度</dt><dd>本期累積 <strong>${m.renewal.qty}</strong> / ${m.renewal.renewQty} 組${m.renewal.reached
+              ? `，<strong>已達標</strong>，到期後延續 ${esc(MS.TIER[m.renewal.tier])} 至 ${esc(m.renewal.nextExpiresAt)}`
+              : `，還差 ${m.renewal.missing} 組；目前到期後會是 ${esc(MS.TIER[m.renewal.nextTier])}${m.renewal.nextExpiresAt ? `（至 ${esc(m.renewal.nextExpiresAt)}）` : ''}`}</dd>` : ''}
             <dt>註冊時間</dt><dd>${esc(MS.twTime(m.createdAt))}</dd>
           </dl>
         </section>

@@ -2663,16 +2663,10 @@ a.qr-box:hover {
 
 /* ============================================================
    合併產品介紹頁 /products/vs-essences
-   頁首放跳轉按鈕，每款產品一段 article（id = 產品代稱，當錨點用）
+   每款產品一段 article（id = 產品代稱，舊網址轉址與站內連結的錨點）
    ============================================================ */
-.vs-jump { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
 .vs-product { scroll-margin-top: 80px; }
-.vs-product + .vs-product { border-top: 1px solid var(--line); }
-@media (max-width: 560px) {
-  .vs-jump .btn { width: 100%; }
-}
 .vs-sub { font-size: clamp(17px, 1.8vw, 19px); }
-.vs-product .ingredient-flow-terms { font-size: clamp(15px, 1.6vw, 18px); }
 .vs-info { align-items: start; }
 /* 產品簡介：商品圖寬度＝文字區塊的一半（1:2）；手機上下排時圖片也只佔一半寬 */
 .split.vs-hero { grid-template-columns: 1fr 2fr; }
@@ -2684,3 +2678,26 @@ a.qr-box:hover {
 .vs-notes { list-style: none; margin-left: 0; padding: 0; color: var(--ink-soft); font-size: 14px; line-height: 1.8; }
 .vs-notes li { padding-left: 1.4em; text-indent: -1.4em; }
 .vs-notes li::before { content: '✱'; display: inline-block; width: 1.4em; text-indent: 0; }
+/* 產品名稱：比頁面大標題（.h2）小一級、中等粗細 */
+.h2.vs-name { font-size: clamp(22px, 2.8vw, 34px); font-weight: 500; }
+@media (max-width: 768px) { .h2.vs-name { font-size: 22px; } }
+.vs-reminder { list-style: none; margin: 8px 0 0; padding: 0; }
+.vs-reminder li { font-size: inherit; line-height: inherit; padding-left: 1.2em; text-indent: -1.2em; }
+.vs-reminder li::before { content: '*'; display: inline-block; width: 1.2em; text-indent: 0; }
+
+/* 段落標題（商品摘要／商品描述／使用方式／商品資訊）：上方留一段空白，標題下一條細線 */
+.vs-sechead { padding-top: clamp(48px, 6vw, 88px); }
+.vs-sechead-t {
+  /* 字級、粗細與「四大保養功效」（.h3）相同 */
+  font-family: var(--sans);
+  font-size: clamp(18px, 2.5vw, 26px);
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--ink);
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+/* 產品介紹頁的常見問答沿用 /faq 的版型；問題在這裡是 h3 */
+.faq-plain.vs-faq { max-width: none; }
+.faq-plain .faq-entry h3 { font-size: clamp(17px, 1.8vw, 20px); line-height: 1.6; }
+@media (max-width: 768px) { .vs-sechead-t { font-size: 17px; } } /* 與手機版「四大保養功效」相同 */

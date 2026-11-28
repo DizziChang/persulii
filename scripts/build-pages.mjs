@@ -39,7 +39,8 @@ const DEFAULT_OG_IMAGE = SITE_URL + '/images/hbanner-homebeauty.webp';
 const PAGE_SLUG = 'vs-essences';
 const PAGE_PATH = '/products/' + PAGE_SLUG;
 const PAGE_URL = SITE_URL + PAGE_PATH;
-const PAGE_NAME = '沛素胜肽精華液';
+const PAGE_NAME = '沛素胜肽精華液';      /* 麵包屑、結構化資料用 */
+const PAGE_HEADING = '沛素宅養顏 V+S 素顏精華'; /* 頁面大標題（H1） */
 /* 產品在頁內的錨點：#v-essence。CMS 的 id 大小寫不拘，一律轉小寫 */
 const slugOf = (p) => String(p.id).toLowerCase();
 const pathOf = (p) => PAGE_PATH + '#' + slugOf(p);
@@ -93,19 +94,6 @@ function descOf(p) {
 
 /* ---- 單一產品段落（合併頁裡的一段；不含首圖 banner） ---- */
 function productSectionHTML(p) {
-  /* 關鍵成分：多項成分以「甲 + 乙 ⇨ 丙」流程呈現 */
-  const ing = (p.ingredients && p.ingredients.length > 1)
-    ? (() => {
-      const last = p.ingredients[p.ingredients.length - 1];
-      const head = p.ingredients.slice(0, -1).map((c) => c.zh).join(' <span class="ingredient-flow-plus">+</span> ');
-      return '<div class="ingredient-flow mt16">'
-        + '<div class="ingredient-flow-terms">' + head + ' <span class="ingredient-flow-arrow">⇨</span> ' + last.zh + '</div>'
-        + '</div>';
-    })()
-    : (p.ingredients || []).map((c, i) => (i > 0 ? '<hr class="divider mt24">' : '')
-      + '<div class="mt24"><div class="eyebrow">' + c.en + '</div>'
-      + '<h3 class="h3 mt8" style="font-size:20px">' + c.zh + '</h3></div>').join('');
-
   /* 產品特色：有功效資料時以功效卡呈現（左側預留縮圖），否則沿用單段文字 */
   const ZH_NUM = { 1: '一', 2: '二', 3: '三', 4: '四', 5: '五', 6: '六' };
   const benefitsHTML = (p.benefits && p.benefits.length)
@@ -116,51 +104,48 @@ function productSectionHTML(p) {
       + '<p class="small mt8">' + benefitBodyHTML(b.body) + '</p></div></div>').join('') + '</div>'
     : '<h2 class="h3">產品特色</h2><p class="body mt16">' + p.feature + '</p>';
 
-  const reminderSection = p.reminder
-    ? '<section class="sec tight"><div class="wrap"><h2 class="h3">注意事項</h2>'
-    + '<ul class="checklist dot mt16">' + p.reminder.split(/\n{2,}/).map((r) => '<li>' + r + '</li>').join('') + '</ul>'
-    + '</div></section>'
+  /* 注意事項：放在產品簡介右欄最下方（2026-11-28 從獨立區塊移進來） */
+  /* 注意事項用一般內文樣式（不加小標題粗體），每條前面 * */
+  const reminderHTML = p.reminder
+    ? '<p class="body mt24">注意事項：</p>'
+    + '<ul class="body vs-reminder">' + p.reminder.split(/\n{2,}/).map((r) => '<li>' + r + '</li>').join('') + '</ul>'
     : '';
 
-  /* 產品簡介右欄：名稱、賣點、簡介、標籤，接著關鍵成分與適用族群（2026-11-28 從獨立區塊移進來） */
-  const audienceHTML = (p.audience && p.audience.length)
-    ? '<h3 class="h3 vs-sub mt32">適用族群</h3>'
-    + '<ul class="checklist mt16">' + p.audience.map((a) => '<li>' + a + '</li>').join('') + '</ul>'
-    : '';
-
+  /* 產品簡介：左圖右文（名稱、賣點、簡介、補充說明與注意事項；關鍵成分、適用族群 2026-11-28 拿掉）。
+     手機上文字在上、圖片在下 */
   const alt = attr(p.en + ' ' + p.name);
-  return '<article class="vs-product" id="' + attr(slugOf(p)) + '">'
-    + '<section class="sec tight"><div class="wrap split vs-hero" style="align-items:flex-start">'
-    + '<div class="media product product-hero-media"' + (p.heroImg ? '' : ' data-mono="' + attr(p.code) + '"') + '>'
+  const media = '<div class="media product product-hero-media"' + (p.heroImg ? '' : ' data-mono="' + attr(p.code) + '"') + '>'
     + (p.heroImg ? '<img class="media-img" src="' + asset(p.heroImg) + '" alt="' + alt + '">' : '')
-    + '</div>'
+    + '</div>';
+  const intro = '<section class="sec tight vs-product" id="' + attr(slugOf(p)) + '">'
+    + '<div class="wrap split vs-hero" style="align-items:flex-start">'
+    + media
     + '<div>'
     + '<div class="eyebrow vs-label">沛素 ' + p.en + '</div>'
-    + '<h2 class="h2 mt12">' + p.name + '</h2>'
+    + '<h2 class="h2 vs-name mt12">' + p.name + '</h2>'
     + '<p class="lead mt16">' + p.tagline + '</p>'
     + '<p class="body">' + p.intro + '</p>'
     + (p.notes && p.notes.length ? '<ul class="vs-notes mt16">' + p.notes.map((n) => '<li>' + n + '</li>').join('') + '</ul>' : '')
-    + (p.ingredients && p.ingredients.length ? '<h3 class="h3 vs-sub mt32">關鍵成分</h3>' + ing : '')
-    + audienceHTML
+    + reminderHTML
     + '</div>'
-    + '</div></section>'
-    + '<section class="sec tight product-feature-sec" style="background:var(--bg)"><div class="wrap">' + benefitsHTML + '</div></section>'
-    /* S01／V01：看完簡介與功效、還在猶豫的人 */
-    + '<section class="sec tight line-cta-band"><div class="wrap center">'
-    + '<p class="body">每個人的膚況不同，不確定適不適合，直接問我們最快。</p>'
-    + '<div class="mt24">' + lineCtaHTML(p.code + '01', '不確定適不適合？LINE 問我們', '我想了解 ' + p.en, 'ghost', 'product_mid') + '</div>'
-    + '</div></section>'
-    + reminderSection
-    + '</article>';
+    + '</div></section>';
+
+  /* 保養功效：兩款的簡介都放完後才接，上方加產品小標辨識是哪一款 */
+  const benefits = '<section class="sec tight product-feature-sec vs-benefits" style="background:var(--bg)"><div class="wrap">'
+    + '<div class="eyebrow vs-label">沛素 ' + p.en + '</div>'
+    + '<div class="mt12">' + benefitsHTML + '</div>'
+    + '</div></section>';
+
+  return { intro, benefits };
 }
 
 /* ---- 使用方式：兩款共用一段（2026-11-28 合併；CMS 各產品的 usage 欄位目前不再使用） ---- */
 const SHARED_USAGE_TITLE = '每天30秒 早晚淨臉後護理';
 const SHARED_USAGE = ['臉部清潔完畢', '先取適量 V-essence 輕抹全臉，細紋處可加強', '待約20秒吸收後，再取適量 S-essence 輕抹全臉', '早晚都能使用'];
 function usageHTML() {
-  return '<section class="sec tight" style="background:var(--bg)"><div class="wrap">'
-    + '<h2 class="h3">使用方式</h2>'
-    + '<p class="body mt16">' + SHARED_USAGE_TITLE + '</p>'
+  return sectionHeadHTML('使用方式')
+    + '<section class="sec tight" style="background:var(--bg)"><div class="wrap">'
+    + '<p class="body">' + SHARED_USAGE_TITLE + '</p>'
     + SHARED_USAGE.map((t, i) => '<p class="body ' + (i === 0 ? 'mt16' : 'mt8') + '"><span class="num">' + ('0' + (i + 1)).slice(-2) + '</span>　' + t + '</p>').join('')
     + '</div></section>';
 }
@@ -186,28 +171,77 @@ function productInfoHTML(products) {
       + '</div>';
   };
   const certs = [...new Set(products.flatMap((p) => p.certifications || []))];
-  return '<section class="sec tight"><div class="wrap">'
-    + '<h2 class="h3">產品資訊</h2>'
-    + '<div class="grid g2 vs-info mt24">' + products.map(col).join('') + '</div>'
+  return sectionHeadHTML('商品資訊')
+    + '<section class="sec tight"><div class="wrap">'
+    + '<div class="grid g2 vs-info">' + products.map(col).join('') + '</div>'
     + (certs.length ? '<p class="small mt32">' + certs.join(' ｜ ') + '</p>' : '')
     + '</div></section>';
 }
 
-/* ---- 合併頁內文：頁首（麵包屑、H1、跳到各產品）＋各產品段落＋共用使用方式＋產品資訊＋回產品頁 ---- */
+/* ---- 使用心得：沿用首頁的 Google 評論輪播（同一組 id，js/main.js 載入 content/reviews.json 後填入；
+   沒有評論時整段維持隱藏，段落標題也包在裡面一起藏） ---- */
+const REVIEW_ARROW = (d) => '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="' + d + '" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+function reviewsHTML() {
+  return '<div id="reviews" hidden>'
+    + sectionHeadHTML('使用心得')
+    + '<section class="sec tight"><div class="wrap">'
+    + '<p class="reviews-summary center" id="reviews-summary"></p>'
+    + '<div class="reviews-carousel mt24">'
+    + '<button type="button" class="rc-btn rc-prev" id="reviews-prev" aria-label="上一則">' + REVIEW_ARROW('M15 5l-7 7 7 7') + '</button>'
+    + '<div class="reviews-track" id="reviews-list" tabindex="0" aria-label="顧客評價"></div>'
+    + '<button type="button" class="rc-btn rc-next" id="reviews-next" aria-label="下一則">' + REVIEW_ARROW('M9 5l7 7-7 7') + '</button>'
+    + '</div>'
+    + '<div class="rc-dots" id="reviews-dots"></div>'
+    + '<p class="center mt32"><a class="reviews-more" id="reviews-more" href="#" target="_blank" rel="noopener">在 Google 查看全部評論</a></p>'
+    + '</div></section></div>';
+}
+
+/* ---- 常見問答：建置時把 content/faq.json 全部寫進來（與 /faq 頁同一份內容；FAQPage 結構化資料只放在 /faq，避免重複） ---- */
+function faqHTML() {
+  const faq = JSON.parse(readFileSync(join(ROOT, 'content/faq.json'), 'utf8')).faq || [];
+  if (!faq.length) return '';
+  const para = (a) => String(a || '').split(/\n{2,}/).map((t) => '<p class="body mt16">' + t.split('\n').join('<br>') + '</p>').join('');
+  return sectionHeadHTML('常見問答')
+    + '<section class="sec tight"><div class="wrap"><div class="faq-plain vs-faq">'
+    + faq.map((it) => '<div class="faq-entry"><h3 class="h3">' + it.q + '</h3>' + para(it.a) + '</div>').join('')
+    + '</div></div></section>';
+}
+
+/* ---- 購買方式：文字說明，「官方 LINE 客服」與「經銷 LINE」做成文字連結（不放按鈕）。
+   官方 LINE 連結沿用 P02 辨識碼（準備購買），GA4 line_click 的 link_location 為 product_purchase ---- */
+function purchaseHTML() {
+  const lineLink = '<a class="tlink" href="' + attr(lineCtaURL('P02', '我想購買沛素精華')) + '" target="_blank" rel="noopener" data-cta="P02" data-cta-loc="product_purchase">官方 LINE 客服</a>';
+  return sectionHeadHTML('購買方式')
+    + '<section class="sec tight"><div class="wrap">'
+    + '<p class="body"><span class="num">方式一</span>　透過' + lineLink + '洽詢購買，提供信用卡付款、匯款及貨到付款。提供免運費宅配與超商取貨。</p>'
+    + '<p class="body mt16"><span class="num">方式二</span>　透過官網公告之<a class="tlink" href="/contact">經銷 LINE</a>，聯繫經銷購買。</p>'
+    + '</div></section>';
+}
+
+/* ---- 段落標題：上方留白、標題下一條細分隔線（商品摘要／商品描述／使用方式／商品資訊） ---- */
+function sectionHeadHTML(title) {
+  return '<div class="wrap vs-sechead"><h2 class="vs-sechead-t">' + title + '</h2></div>';
+}
+
+/* ---- 合併頁內文：頁首（麵包屑、H1）＋商品摘要＋商品描述＋使用方式＋商品資訊＋使用心得＋常見問答＋購買方式＋回產品頁 ---- */
 function detailHTML(products) {
   return '<section class="sec tight vs-intro"><div class="wrap">'
     + '<div class="crumb"><a href="/">首頁</a> / <a href="/products">產品</a> / ' + PAGE_NAME + '</div>'
     + '<div class="center mt32">'
     + '<div class="eyebrow">Products</div>'
-    + '<h1 class="h2 mt16">' + PAGE_NAME + '</h1>'
+    + '<h1 class="h2 mt16">' + PAGE_HEADING + '</h1>'
     + '<p class="body mt16">每天30秒，在家悄悄變美。兩款精華可單獨使用，也可以早晚搭配。</p>'
-    + '<nav class="vs-jump mt32" aria-label="產品">'
-    + products.map((p) => '<a href="#' + attr(slugOf(p)) + '" class="btn ghost">' + (p.hoverTitle && p.hoverDesc ? p.hoverTitle + '｜' + p.hoverDesc : p.en) + '</a>').join('')
-    + '</nav>'
     + '</div></div></section>'
-    + products.map(productSectionHTML).join('')
+    /* 順序：商品摘要（V 簡介 → S 簡介）→ 商品描述（V 功效 → S 功效）→ 使用方式 → 商品資訊 */
+    + sectionHeadHTML('商品摘要')
+    + products.map((p) => productSectionHTML(p).intro).join('')
+    + sectionHeadHTML('商品描述')
+    + products.map((p) => productSectionHTML(p).benefits).join('')
     + usageHTML()
     + productInfoHTML(products)
+    + reviewsHTML()
+    + faqHTML()
+    + purchaseHTML()
     + '<section class="sec tight"><div class="wrap">'
     + '<div class="pn mt56">'
     + '<a href="/products" class="pn-i"><div class="eyebrow">← 回到產品頁</div></a>'
@@ -381,7 +415,7 @@ function lastmodOf(files) {
 function sitemapXML(products) {
   /* /products 原本掛一支綜合介紹影片，2026-11-28 從頁面拿掉，sitemap 也不再宣告 */
   const entries = STATIC_PAGES.concat(
-    [{ path: PAGE_PATH, files: ['products/' + PAGE_SLUG + '.html', 'content/products.json'] }]
+    [{ path: PAGE_PATH, files: ['products/' + PAGE_SLUG + '.html', 'content/products.json', 'content/faq.json'] }]
   );
   return '<?xml version="1.0" encoding="UTF-8"?>\n'
     + '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'

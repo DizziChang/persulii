@@ -1137,6 +1137,9 @@ document.addEventListener('DOMContentLoaded', function () {
   if (page === 'home') {
     getJSON('/content/home.json').then(renderHome).catch(console.error);
     getJSON('/content/home-hero.json').then(initHeroCarousel).catch(console.error);
+  }
+  /* Google 評論輪播：首頁與產品介紹頁（/products/vs-essences 的「使用心得」）共用 */
+  if (document.getElementById('reviews')) {
     getJSON('/content/reviews.json').then(renderReviews).catch(console.error);
   }
   if (page === 'about') getJSON('/content/about-sections.json').then(renderAbout).catch(console.error);

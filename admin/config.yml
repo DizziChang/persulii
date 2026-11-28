@@ -36,7 +36,8 @@ collections:
               - { name: heroImg, label: 產品頁主圖, widget: image, required: false }
               - { name: tagline, label: 一句話賣點, widget: string }
               - { name: intro, label: 產品簡介, widget: text }
-              - { name: highlights, label: 重點標籤（產品頁簡介下方的小圓標）, widget: list, required: false, field: { name: item, label: 標籤, widget: string } }
+              - { name: highlights, label: 重點標籤（目前產品頁不顯示）, widget: list, required: false, field: { name: item, label: 標籤, widget: string } }
+              - { name: notes, label: 簡介補充說明（產品頁簡介下方、每行前面加 ✱）, widget: list, required: false, field: { name: item, label: 說明, widget: string } }
               - name: videoId
                 label: YouTube 影片 ID
                 widget: string

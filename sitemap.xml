@@ -1,53 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://persulii.com.tw/</loc>
-    <lastmod>2026-11-10</lastmod>
+    <lastmod>2026-11-28</lastmod>
   </url>
   <url>
     <loc>https://persulii.com.tw/about</loc>
-    <lastmod>2026-11-10</lastmod>
+    <lastmod>2026-11-28</lastmod>
   </url>
   <url>
     <loc>https://persulii.com.tw/products</loc>
-    <lastmod>2026-11-10</lastmod>
-    <video:video>
-      <video:thumbnail_loc>https://persulii.com.tw/images/video-vs-poster.webp</video:thumbnail_loc>
-      <video:title>per-sulii 沛素 產品介紹影片</video:title>
-      <video:description>per-sulii 沛素 產品系列介紹：V-essence 精萃蜂胜肽PLUS精華與 S-essence 外泌體多胜肽養護精華，每天30秒在家養出好肌膚。</video:description>
-      <video:content_loc>https://persulii.com.tw/video/persulii-vs-intro.mp4</video:content_loc>
-      <video:publication_date>2026-08-01T00:00:00+08:00</video:publication_date>
-    </video:video>
+    <lastmod>2026-11-28</lastmod>
   </url>
   <url>
     <loc>https://persulii.com.tw/faq</loc>
-    <lastmod>2026-11-10</lastmod>
+    <lastmod>2026-11-28</lastmod>
   </url>
   <url>
     <loc>https://persulii.com.tw/contact</loc>
-    <lastmod>2026-11-10</lastmod>
+    <lastmod>2026-11-28</lastmod>
   </url>
   <url>
-    <loc>https://persulii.com.tw/products/s-essence</loc>
-    <lastmod>2026-11-10</lastmod>
-    <video:video>
-      <video:thumbnail_loc>https://persulii.com.tw/images/video-s-poster.webp</video:thumbnail_loc>
-      <video:title>S-essence 外泌體多胜肽養護精華 介紹影片</video:title>
-      <video:description>S-essence 外泌體多胜肽養護精華介紹影片。柔潤、透亮肌膚、細緻毛孔 使用合法優質外泌體結合多胜肽，調理肌膚，在家悄悄變美</video:description>
-      <video:player_loc>https://www.youtube.com/embed/x2illOn4Tpc</video:player_loc>
-      <video:publication_date>2026-08-01T00:00:00+08:00</video:publication_date>
-    </video:video>
-  </url>
-  <url>
-    <loc>https://persulii.com.tw/products/v-essence</loc>
-    <lastmod>2026-11-10</lastmod>
-    <video:video>
-      <video:thumbnail_loc>https://persulii.com.tw/images/video-v-poster.webp</video:thumbnail_loc>
-      <video:title>V-essence 精萃蜂胜肽PLUS精華 介紹影片</video:title>
-      <video:description>V-essence 精萃蜂胜肽PLUS精華介紹影片。專為淡化肌膚紋路打造 蜂胜肽精華，有助於維持肌膚彈性與緊緻，讓肌膚展現澎潤光澤與年輕活力。</video:description>
-      <video:player_loc>https://www.youtube.com/embed/fHU3fPWBnUY</video:player_loc>
-      <video:publication_date>2026-08-01T00:00:00+08:00</video:publication_date>
-    </video:video>
+    <loc>https://persulii.com.tw/products/vs-essences</loc>
+    <lastmod>2026-10-28</lastmod>
   </url>
 </urlset>

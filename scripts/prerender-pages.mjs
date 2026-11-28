@@ -31,7 +31,7 @@ const ldScript = (id, data) => '<script type="application/ld+json" id="' + id + 
   + JSON.stringify(data).replace(/</g, '\\u003c') + '</script>';
 
 /* ---- 產品卡（與 js/main.js 的 productCardHTML／homeProductRowHTML 同版型） ---- */
-const productPath = (p) => '/products/' + String(p.id).toLowerCase();
+const productPath = (p) => '/products/vs-essences#' + String(p.id).toLowerCase();
 const HOME_CTA = { 'V-essence': '我要淡化細紋 →', 'S-essence': '我要細緻肌膚 →' };
 const ROW_CLASS = { 'V-essence': 'pfeature-row-v', 'S-essence': 'pfeature-row-s' };
 

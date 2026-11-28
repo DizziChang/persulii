@@ -2,8 +2,10 @@
 /* ============================================================
    build-pages.mjs — 產品實體頁與 sitemap 產生器
 
-   讀 content/products.json，每款產品輸出一個實體 HTML：
-     content/products.json  →  products/v-essence.html  →  /products/v-essence
+   讀 content/products.json，所有產品合併輸出成一個實體 HTML（2026-11-28 起）：
+     content/products.json  →  products/vs-essences.html  →  /products/vs-essences
+   每款產品是頁內一段，錨點為產品代稱：/products/vs-essences#v-essence。
+   舊網址 /products/v-essence、/products/s-essence 由 worker/index.js 與 _redirects 301 轉到對應錨點。
 
    為什麼要在建置時產生，而不是像以前一樣用 product.html?id= 由 JS 渲染：
      1. 每頁有自己的 title / description / canonical / OG，原始 HTML 就帶著，
@@ -33,9 +35,20 @@ const SITE_NAME = 'per-sulii 沛素';
 const GA_ID = 'G-LZB61GG4PM';
 const DEFAULT_OG_IMAGE = SITE_URL + '/images/hbanner-homebeauty.webp';
 
-/* 網址代稱：/products/v-essence。CMS 的 id 大小寫不拘，一律轉小寫 */
+/* 合併後的產品介紹頁 */
+const PAGE_SLUG = 'vs-essences';
+const PAGE_PATH = '/products/' + PAGE_SLUG;
+const PAGE_URL = SITE_URL + PAGE_PATH;
+const PAGE_NAME = '沛素胜肽精華液';
+/* 產品在頁內的錨點：#v-essence。CMS 的 id 大小寫不拘，一律轉小寫 */
 const slugOf = (p) => String(p.id).toLowerCase();
-const pathOf = (p) => '/products/' + slugOf(p);
+const pathOf = (p) => PAGE_PATH + '#' + slugOf(p);
+/* 頁內排列：V 在前、S 在後（與「V+S」的說法一致），CMS 新增的其他產品接在後面 */
+const ORDER = ['V-essence', 'S-essence'];
+const ordered = (list) => list.slice().sort((a, b) => {
+  const ia = ORDER.indexOf(a.en), ib = ORDER.indexOf(b.en);
+  return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
+});
 
 /* CMS 的 media_folder 是 images，存出來的路徑有 "images/x.webp" 也有 "/images/x.webp"，
    在子目錄頁面上相對路徑會解析錯，統一補成根絕對路徑 */
@@ -72,72 +85,20 @@ function benefitBodyHTML(s) {
   return (s || '').split('\n').map((line) => '<span class="benefit-line">' + line + '</span>').join('');
 }
 
-/* ---- 影片 ----
-   Google 要收錄影片需要兩件事：頁面上的 VideoObject 結構化資料，
-   以及 sitemap 的 video 擴充。兩者的內容必須一致，所以共用下面這份定義。
-
-   一支影片只掛一個頁面。首頁那三支（含 js/main.js 依 videoId 注入的 V／S
-   短影片）與這裡宣告的是同一份內容，Google 一支影片只會挑一個網址收錄，
-   兩邊都宣告等於自己跟自己搶，因此首頁刻意不宣告。 */
-
-/* 影片沒有進 CMS，發佈時間統一用影片首次進版控的日期。
-   換上新影片時要一併更新，否則 Google 拿到的是過期的發佈時間。 */
-const VIDEO_PUBLISHED = '2026-08-01T00:00:00+08:00';
-
-/* 縮圖是 VideoObject 的必填欄位，沒有就不會被收錄。用站內自製的 poster 圖，
-   也就是影片本身的第一影格（同一張圖同時餵給 <video poster>）。
-
-   不用 YouTube 的 maxresdefault：V／S 是直式 1080x1920，YouTube 一律輸出
-   16:9，直式影片會被塞進信箱框，兩側補放大模糊的填充，真正的畫面只剩中間
-   一條，當搜尋結果縮圖很吃虧。
-
-   換影片時要重新抽圖（本機有 ffmpeg 的話）：
-     ffmpeg -i video/persulii-vs-intro.mp4 -vframes 1 -q:v 2 images/video-vs-poster.webp */
-const poster = (code) => SITE_URL + '/images/video-' + code + '-poster.webp';
-
-/* /products 那支綜合介紹影片：檔案自架、沒有對應的 CMS 欄位，只能寫死。
-   products.html 的 VideoObject 是手寫的，改這裡要記得同步過去。 */
-const PRODUCTS_PAGE_VIDEO = {
-  title: 'per-sulii 沛素 產品介紹影片',
-  description: 'per-sulii 沛素 產品系列介紹：V-essence 精萃蜂胜肽PLUS精華與 S-essence 外泌體多胜肽養護精華，每天30秒在家養出好肌膚。',
-  thumbnail: poster('vs'),
-  contentUrl: SITE_URL + '/video/persulii-vs-intro.mp4'
-};
-
-/* 產品頁嵌的是 YouTube，所以給 player_loc／embedUrl 而非 content_loc；
-   指向站內沒有的檔案會讓 Google 抓不到而整筆略過。 */
-function productVideo(p) {
-  if (!p.videoId) return null;
-  return {
-    title: p.en + ' ' + p.name + ' 介紹影片',
-    description: p.en + ' ' + p.name + '介紹影片。' + descOf(p),
-    thumbnail: poster(String(p.code).toLowerCase()),
-    playerUrl: 'https://www.youtube.com/embed/' + p.videoId
-  };
-}
-
 /* 摘要取自賣點＋簡介，過長則截斷，維持在搜尋結果不被切掉的長度 */
 function descOf(p) {
   const d = (p.tagline || '').replace(/<br\s*\/?>/gi, ' ') + (p.intro ? ' ' + p.intro : '');
   return d.length > 120 ? d.slice(0, 117) + '...' : d;
 }
 
-const SHARE_ICON_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.4"/><circle cx="6" cy="12" r="2.4"/><circle cx="18" cy="19" r="2.4"/><path d="M8.1 10.7l7.6-4.3M8.1 13.3l7.6 4.3"/></svg>';
-function shareButtonHTML(url, title) {
-  return '<div class="video-share-wrap">'
-    + '<button type="button" class="btn ghost share-btn" data-share-url="' + attr(url) + '" data-share-title="' + attr(title || '') + '">'
-    + SHARE_ICON_SVG + '<span class="share-btn-label">分享</span>'
-    + '</button></div>';
-}
-
-/* ---- 產品內文（自 js/main.js 的 renderProductDetail 移植，版型未變） ---- */
-function detailHTML(p, next) {
+/* ---- 單一產品段落（合併頁裡的一段；不含首圖 banner） ---- */
+function productSectionHTML(p) {
   /* 關鍵成分：多項成分以「甲 + 乙 ⇨ 丙」流程呈現 */
   const ing = (p.ingredients && p.ingredients.length > 1)
     ? (() => {
       const last = p.ingredients[p.ingredients.length - 1];
       const head = p.ingredients.slice(0, -1).map((c) => c.zh).join(' <span class="ingredient-flow-plus">+</span> ');
-      return '<div class="ingredient-flow mt24">'
+      return '<div class="ingredient-flow mt16">'
         + '<div class="ingredient-flow-terms">' + head + ' <span class="ingredient-flow-arrow">⇨</span> ' + last.zh + '</div>'
         + '</div>';
     })()
@@ -145,13 +106,7 @@ function detailHTML(p, next) {
       + '<div class="mt24"><div class="eyebrow">' + c.en + '</div>'
       + '<h3 class="h3 mt8" style="font-size:20px">' + c.zh + '</h3></div>').join('');
 
-  const use = (p.usage || []).map((s, i) => {
-    const n = ('0' + (i + 1)).slice(-2);
-    return '<p class="body ' + (i === 0 ? 'mt16' : 'mt8') + '">'
-      + '<span class="num">' + n + '</span>　' + s + '</p>';
-  }).join('');
-
-  /* 產品特色：有功效資料時以功效卡呈現（左側預留縮圖），否則沿用單段文字；有影片時功效文字置左、影片置右 */
+  /* 產品特色：有功效資料時以功效卡呈現（左側預留縮圖），否則沿用單段文字 */
   const ZH_NUM = { 1: '一', 2: '二', 3: '三', 4: '四', 5: '五', 6: '六' };
   const benefitsHTML = (p.benefits && p.benefits.length)
     ? '<h2 class="h3">' + (ZH_NUM[p.benefits.length] || p.benefits.length) + '大保養功效</h2><div class="benefits-row' + (p.benefits.length === 3 ? ' cols-3' : '') + ' mt32">'
@@ -161,152 +116,135 @@ function detailHTML(p, next) {
       + '<p class="small mt8">' + benefitBodyHTML(b.body) + '</p></div></div>').join('') + '</div>'
     : '<h2 class="h3">產品特色</h2><p class="body mt16">' + p.feature + '</p>';
 
-  const featureSection = p.videoId
-    ? '<div class="benefits-layout"><div>' + benefitsHTML + '</div>'
-    + '<div class="benefit-video"><div class="video-frame"><iframe src="https://www.youtube.com/embed/' + attr(p.videoId) + '" title="' + attr(p.en) + ' 介紹影片" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>'
-    + shareButtonHTML(SITE_URL + pathOf(p), p.en + ' ' + p.name) + '</div>'
-    + '</div>'
-    : benefitsHTML;
-
-  /* 適用族群／使用方式 左右並排 */
-  const audienceUsageSection = (p.audience && p.audience.length)
-    ? '<section class="sec tight" style="background:var(--bg)"><div class="wrap grid g2">'
-    + '<div><h2 class="h3">適用族群</h2>'
-    + '<ul class="checklist mt24">' + p.audience.map((a) => '<li>' + a + '</li>').join('') + '</ul>'
-    + '</div>'
-    + '<div><h2 class="h3">使用方式</h2>'
-    + (p.usageTitle ? '<p class="body mt16">' + p.usageTitle + '</p>' : '')
-    + use + '</div>'
-    + '</div></section>'
-    : '<section class="sec tight"><div class="wrap"><h2 class="h3">使用方式</h2>'
-    + (p.usageTitle ? '<p class="body mt16">' + p.usageTitle + '</p>' : '')
-    + use + '</div></section>';
-
   const reminderSection = p.reminder
     ? '<section class="sec tight"><div class="wrap"><h2 class="h3">注意事項</h2>'
     + '<ul class="checklist dot mt16">' + p.reminder.split(/\n{2,}/).map((r) => '<li>' + r + '</li>').join('') + '</ul>'
     + '</div></section>'
     : '';
 
-  const inciSection = p.specs.inciList
-    ? '<p class="body mt8">成分標示：</p>'
-    + '<p class="body mt16" style="font-weight:500">' + p.specs.inciTitle + '</p>'
-    + '<p class="small mt8 inci-text">' + p.specs.inciList + '</p>'
-    + (p.specs.inciNote ? '<p class="small mt8">' + p.specs.inciNote + '</p>' : '')
-    : '<p class="body mt8">成分標示：' + p.specs.inci + '</p>';
-
-  const certList = (p.certifications && p.certifications.length)
-    ? p.certifications.join(' ｜ ')
-    : (p.bottleInfo && p.bottleInfo.cert ? p.bottleInfo.cert : '');
-
-  const bottleRows = p.bottleInfo ? [
-    p.bottleInfo.name ? '<tr><th>品名</th><td>' + p.bottleInfo.name + '</td></tr>' : '',
-    p.bottleInfo.volume ? '<tr><th>容量</th><td>' + p.bottleInfo.volume + '</td></tr>' : '',
-    p.bottleInfo.price ? '<tr><th>定價</th><td>' + p.bottleInfo.price + '</td></tr>' : '',
-    p.bottleInfo.storage ? '<tr><th>保存方法</th><td>' + p.bottleInfo.storage + '</td></tr>' : '',
-    p.bottleInfo.shelfLife ? '<tr><th>有效期限</th><td>' + p.bottleInfo.shelfLife + '</td></tr>' : '',
-    p.bottleInfo.batchExpiry ? '<tr><th>保存期限與批號</th><td>' + p.bottleInfo.batchExpiry + '</td></tr>' : '',
-    p.bottleInfo.manufacturer ? '<tr><th>製造業者</th><td>' + p.bottleInfo.manufacturer + '</td></tr>' : '',
-    p.bottleInfo.phone ? '<tr><th>客服專線</th><td>' + p.bottleInfo.phone + '</td></tr>' : '',
-    p.bottleInfo.address ? '<tr><th>地址</th><td>' + p.bottleInfo.address + '</td></tr>' : '',
-  ].filter(Boolean).join('') : '';
-
-  const bottleSection = p.bottleInfo
-    ? '<section class="sec tight" style="background:var(--bg)"><div class="wrap">'
-    + '<h2 class="h3">產品資訊</h2><table class="pspecs mt24">'
-    + bottleRows
-    + '</table>'
-    + '<div class="mt24">' + inciSection + (certList ? '<p class="small mt8">' + certList + '</p>' : '') + '</div>'
-    + '</div></section>'
+  /* 產品簡介右欄：名稱、賣點、簡介、標籤，接著關鍵成分與適用族群（2026-11-28 從獨立區塊移進來） */
+  const audienceHTML = (p.audience && p.audience.length)
+    ? '<h3 class="h3 vs-sub mt32">適用族群</h3>'
+    + '<ul class="checklist mt16">' + p.audience.map((a) => '<li>' + a + '</li>').join('') + '</ul>'
     : '';
 
   const alt = attr(p.en + ' ' + p.name);
-  return '<div class="wrap"><div class="crumb"><a href="/">首頁</a> / <a href="/products">產品</a> / ' + p.en + ' ' + p.name + '</div></div>'
-    + (p.banner ? '<div class="pbanner-wrap"><img class="pbanner" src="' + asset(p.banner) + '" alt="' + alt + '"></div>' : '')
-    + '<section class="sec tight"><div class="wrap split" style="align-items:flex-start">'
-    + '<div class="media product" id="product-hero-media"' + (p.heroImg ? '' : ' data-mono="' + attr(p.code) + '"') + '>'
+  return '<article class="vs-product" id="' + attr(slugOf(p)) + '">'
+    + '<section class="sec tight"><div class="wrap split vs-hero" style="align-items:flex-start">'
+    + '<div class="media product product-hero-media"' + (p.heroImg ? '' : ' data-mono="' + attr(p.code) + '"') + '>'
     + (p.heroImg ? '<img class="media-img" src="' + asset(p.heroImg) + '" alt="' + alt + '">' : '')
     + '</div>'
     + '<div>'
-    + '<h1 class="h2 mt12">' + p.en + ' ' + p.name + '</h1>'
+    + '<div class="eyebrow vs-label">沛素 ' + p.en + '</div>'
+    + '<h2 class="h2 mt12">' + p.name + '</h2>'
     + '<p class="lead mt16">' + p.tagline + '</p>'
     + '<p class="body">' + p.intro + '</p>'
-    + (p.highlights && p.highlights.length ? '<div class="chips mt24">' + p.highlights.map((h) => '<span class="chip">' + h + '</span>').join('') + '</div>' : '')
-    + '<div class="mt32 line-cta-hero" id="product-hero-cta">'
-    + lineCtaHTML(p.code + '02', 'LINE 立即詢問購買', '我想購買 ' + p.en, 'solid', 'product_hero')
-    + '<a href="/contact" class="tlink line-cta-alt">或洽詢官方認證夥伴 ▸</a>'
-    + '</div>'
+    + (p.notes && p.notes.length ? '<ul class="vs-notes mt16">' + p.notes.map((n) => '<li>' + n + '</li>').join('') + '</ul>' : '')
+    + (p.ingredients && p.ingredients.length ? '<h3 class="h3 vs-sub mt32">關鍵成分</h3>' + ing : '')
+    + audienceHTML
     + '</div>'
     + '</div></section>'
-    + '<section class="sec tight" id="product-feature-sec" style="background:var(--bg)"><div class="wrap">' + featureSection + '</div></section>'
-    + '<section class="sec tight"><div class="wrap"><h2 class="h3">關鍵成分</h2>' + ing + '</div></section>'
-    + audienceUsageSection
-    /* S01／V01：看完適用族群與用法、還在猶豫的人 */
+    + '<section class="sec tight product-feature-sec" style="background:var(--bg)"><div class="wrap">' + benefitsHTML + '</div></section>'
+    /* S01／V01：看完簡介與功效、還在猶豫的人 */
     + '<section class="sec tight line-cta-band"><div class="wrap center">'
     + '<p class="body">每個人的膚況不同，不確定適不適合，直接問我們最快。</p>'
     + '<div class="mt24">' + lineCtaHTML(p.code + '01', '不確定適不適合？LINE 問我們', '我想了解 ' + p.en, 'ghost', 'product_mid') + '</div>'
     + '</div></section>'
     + reminderSection
-    + '' /* TODO: 暫時隱藏「規格與認證」區塊 */
-    + bottleSection
+    + '</article>';
+}
+
+/* ---- 使用方式：兩款共用一段（2026-11-28 合併；CMS 各產品的 usage 欄位目前不再使用） ---- */
+const SHARED_USAGE_TITLE = '每天30秒 早晚淨臉後護理';
+const SHARED_USAGE = ['臉部清潔完畢', '先取適量 V-essence 輕抹全臉，細紋處可加強', '待約20秒吸收後，再取適量 S-essence 輕抹全臉', '早晚都能使用'];
+function usageHTML() {
+  return '<section class="sec tight" style="background:var(--bg)"><div class="wrap">'
+    + '<h2 class="h3">使用方式</h2>'
+    + '<p class="body mt16">' + SHARED_USAGE_TITLE + '</p>'
+    + SHARED_USAGE.map((t, i) => '<p class="body ' + (i === 0 ? 'mt16' : 'mt8') + '"><span class="num">' + ('0' + (i + 1)).slice(-2) + '</span>　' + t + '</p>').join('')
+    + '</div></section>';
+}
+
+/* ---- 產品資訊：各產品並排（手機上下排），認證只寫一次 ---- */
+function productInfoHTML(products) {
+  const col = (p) => {
+    const b = p.bottleInfo || {};
+    const rows = [
+      ['品名', b.name], ['容量', b.volume], ['定價', b.price], ['保存方法', b.storage], ['有效期限', b.shelfLife],
+      ['保存期限與批號', b.batchExpiry], ['製造業者', b.manufacturer], ['客服專線', b.phone], ['地址', b.address]
+    ].filter((r) => r[1]).map((r) => '<tr><th>' + r[0] + '</th><td>' + r[1] + '</td></tr>').join('');
+    const sp = p.specs || {};
+    const inci = sp.inciList
+      ? '<p class="body mt16" style="font-weight:500">' + sp.inciTitle + '</p>'
+      + '<p class="small mt8 inci-text">' + sp.inciList + '</p>'
+      + (sp.inciNote ? '<p class="small mt8">' + sp.inciNote + '</p>' : '')
+      : (sp.inci ? '<p class="body mt16">成分標示：' + sp.inci + '</p>' : '');
+    return '<div class="vs-info-col">'
+      + '<h3 class="h3 vs-sub">' + p.en + ' ' + p.name + '</h3>'
+      + (rows ? '<table class="pspecs mt16">' + rows + '</table>' : '')
+      + inci
+      + '</div>';
+  };
+  const certs = [...new Set(products.flatMap((p) => p.certifications || []))];
+  return '<section class="sec tight"><div class="wrap">'
+    + '<h2 class="h3">產品資訊</h2>'
+    + '<div class="grid g2 vs-info mt24">' + products.map(col).join('') + '</div>'
+    + (certs.length ? '<p class="small mt32">' + certs.join(' ｜ ') + '</p>' : '')
+    + '</div></section>';
+}
+
+/* ---- 合併頁內文：頁首（麵包屑、H1、跳到各產品）＋各產品段落＋共用使用方式＋產品資訊＋回產品頁 ---- */
+function detailHTML(products) {
+  return '<section class="sec tight vs-intro"><div class="wrap">'
+    + '<div class="crumb"><a href="/">首頁</a> / <a href="/products">產品</a> / ' + PAGE_NAME + '</div>'
+    + '<div class="center mt32">'
+    + '<div class="eyebrow">Products</div>'
+    + '<h1 class="h2 mt16">' + PAGE_NAME + '</h1>'
+    + '<p class="body mt16">每天30秒，在家悄悄變美。兩款精華可單獨使用，也可以早晚搭配。</p>'
+    + '<nav class="vs-jump mt32" aria-label="產品">'
+    + products.map((p) => '<a href="#' + attr(slugOf(p)) + '" class="btn ghost">' + (p.hoverTitle && p.hoverDesc ? p.hoverTitle + '｜' + p.hoverDesc : p.en) + '</a>').join('')
+    + '</nav>'
+    + '</div></div></section>'
+    + products.map(productSectionHTML).join('')
+    + usageHTML()
+    + productInfoHTML(products)
     + '<section class="sec tight"><div class="wrap">'
     + '<div class="pn mt56">'
     + '<a href="/products" class="pn-i"><div class="eyebrow">← 回到產品頁</div></a>'
-    + '<a href="' + pathOf(next) + '" class="pn-i" style="text-align:right"><div class="eyebrow">下一個商品 →</div><div class="nm">' + next.en + ' ' + next.name + '</div></a>'
     + '</div></div></section>';
 }
 
 /* ---- 整頁 ---- */
-function pageHTML(p, next) {
-  const TITLES = {
-    'V-essence': '蜂胜肽精華 V-essence｜淡化細紋・緊緻彈潤｜沛素 per-sulii',
-    'S-essence': '外泌體精華 S-essence｜細緻毛孔・穩定膚況｜沛素 per-sulii',
-  };
-  const title = TITLES[p.en] || (p.en + ' ' + p.name + ' — ' + SITE_NAME);
-  const url = SITE_URL + pathOf(p);
-  const ogImage = p.banner ? (SITE_URL + asset(p.banner)) : DEFAULT_OG_IMAGE;
+function pageHTML(products) {
+  const title = '胜肽精華液 V-essence・S-essence｜淡化細紋・細緻毛孔｜沛素 per-sulii';
+  const url = PAGE_URL;
+  const ogImage = DEFAULT_OG_IMAGE;
+  const desc = '沛素 V-essence 精萃蜂胜肽PLUS精華淡化細紋、緊緻彈潤；S-essence 外泌體多胜肽養護精華細緻毛孔、穩定膚況。完成 TFDA 化粧品產品登錄，GMP 品質製程。';
 
-  const DESCS = {
-    'S-essence': '沛素 S-essence 外泌體多胜肽養護精華，細緻毛孔、穩定膚況。使用合法優質外泌體結合多胜肽，調理肌膚，在家悄悄變美。',
-  };
-  const desc = DESCS[p.en] || descOf(p);
-
-  const ld = {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    name: p.en + ' ' + p.name,
-    description: desc,
-    image: ogImage,
-    brand: { '@type': 'Brand', name: 'per-sulii 沛素' },
-    url: url
-  };
-
-  /* Google 的 Product 複合式結果必須有 offers／review／aggregateRating 其一，
+  /* 每款產品一筆 Product。Google 的 Product 複合式結果必須有 offers／review／aggregateRating 其一，
      這裡用 CMS 的定價（例如 "NT$ 3,800"）產生 offers；沒填定價就不輸出 */
-  const price = String((p.bottleInfo && p.bottleInfo.price) || '').replace(/[^\d.]/g, '');
-  if (price) {
-    ld.offers = {
-      '@type': 'Offer',
-      price: price,
-      priceCurrency: 'TWD',
-      availability: 'https://schema.org/InStock',
-      url: url
+  const ld = products.map((p) => {
+    const item = {
+      '@context': 'https://schema.org',
+      '@type': 'Product',
+      name: p.en + ' ' + p.name,
+      description: descOf(p),
+      image: SITE_URL + asset(p.heroImg || p.img),
+      brand: { '@type': 'Brand', name: 'per-sulii 沛素' },
+      url: SITE_URL + pathOf(p)
     };
-  }
-
-  const video = productVideo(p);
-  const videoLd = video && {
-    '@context': 'https://schema.org',
-    '@type': 'VideoObject',
-    name: video.title,
-    description: video.description,
-    thumbnailUrl: video.thumbnail,
-    uploadDate: VIDEO_PUBLISHED,
-    embedUrl: video.playerUrl
-  };
-  const videoLdTag = videoLd
-    ? '\n  <script type="application/ld+json">' + JSON.stringify(videoLd) + '</script>'
-    : '';
+    const price = String((p.bottleInfo && p.bottleInfo.price) || '').replace(/[^\d.]/g, '');
+    if (price) {
+      item.offers = {
+        '@type': 'Offer',
+        price: price,
+        priceCurrency: 'TWD',
+        availability: 'https://schema.org/InStock',
+        url: SITE_URL + pathOf(p)
+      };
+    }
+    return item;
+  });
 
   const breadcrumbLd = {
     '@context': 'https://schema.org',
@@ -314,7 +252,7 @@ function pageHTML(p, next) {
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: '首頁', item: SITE_URL + '/' },
       { '@type': 'ListItem', position: 2, name: '產品', item: SITE_URL + '/products' },
-      { '@type': 'ListItem', position: 3, name: p.en + ' ' + p.name, item: url }
+      { '@type': 'ListItem', position: 3, name: PAGE_NAME, item: url }
     ]
   };
   const breadcrumbLdTag = '\n  <script type="application/ld+json">' + JSON.stringify(breadcrumbLd) + '</script>';
@@ -379,7 +317,7 @@ function pageHTML(p, next) {
   <meta name="twitter:title" content="${attr(title)}">
   <meta name="twitter:description" content="${attr(desc)}">
   <meta name="twitter:image" content="${attr(ogImage)}">
-  <script type="application/ld+json">${JSON.stringify(ld)}</script>${videoLdTag}${breadcrumbLdTag}
+  <script type="application/ld+json">${JSON.stringify(ld)}</script>${breadcrumbLdTag}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -410,15 +348,7 @@ function pageHTML(p, next) {
   <div id="site-header"></div>
 
   <!-- 本頁由 scripts/build-pages.mjs 依 content/products.json 產生，請勿直接編輯 -->
-  <main id="product-detail">${detailHTML(p, next)}</main>
-
-  <!-- 置底購買列（S02／V02）：首屏按鈕捲出畫面後才出現，看到 footer 時收起（js/main.js initStickyCta） -->
-  <div class="line-cta-sticky" id="line-cta-sticky" aria-hidden="true">
-    <div class="line-cta-sticky-in">
-      <span class="line-cta-sticky-name">${p.en} ${p.name}</span>
-      ${lineCtaHTML(p.code + '02', 'LINE 立即詢問購買', '我想購買 ' + p.en, 'solid', 'product_sticky')}
-    </div>
-  </div>
+  <main id="product-detail">${detailHTML(products)}</main>
 
   <div id="site-footer"></div>
 
@@ -439,20 +369,6 @@ const STATIC_PAGES = [
   { path: '/contact', files: ['contact.html', 'content/contact-channels.json', 'content/settings-contact.json'] }
 ];
 
-/* video 擴充的子標籤有固定順序，對調會驗證失敗。attr() 逸出的字元
-   （& < > "）對 XML 文字節點也夠用，不另外寫一份逸出函式。 */
-function videoXML(v) {
-  if (!v) return '';
-  return '    <video:video>\n'
-    + '      <video:thumbnail_loc>' + attr(v.thumbnail) + '</video:thumbnail_loc>\n'
-    + '      <video:title>' + attr(v.title) + '</video:title>\n'
-    + '      <video:description>' + attr(v.description) + '</video:description>\n'
-    + (v.contentUrl ? '      <video:content_loc>' + attr(v.contentUrl) + '</video:content_loc>\n' : '')
-    + (v.playerUrl ? '      <video:player_loc>' + attr(v.playerUrl) + '</video:player_loc>\n' : '')
-    + '      <video:publication_date>' + VIDEO_PUBLISHED + '</video:publication_date>\n'
-    + '    </video:video>\n';
-}
-
 /* lastmod 取相關檔案最後一次 commit 的日期（Google 只在日期可信時才採用，
    changefreq／priority 已不被採用所以不輸出）。取不到（淺層 clone、非 git 環境）就省略。 */
 function lastmodOf(files) {
@@ -463,18 +379,15 @@ function lastmodOf(files) {
 }
 
 function sitemapXML(products) {
-  const entries = STATIC_PAGES.map((e) => (
-    e.path === '/products' ? { ...e, video: PRODUCTS_PAGE_VIDEO } : e
-  )).concat(
-    products.map((p) => ({ path: pathOf(p), files: ['products/' + slugOf(p) + '.html', 'content/products.json'], video: productVideo(p) }))
+  /* /products 原本掛一支綜合介紹影片，2026-11-28 從頁面拿掉，sitemap 也不再宣告 */
+  const entries = STATIC_PAGES.concat(
+    [{ path: PAGE_PATH, files: ['products/' + PAGE_SLUG + '.html', 'content/products.json'] }]
   );
   return '<?xml version="1.0" encoding="UTF-8"?>\n'
-    + '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n'
-    + '        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">\n'
+    + '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     + entries.map((e) => '  <url>\n'
       + '    <loc>' + SITE_URL + e.path + '</loc>\n'
       + (lastmodOf(e.files) ? '    <lastmod>' + lastmodOf(e.files) + '</lastmod>\n' : '')
-      + videoXML(e.video)
       + '  </url>\n').join('')
     + '</urlset>\n';
 }
@@ -498,24 +411,20 @@ for (const p of products) {
 
 mkdirSync(OUT_DIR, { recursive: true });
 
-products.forEach((p, i) => {
-  const next = products[(i + 1) % products.length];
-  writeFileSync(join(OUT_DIR, slugOf(p) + '.html'), pageHTML(p, next));
-  console.log('  ✓ products/' + slugOf(p) + '.html  →  ' + pathOf(p));
-});
+const pageProducts = ordered(products);
+writeFileSync(join(OUT_DIR, PAGE_SLUG + '.html'), pageHTML(pageProducts));
+console.log('  ✓ products/' + PAGE_SLUG + '.html  →  ' + PAGE_PATH + '（' + pageProducts.map((p) => '#' + slugOf(p)).join('、') + '）');
 
-/* CMS 刪掉產品後，殘留的舊頁面會繼續被 Google 收錄，一併清掉 */
-if (existsSync(OUT_DIR)) {
-  for (const name of readdirSync(OUT_DIR)) {
-    if (!name.endsWith('.html')) continue;
-    if (seen.has(name.slice(0, -5))) continue;
-    rmSync(join(OUT_DIR, name));
-    console.log('  ✗ 移除已不存在的產品頁 products/' + name);
-  }
+/* 拆頁時代的 v-essence.html／s-essence.html 與 CMS 刪掉的產品頁，殘留會繼續被 Google 收錄，一併清掉
+   （舊網址的 301 轉址在 worker/index.js 與 _redirects） */
+for (const name of readdirSync(OUT_DIR)) {
+  if (!name.endsWith('.html') || name === PAGE_SLUG + '.html') continue;
+  rmSync(join(OUT_DIR, name));
+  console.log('  ✗ 移除舊產品頁 products/' + name);
 }
 
 writeFileSync(join(ROOT, 'sitemap.xml'), sitemapXML(products));
-console.log('  ✓ sitemap.xml（' + (STATIC_PAGES.length + products.length) + ' 筆）');
+console.log('  ✓ sitemap.xml（' + (STATIC_PAGES.length + 1) + ' 筆）');
 
 /* 預渲染首頁／產品總覽／關於／FAQ 的內文（見 prerender-pages.mjs） */
 await import('./prerender-pages.mjs');

@@ -1656,7 +1656,7 @@ h3.in-view {
     padding-left: clamp(10px, 3vw, 20px) !important
   }
 
-  #product-feature-sec .benefits-row.cols-3 .small {
+  .product-feature-sec .benefits-row.cols-3 .small {
     font-size: 14px
   }
 
@@ -1754,15 +1754,15 @@ h3.in-view {
     height: 16px
   }
 
-  #product-feature-sec h2.h3 {
+  .product-feature-sec h2.h3 {
     font-size: 17px;
   }
 
-  #product-feature-sec .small {
+  .product-feature-sec .small {
     font-size: 15px;
   }
 
-  #product-feature-sec p.body {
+  .product-feature-sec p.body {
     font-size: 16px;
   }
 
@@ -1843,7 +1843,7 @@ h3.in-view {
     height: auto !important
   }
 
-  #product-hero-media {
+  .product-hero-media {
     height: auto !important
   }
 
@@ -2601,3 +2601,86 @@ a.qr-box:hover {
   .line-cta-hero .btn.line-cta { width: 100%; }
 }
 @media (prefers-reduced-motion: reduce) { .line-cta-sticky { transition: none; } }
+
+/* ============================================================
+   產品頁「選購組合」卡片（products.html #bundles）
+   三張並排，平板兩欄、手機一欄；按鈕貼齊卡片底部，價格行不受品項行數影響而對齊
+   ============================================================ */
+.bundle-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(16px, 2.4vw, 32px);
+}
+.bundle-card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--img-radius);
+  overflow: hidden;
+}
+.bundle-media { position: relative; aspect-ratio: 1080 / 945; background: var(--bg2); }
+.bundle-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.bundle-badge {
+  position: absolute;
+  top: 12px; right: 12px;
+  background: var(--deep);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+.bundle-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(18px, 2vw, 26px);
+}
+.bundle-items {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.bundle-items li { padding-left: 14px; position: relative; }
+.bundle-items li::before { content: ''; position: absolute; left: 0; top: .8em; width: 5px; height: 1px; background: var(--mid); }
+.bundle-price {
+  margin-top: auto;
+  padding-top: 20px;
+  font-size: clamp(24px, 2.4vw, 30px);
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: .02em;
+}
+.bundle-cur { font-size: .55em; font-weight: 500; margin-right: 2px; }
+.bundle-card .btn.line-cta { margin-top: 16px; width: 100%; padding: 12px 16px; }
+@media (max-width: 1024px) { .bundle-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .bundle-grid { grid-template-columns: 1fr; } }
+
+/* ============================================================
+   合併產品介紹頁 /products/vs-essences
+   頁首放跳轉按鈕，每款產品一段 article（id = 產品代稱，當錨點用）
+   ============================================================ */
+.vs-jump { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.vs-product { scroll-margin-top: 80px; }
+.vs-product + .vs-product { border-top: 1px solid var(--line); }
+@media (max-width: 560px) {
+  .vs-jump .btn { width: 100%; }
+}
+.vs-sub { font-size: clamp(17px, 1.8vw, 19px); }
+.vs-product .ingredient-flow-terms { font-size: clamp(15px, 1.6vw, 18px); }
+.vs-info { align-items: start; }
+/* 產品簡介：商品圖寬度＝文字區塊的一半（1:2）；手機上下排時圖片也只佔一半寬 */
+.split.vs-hero { grid-template-columns: 1fr 2fr; }
+@media (max-width: 768px) {
+  .split.vs-hero { grid-template-columns: 1fr; }
+  .vs-hero .product-hero-media { width: 50%; }
+}
+.vs-label { text-transform: none; }
+.vs-notes { list-style: none; margin-left: 0; padding: 0; color: var(--ink-soft); font-size: 14px; line-height: 1.8; }
+.vs-notes li { padding-left: 1.4em; text-indent: -1.4em; }
+.vs-notes li::before { content: '✱'; display: inline-block; width: 1.4em; text-indent: 0; }

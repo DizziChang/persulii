@@ -27,7 +27,8 @@ function asset(p) {
 }
 
 /* 產品詳細頁的網址（實體頁由 scripts/build-pages.mjs 於建置時產生） */
-function productPath(p) { return '/products/' + String(p.id).toLowerCase(); }
+/* 2026-11-28 起產品介紹合併成一頁，各產品是頁內錨點（見 scripts/build-pages.mjs） */
+function productPath(p) { return '/products/vs-essences#' + String(p.id).toLowerCase(); }
 
 function injectJSONLD(id, data) {
   var existing = document.getElementById(id);

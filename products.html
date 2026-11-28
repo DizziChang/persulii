@@ -61,17 +61,13 @@
   <meta name="twitter:description"
     content="per-sulii 沛素 產品系列：V-essence 精萃蜂胜肽PLUS精華、S-essence 外泌體多胜肽養護精華，完成 TFDA-PIF 化粧品產品登錄，符合GMP品質管理，從原料到成品嚴格把關。">
   <meta name="twitter:image" content="https://persulii.com.tw/images/phead-product.webp">
-  <!-- 綜合介紹影片。內容與 scripts/build-pages.mjs 的 PRODUCTS_PAGE_VIDEO 是同一份
-       （那邊產生 sitemap 的 video 擴充），改一邊要記得同步另一邊。
-       同一支 mp4 也出現在首頁，但一支影片只能掛一個網址，首頁刻意不宣告。 -->
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoObject","name":"per-sulii 沛素 產品介紹影片","description":"per-sulii 沛素 產品系列介紹：V-essence 精萃蜂胜肽PLUS精華與 S-essence 外泌體多胜肽養護精華，每天30秒在家養出好肌膚。","thumbnailUrl":"https://persulii.com.tw/images/video-vs-poster.webp","uploadDate":"2026-08-01T00:00:00+08:00","contentUrl":"https://persulii.com.tw/video/persulii-vs-intro.mp4"}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首頁","item":"https://persulii.com.tw/"},{"@type":"ListItem","position":2,"name":"產品","item":"https://persulii.com.tw/products"}]}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="/css/main.css?v=a45744379f">
+  <link rel="stylesheet" href="/css/main.css?v=a219c56f8f">
   <!-- Meta Pixel Code -->
   <script>
   !function(f,b,e,v,n,t,s)
@@ -109,28 +105,48 @@
 
     <section class="sec">
       <div class="wrap">
-        <div class="grid g2" id="product-list"><!--prerender:product-list--><a href="/products/s-essence" class="pcard"><div class="media product"><img class="media-img" src="/images/pcard_S.webp" alt="S-essence 外泌體多胜肽養護精華" loading="lazy"><div class="media-hover"><img src="/images/S04.webp" alt="S-essence 外泌體多胜肽養護精華 特寫" loading="lazy"></div><div class="media-cap"><span class="media-cap-t">沛素-S</span><span class="media-cap-d">外泌體細緻膚質</span></div></div><h3 class="h3 mt24">S-essence 外泌體多胜肽養護精華</h3><p class="body mt8">柔潤、透亮肌膚、細緻毛孔</p><div class="mt16"><span class="btn ghost">我要細緻肌膚 →</span></div></a><a href="/products/v-essence" class="pcard"><div class="media product"><img class="media-img" src="/images/pcard_V.webp" alt="V-essence 精萃蜂胜肽PLUS精華" loading="lazy"><div class="media-hover"><img src="/images/V01.webp" alt="V-essence 精萃蜂胜肽PLUS精華 特寫" loading="lazy"></div><div class="media-cap"><span class="media-cap-t">沛素-V</span><span class="media-cap-d">蜂胜肽緊緻撫紋</span></div></div><h3 class="h3 mt24">V-essence 精萃蜂胜肽PLUS精華</h3><p class="body mt8">專為淡化肌膚紋路打造</p><div class="mt16"><span class="btn ghost">我要淡化細紋 →</span></div></a><!--/prerender:product-list--></div>
+        <div class="grid g2" id="product-list"><!--prerender:product-list--><a href="/products/vs-essences#s-essence" class="pcard"><div class="media product"><img class="media-img" src="/images/pcard_S.webp" alt="S-essence 外泌體多胜肽養護精華" loading="lazy"><div class="media-hover"><img src="/images/S04.webp" alt="S-essence 外泌體多胜肽養護精華 特寫" loading="lazy"></div><div class="media-cap"><span class="media-cap-t">沛素-S</span><span class="media-cap-d">外泌體細緻膚質</span></div></div><h3 class="h3 mt24">S-essence 外泌體多胜肽養護精華</h3><p class="body mt8">柔潤、透亮肌膚、細緻毛孔</p><div class="mt16"><span class="btn ghost">我要細緻肌膚 →</span></div></a><a href="/products/vs-essences#v-essence" class="pcard"><div class="media product"><img class="media-img" src="/images/pcard_V.webp" alt="V-essence 精萃蜂胜肽PLUS精華" loading="lazy"><div class="media-hover"><img src="/images/V01.webp" alt="V-essence 精萃蜂胜肽PLUS精華 特寫" loading="lazy"></div><div class="media-cap"><span class="media-cap-t">沛素-V</span><span class="media-cap-d">蜂胜肽緊緻撫紋</span></div></div><h3 class="h3 mt24">V-essence 精萃蜂胜肽PLUS精華</h3><p class="body mt8">專為淡化肌膚紋路設計配方</p><div class="mt16"><span class="btn ghost">我要淡化細紋 →</span></div></a><!--/prerender:product-list--></div>
       </div>
     </section>
 
-    <section class="sec tight">
+    <!-- 選購組合：目前實際販售的三種組合，價格與內容寫死在這裡（沒有進 CMS），
+         改價格或組合時直接改這段。按鈕辨識碼 VS02／VV02／SS02（02 = 準備購買），
+         GA4 line_click 的 link_location 為 products_bundle。 -->
+    <section class="sec tight bundle-sec" id="bundles" style="background:var(--bg);border-top:1px solid var(--line)">
       <div class="wrap">
-        <div class="video-frame" style="max-width:900px;margin:0 auto">
-          <video src="/video/persulii-vs-intro.mp4" poster="/images/video-vs-poster.webp" controls playsinline
-            preload="metadata"></video>
+        <div class="center">
+          <div class="eyebrow">Sets</div>
+          <h2 class="h2 mt16">選購組合</h2>
+          <p class="body mt16">選好組合，點按鈕直接在官方 LINE 下單，專人回覆。</p>
         </div>
-        <div class="video-share-wrap">
-          <button type="button" class="btn ghost share-btn" data-share-url="https://youtu.be/hWlyWHFQgqo"
-            data-share-title="per-sulii 沛素 產品影片">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-              stroke-linejoin="round">
-              <circle cx="18" cy="5" r="2.4" />
-              <circle cx="6" cy="12" r="2.4" />
-              <circle cx="18" cy="19" r="2.4" />
-              <path d="M8.1 10.7l7.6-4.3M8.1 13.3l7.6 4.3" />
-            </svg>
-            <span class="share-btn-label">分享</span>
-          </button>
+        <div class="bundle-grid mt40">
+          <article class="bundle-card">
+            <div class="bundle-media"><img src="/images/bundle-vs.webp" alt="沛素 V+S雙精華組" loading="lazy" width="1080" height="945"></div>
+            <div class="bundle-body">
+              <h3 class="h3">沛素 V+S雙精華組</h3>
+              <ul class="bundle-items"><li>V-essence 精萃蜂胜肽PLUS精華 35ml</li><li>S-essence 外泌體多胜肽養護精華 35ml</li></ul>
+              <p class="bundle-price"><span class="bundle-cur">NT$</span> 6,800</p>
+              <a class="btn line-cta solid" href="https://line.me/R/oaMessage/@592ziwjw/?VS02%EF%BD%9C%E6%88%91%E6%83%B3%E8%B3%BC%E8%B2%B7%20%E6%B2%9B%E7%B4%A0%20V%2BS%E9%9B%99%E7%B2%BE%E8%8F%AF%E7%B5%84" target="_blank" rel="noopener" data-cta="VS02" data-cta-loc="products_bundle"><svg class="line-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5C6.2 2.5 1.5 6.3 1.5 11c0 4.2 3.7 7.7 8.7 8.4.34.07.8.22.92.51.1.27.07.68.03.95l-.15.9c-.04.27-.21 1.05.92.57 1.13-.47 6.07-3.57 8.28-6.12 1.53-1.66 2.3-3.36 2.3-5.21 0-4.7-4.7-8.5-10.5-8.5zM7.3 13.6H5.2a.55.55 0 0 1-.55-.55V8.9a.55.55 0 0 1 1.1 0v3.6h1.55a.55.55 0 0 1 0 1.1zm1.9-.55a.55.55 0 0 1-1.1 0V8.9a.55.55 0 0 1 1.1 0v4.15zm5.1 0a.55.55 0 0 1-.99.33l-2.06-2.8v2.47a.55.55 0 0 1-1.1 0V8.9a.55.55 0 0 1 .99-.33l2.06 2.8V8.9a.55.55 0 0 1 1.1 0v4.15zm3.5-2.63a.55.55 0 0 1 0 1.1h-1.55v.98h1.55a.55.55 0 0 1 0 1.1h-2.1a.55.55 0 0 1-.55-.55V8.9c0-.3.25-.55.55-.55h2.1a.55.55 0 0 1 0 1.1h-1.55v.97h1.55z"/></svg><span>LINE 洽詢購買</span></a>
+            </div>
+          </article>
+          <article class="bundle-card">
+            <div class="bundle-media"><img src="/images/pcard_V.webp" alt="沛素 VV雙精華組" loading="lazy" width="1080" height="945"><span class="bundle-badge">×2</span></div>
+            <div class="bundle-body">
+              <h3 class="h3">沛素 VV雙精華組</h3>
+              <ul class="bundle-items"><li>V-essence 精萃蜂胜肽PLUS精華 35ml ×2</li></ul>
+              <p class="bundle-price"><span class="bundle-cur">NT$</span> 8,100</p>
+              <a class="btn line-cta solid" href="https://line.me/R/oaMessage/@592ziwjw/?VV02%EF%BD%9C%E6%88%91%E6%83%B3%E8%B3%BC%E8%B2%B7%20%E6%B2%9B%E7%B4%A0%20VV%E9%9B%99%E7%B2%BE%E8%8F%AF%E7%B5%84" target="_blank" rel="noopener" data-cta="VV02" data-cta-loc="products_bundle"><svg class="line-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5C6.2 2.5 1.5 6.3 1.5 11c0 4.2 3.7 7.7 8.7 8.4.34.07.8.22.92.51.1.27.07.68.03.95l-.15.9c-.04.27-.21 1.05.92.57 1.13-.47 6.07-3.57 8.28-6.12 1.53-1.66 2.3-3.36 2.3-5.21 0-4.7-4.7-8.5-10.5-8.5zM7.3 13.6H5.2a.55.55 0 0 1-.55-.55V8.9a.55.55 0 0 1 1.1 0v3.6h1.55a.55.55 0 0 1 0 1.1zm1.9-.55a.55.55 0 0 1-1.1 0V8.9a.55.55 0 0 1 1.1 0v4.15zm5.1 0a.55.55 0 0 1-.99.33l-2.06-2.8v2.47a.55.55 0 0 1-1.1 0V8.9a.55.55 0 0 1 .99-.33l2.06 2.8V8.9a.55.55 0 0 1 1.1 0v4.15zm3.5-2.63a.55.55 0 0 1 0 1.1h-1.55v.98h1.55a.55.55 0 0 1 0 1.1h-2.1a.55.55 0 0 1-.55-.55V8.9c0-.3.25-.55.55-.55h2.1a.55.55 0 0 1 0 1.1h-1.55v.97h1.55z"/></svg><span>LINE 洽詢購買</span></a>
+            </div>
+          </article>
+          <article class="bundle-card">
+            <div class="bundle-media"><img src="/images/pcard_S.webp" alt="沛素 SS雙精華組" loading="lazy" width="1080" height="945"><span class="bundle-badge">×2</span></div>
+            <div class="bundle-body">
+              <h3 class="h3">沛素 SS雙精華組</h3>
+              <ul class="bundle-items"><li>S-essence 外泌體多胜肽養護精華 35ml ×2</li></ul>
+              <p class="bundle-price"><span class="bundle-cur">NT$</span> 5,700</p>
+              <a class="btn line-cta solid" href="https://line.me/R/oaMessage/@592ziwjw/?SS02%EF%BD%9C%E6%88%91%E6%83%B3%E8%B3%BC%E8%B2%B7%20%E6%B2%9B%E7%B4%A0%20SS%E9%9B%99%E7%B2%BE%E8%8F%AF%E7%B5%84" target="_blank" rel="noopener" data-cta="SS02" data-cta-loc="products_bundle"><svg class="line-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5C6.2 2.5 1.5 6.3 1.5 11c0 4.2 3.7 7.7 8.7 8.4.34.07.8.22.92.51.1.27.07.68.03.95l-.15.9c-.04.27-.21 1.05.92.57 1.13-.47 6.07-3.57 8.28-6.12 1.53-1.66 2.3-3.36 2.3-5.21 0-4.7-4.7-8.5-10.5-8.5zM7.3 13.6H5.2a.55.55 0 0 1-.55-.55V8.9a.55.55 0 0 1 1.1 0v3.6h1.55a.55.55 0 0 1 0 1.1zm1.9-.55a.55.55 0 0 1-1.1 0V8.9a.55.55 0 0 1 1.1 0v4.15zm5.1 0a.55.55 0 0 1-.99.33l-2.06-2.8v2.47a.55.55 0 0 1-1.1 0V8.9a.55.55 0 0 1 .99-.33l2.06 2.8V8.9a.55.55 0 0 1 1.1 0v4.15zm3.5-2.63a.55.55 0 0 1 0 1.1h-1.55v.98h1.55a.55.55 0 0 1 0 1.1h-2.1a.55.55 0 0 1-.55-.55V8.9c0-.3.25-.55.55-.55h2.1a.55.55 0 0 1 0 1.1h-1.55v.97h1.55z"/></svg><span>LINE 洽詢購買</span></a>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -150,7 +166,7 @@
   <div id="site-footer"></div>
 
   <script src="/js/components.js?v=401c6ed325"></script>
-  <script src="/js/main.js?v=ac7bccca88"></script>
+  <script src="/js/main.js?v=ddcacad4a2"></script>
 </body>
 
 </html>

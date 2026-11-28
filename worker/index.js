@@ -57,6 +57,16 @@ export default {
       return Response.redirect(clean.toString(), 301);
     }
 
+    /* 2026-11-28 兩個產品介紹頁合併成 /products/vs-essences，舊網址 301 到對應的頁內錨點，
+       Google 收錄與外部分享出去的舊連結都不會斷。Netlify 開發站用的是根目錄 _redirects，兩邊要一起改。 */
+    const MOVED = { '/products/v-essence': '/products/vs-essences#v-essence', '/products/s-essence': '/products/vs-essences#s-essence' };
+    const moved = MOVED[url.pathname.toLowerCase().replace(/\/+$/, '')];
+    if (moved && (request.method === 'GET' || request.method === 'HEAD')) {
+      const to = new URL(moved, url);
+      to.search = url.search;
+      return Response.redirect(to.toString(), 301);
+    }
+
     /* 其餘一律交還給靜態資源伺服器，行為與加這支 Worker 之前完全相同
        （/about → about.html 的副檔名補齊、_headers 的快取規則都照舊） */
     const res = await env.ASSETS.fetch(request);

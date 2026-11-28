@@ -1054,6 +1054,15 @@ function initClickTracking() {
     if (typeof gtag !== 'function') return;
     var a = e.target.closest && e.target.closest('a[href]');
     if (!a) return;
+    /* LINE 購買 CTA：沿用 line_click（已是重要事件），link_location 標位置，cta_id 標按鈕辨識碼 */
+    if (a.dataset.cta) {
+      gtag('event', 'line_click', {
+        link_location: a.dataset.ctaLoc || 'content',
+        cta_id: a.dataset.cta,
+        link_url: a.href
+      });
+      return;
+    }
     var card = a.closest('.channel-card');
     if (card) {
       gtag('event', 'channel_click', {
@@ -1072,9 +1081,38 @@ function initClickTracking() {
   });
 }
 
+/* ---- 產品頁置底購買列 ----
+   首屏的購買按鈕還看得到時不顯示（避免同一顆按鈕出現兩次）；
+   捲過首屏按鈕後滑上來；捲到 footer 時收起，不擋頁尾資訊。 */
+function initStickyCta() {
+  /* 用捲動事件＋rAF 而非 IntersectionObserver：一口氣跳回頂端（iPhone 點狀態列）時
+     按鈕從「在上方」直接變「在下方」、中間沒有交會，IO 不會觸發，列會卡在畫面上 */
+  var bar = document.getElementById('line-cta-sticky');
+  var hero = document.getElementById('product-hero-cta');
+  if (!bar || !hero) return;
+  var shown = null, ticking = false;
+  function update() {
+    ticking = false;
+    var footer = document.querySelector('footer.ftr'); /* 由 components.js 稍後注入 */
+    var show = hero.getBoundingClientRect().bottom < 0
+      && !(footer && footer.getBoundingClientRect().top < window.innerHeight);
+    if (show === shown) return;
+    shown = show;
+    bar.classList.toggle('show', show);
+    bar.setAttribute('aria-hidden', show ? 'false' : 'true');
+    /* 藏起來時不能被 Tab 鍵選到 */
+    bar.querySelectorAll('a').forEach(function (a) { a.tabIndex = show ? 0 : -1; });
+  }
+  function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
+}
+
 /* ---- 初始化 ---- */
 document.addEventListener('DOMContentLoaded', function () {
   initClickTracking();
+  initStickyCta();
   initScrollReveal();
   initHeroScroll();
   initAboutImgPin();

@@ -44,6 +44,21 @@ function asset(p) {
   return /^(https?:)?\/\//.test(p) ? p : '/' + String(p).replace(/^\/+/, '');
 }
 
+/* ---- LINE 購買 CTA ----
+   用 LINE 的 oaMessage 連結開啟官方帳號並預填訊息；訊息開頭帶辨識碼（S02、V01…），
+   客服一看就知道客人從哪顆按鈕來：02 = 準備購買（優先回覆）、01 = 還在了解。
+   同一份定義也寫在 js/main.js（首頁、FAQ 用），改文案或帳號時兩邊一起改。 */
+const LINE_OA_ID = '@592ziwjw';
+const LINE_ICON_SVG = '<svg class="line-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5C6.2 2.5 1.5 6.3 1.5 11c0 4.2 3.7 7.7 8.7 8.4.34.07.8.22.92.51.1.27.07.68.03.95l-.15.9c-.04.27-.21 1.05.92.57 1.13-.47 6.07-3.57 8.28-6.12 1.53-1.66 2.3-3.36 2.3-5.21 0-4.7-4.7-8.5-10.5-8.5zM7.3 13.6H5.2a.55.55 0 0 1-.55-.55V8.9a.55.55 0 0 1 1.1 0v3.6h1.55a.55.55 0 0 1 0 1.1zm1.9-.55a.55.55 0 0 1-1.1 0V8.9a.55.55 0 0 1 1.1 0v4.15zm5.1 0a.55.55 0 0 1-.99.33l-2.06-2.8v2.47a.55.55 0 0 1-1.1 0V8.9a.55.55 0 0 1 .99-.33l2.06 2.8V8.9a.55.55 0 0 1 1.1 0v4.15zm3.5-2.63a.55.55 0 0 1 0 1.1h-1.55v.98h1.55a.55.55 0 0 1 0 1.1h-2.1a.55.55 0 0 1-.55-.55V8.9c0-.3.25-.55.55-.55h2.1a.55.55 0 0 1 0 1.1h-1.55v.97h1.55z"/></svg>';
+function lineCtaURL(code, msg) {
+  return 'https://line.me/R/oaMessage/' + LINE_OA_ID + '/?' + encodeURIComponent(code + '｜' + msg);
+}
+/* variant：'solid'（綠底，準備購買）或 'ghost'（綠框，詢問）；loc 送進 GA4 line_click 的 link_location */
+function lineCtaHTML(code, label, msg, variant, loc) {
+  return '<a class="btn line-cta ' + variant + '" href="' + attr(lineCtaURL(code, msg)) + '" target="_blank" rel="noopener"'
+    + ' data-cta="' + code + '" data-cta-loc="' + loc + '">' + LINE_ICON_SVG + '<span>' + label + '</span></a>';
+}
+
 /* 只用於屬性值（meta content、alt、src…）；內文沿用 CMS 原樣輸出，與改版前一致 */
 function attr(s) {
   return String(s == null ? '' : s)
@@ -217,12 +232,20 @@ function detailHTML(p, next) {
     + '<p class="lead mt16">' + p.tagline + '</p>'
     + '<p class="body">' + p.intro + '</p>'
     + (p.highlights && p.highlights.length ? '<div class="chips mt24">' + p.highlights.map((h) => '<span class="chip">' + h + '</span>').join('') + '</div>' : '')
-    + '<div class="mt32"><a href="/contact" class="btn solid">購買沛素洽詢官方認證夥伴 ▸ </a></div>'
+    + '<div class="mt32 line-cta-hero" id="product-hero-cta">'
+    + lineCtaHTML(p.code + '02', 'LINE 立即詢問購買', '我想購買 ' + p.en, 'solid', 'product_hero')
+    + '<a href="/contact" class="tlink line-cta-alt">或洽詢官方認證夥伴 ▸</a>'
+    + '</div>'
     + '</div>'
     + '</div></section>'
     + '<section class="sec tight" id="product-feature-sec" style="background:var(--bg)"><div class="wrap">' + featureSection + '</div></section>'
     + '<section class="sec tight"><div class="wrap"><h2 class="h3">關鍵成分</h2>' + ing + '</div></section>'
     + audienceUsageSection
+    /* S01／V01：看完適用族群與用法、還在猶豫的人 */
+    + '<section class="sec tight line-cta-band"><div class="wrap center">'
+    + '<p class="body">每個人的膚況不同，不確定適不適合，直接問我們最快。</p>'
+    + '<div class="mt24">' + lineCtaHTML(p.code + '01', '不確定適不適合？LINE 問我們', '我想了解 ' + p.en, 'ghost', 'product_mid') + '</div>'
+    + '</div></section>'
     + reminderSection
     + '' /* TODO: 暫時隱藏「規格與認證」區塊 */
     + bottleSection
@@ -388,6 +411,14 @@ function pageHTML(p, next) {
 
   <!-- 本頁由 scripts/build-pages.mjs 依 content/products.json 產生，請勿直接編輯 -->
   <main id="product-detail">${detailHTML(p, next)}</main>
+
+  <!-- 置底購買列（S02／V02）：首屏按鈕捲出畫面後才出現，看到 footer 時收起（js/main.js initStickyCta） -->
+  <div class="line-cta-sticky" id="line-cta-sticky" aria-hidden="true">
+    <div class="line-cta-sticky-in">
+      <span class="line-cta-sticky-name">${p.en} ${p.name}</span>
+      ${lineCtaHTML(p.code + '02', 'LINE 立即詢問購買', '我想購買 ' + p.en, 'solid', 'product_sticky')}
+    </div>
+  </div>
 
   <div id="site-footer"></div>
 

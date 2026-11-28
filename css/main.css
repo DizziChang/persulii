@@ -2546,3 +2546,58 @@ a.qr-box:hover {
 .reviews-more {
   color: var(--link);
 }
+
+/* ============================================================
+   LINE 購買 CTA：所有 LINE 按鈕一律綠底白字，hover 變深綠
+   綠色用 LINE 官方品牌色，讓客人一眼認出會打開 LINE
+   （solid／ghost 兩個 class 保留給 HTML 標示用途，外觀相同）
+   ============================================================ */
+.btn.line-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-color: #06C755;
+  letter-spacing: .04em;
+}
+.btn.line-cta .line-ico { width: 1.25em; height: 1.25em; flex: none; }
+.btn.line-cta,
+.btn.line-cta.solid,
+.btn.line-cta.ghost { background: #06C755; border-color: #06C755; color: #fff; }
+.btn.line-cta:hover,
+.btn.line-cta:focus-visible { background: #05a548; border-color: #05a548; color: #fff; }
+
+/* 首屏：主按鈕＋次要的經銷夥伴連結 */
+.line-cta-hero { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; }
+.line-cta-hero .btn.line-cta { padding: 12px 32px; }
+.line-cta-band .body { color: var(--ink-soft); }
+
+/* 置底購買列：預設藏在畫面外，捲過首屏按鈕後滑上來 */
+.line-cta-sticky {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 90;
+  background: rgba(255, 255, 255, .96);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid var(--line);
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+  transform: translateY(110%);
+  transition: transform .3s ease;
+}
+.line-cta-sticky.show { transform: none; }
+.line-cta-sticky-in {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.line-cta-sticky-name { font-size: 14px; font-weight: 500; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 560px) {
+  .line-cta-sticky-name { display: none; }
+  .line-cta-sticky .btn.line-cta { width: 100%; padding: 12px 16px; }
+  .line-cta-hero .btn.line-cta { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .line-cta-sticky { transition: none; } }
